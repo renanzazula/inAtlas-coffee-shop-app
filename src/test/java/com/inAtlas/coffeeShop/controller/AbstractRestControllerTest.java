@@ -1,4 +1,4 @@
-package com.inAtlas.coffeeShop.weathertestlst.controller;
+package com.inAtlas.coffeeShop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -1,4 +1,4 @@
-package com.inAtlas.coffeeShop.weathertestlst;
+package com.inAtlas.coffeeShop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

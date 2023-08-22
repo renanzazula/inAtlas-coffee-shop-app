@@ -1,4 +1,4 @@
-package com.inAtlas.coffeeShop.weathertestlst;
+package com.inAtlas.coffeeShop;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
