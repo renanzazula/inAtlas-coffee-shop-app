@@ -1,6 +1,6 @@
 version: '3'
 services:
-  weatherTestLst-app:
+  inAtlasCoffeeShop-app-app:
       image: inAtlasCoffeeShop
       build:
         context: ./
