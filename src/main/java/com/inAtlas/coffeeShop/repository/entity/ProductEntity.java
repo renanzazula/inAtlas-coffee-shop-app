@@ -1,6 +1,8 @@
 package com.inAtlas.coffeeShop.repository.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -9,8 +11,12 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "product")
+@EqualsAndHashCode
+@ToString
 public @Data
 class ProductEntity extends BaseAuditEntity {
+
+    private static final long serialVersionUID = -7008578354674160248L;
 
     @NotNull
     @Size(max = 45)
@@ -26,7 +32,7 @@ class ProductEntity extends BaseAuditEntity {
 
     @ColumnDefault(value = "0")
     @Column(name = "quantity")
-    private Double quantity;
+    private Long quantity;
 
     @ColumnDefault(value = "0")
     @Column(name = "price_unit")

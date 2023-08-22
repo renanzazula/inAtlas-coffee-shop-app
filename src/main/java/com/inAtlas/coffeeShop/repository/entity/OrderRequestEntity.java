@@ -2,6 +2,7 @@ package com.inAtlas.coffeeShop.repository.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,18 +13,23 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude = "orderHasProductEntity")
 @Entity
 @Table(name = "order_request")
+@EqualsAndHashCode(exclude = {"orderHasProduct"})
+@ToString
 public @Data
 class OrderRequestEntity extends BaseAuditEntity {
+
+    private static final long serialVersionUID = -1728370995890730077L;
+
 
     @CreationTimestamp
     @Column(name = "date")
     private LocalDateTime date;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private StatusOrderEnum status;
 
     @Column(name = "total_quantity")
     private Long totalQuantity;
@@ -36,6 +42,6 @@ class OrderRequestEntity extends BaseAuditEntity {
     private Double totalDiscount;
 
     @NotNull
-    @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<OrderHasProductEntity> orderHasProduct = new HashSet<>();
 }

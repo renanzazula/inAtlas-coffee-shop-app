@@ -3,6 +3,7 @@ package com.inAtlas.coffeeShop.controller.discounts;
 import com.inAtlas.coffeeShop.controller.domain.Discount;
 import com.inAtlas.coffeeShop.service.discount.DiscountService;
 import com.inAtlas.coffeeShop.utils.ConstantsApi;
+import com.inAtlas.coffeeShop.utils.functions.DomainToDtoAdapter;
 import com.inAtlas.coffeeShop.utils.functions.DtoToDomainAdapter;
 import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,9 @@ public class DiscountsController {
     @PostMapping
     public ResponseEntity<Discount> add(@RequestBody Discount obj) {
         return new ResponseEntity<>(DtoToDomainAdapter.discountDtoToDiscountAdapter
-                .apply(discountService.add(null)), HttpStatus.CREATED);
+                .apply(discountService.add(DomainToDtoAdapter
+                        .discountToDiscountDtoAdapter
+                        .apply(obj))), HttpStatus.CREATED);
     }
 
     @DeleteMapping({"/{id}"})
@@ -52,8 +55,11 @@ public class DiscountsController {
 
     @PutMapping({"/{id}"})
     public ResponseEntity<Discount> update(@PathVariable Long id, @RequestBody Discount obj) {
-        return new ResponseEntity<>(DtoToDomainAdapter.discountDtoToDiscountAdapter
-                .apply(discountService.update(id, null)), HttpStatus.OK);
+        return new ResponseEntity<>(DtoToDomainAdapter
+                .discountDtoToDiscountAdapter
+                .apply(discountService.update(id,
+                        DomainToDtoAdapter.discountToDiscountDtoAdapter
+                                .apply(obj))), HttpStatus.OK);
     }
 
 }

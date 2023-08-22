@@ -9,7 +9,7 @@ class ProductDto extends BaseDto {
     private String name;
     private String description;
     private String status;
-    private Double quantity;
+    private Long quantity;
     private Double priceUnit;
 
 }

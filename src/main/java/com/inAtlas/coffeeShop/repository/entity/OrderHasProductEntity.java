@@ -1,27 +1,34 @@
 package com.inAtlas.coffeeShop.repository.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "order_request_has_product")
-public @Data class OrderHasProductEntity  extends BaseAuditEntity{
+@ToString
+public @Data class OrderHasProductEntity  {
 
-    @ManyToOne
-    @JoinColumn(name = "order_request_id")
+    private static final long serialVersionUID = 7167425684167438414L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "order_request_has_product_id")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_request_id",  updatable = false)
     private OrderRequestEntity orderRequest;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", updatable = false)
     private ProductEntity product;
 
-    @Column(name = "quantity")
-    private Integer quantity;
-
-    @ColumnDefault(value = "0")
     @Column(name = "discount")
     private Double discount;
+
+    @Column(name = "price_unit")
+    private Double priceUnit;
 
 }

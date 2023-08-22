@@ -1,10 +1,8 @@
 package com.inAtlas.coffeeShop.controller.orders;
 
 import com.inAtlas.coffeeShop.controller.domain.OrderRequest;
-import com.inAtlas.coffeeShop.controller.domain.OrderRequest;
 import com.inAtlas.coffeeShop.service.order.OrderRequestService;
 import com.inAtlas.coffeeShop.utils.ConstantsApi;
-import com.inAtlas.coffeeShop.utils.functions.DomainToDtoAdapter;
 import com.inAtlas.coffeeShop.utils.functions.DtoToDomainAdapter;
 import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
@@ -26,38 +24,48 @@ public class OrdersController {
     }
 
     @GetMapping({""})
-    public ResponseEntity<List<OrderRequest>> get() {
-        return new ResponseEntity<>(orderRequestService.get()
+    public ResponseEntity<List<OrderRequest>> getAllOrders() {
+        return new ResponseEntity<>(orderRequestService.getAll()
                 .stream()
                 .map(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter)
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
-    @GetMapping({"/{id}"})
-    public ResponseEntity<OrderRequest> getById(@PathVariable Long id) {
+    @GetMapping({"/{orderId}"})
+    public ResponseEntity<OrderRequest> getOrderById(@PathVariable Long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.getById(id)), HttpStatus.OK);
+                .apply(orderRequestService.getById(orderId)), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<OrderRequest> add(@RequestBody OrderRequest obj) {
+    @PostMapping()
+    public ResponseEntity<OrderRequest> createNewOrder() {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.add(DomainToDtoAdapter.orderRequestToOrderRequestDtoAdapter.apply(obj))), HttpStatus.CREATED);
+                .apply(orderRequestService.createNewOrder()), HttpStatus.CREATED);
     }
 
-    @DeleteMapping({"/{id}"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        orderRequestService.delete(id);
-    }
-
-    @PutMapping({"/{id}"})
-    public ResponseEntity<OrderRequest> update(@PathVariable Long id, @RequestBody OrderRequest obj) {
+    @DeleteMapping({"/{orderId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<OrderRequest> delete(@PathVariable Long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.update(id, DomainToDtoAdapter.orderRequestToOrderRequestDtoAdapter.apply(obj))), HttpStatus.OK);
+                .apply(orderRequestService.delete(orderId)), HttpStatus.OK);
     }
 
+    @PutMapping({"/{orderId}/close"})
+    public ResponseEntity<OrderRequest> closeOrder(@PathVariable Long orderId) {
+        return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
+                .apply(orderRequestService.closeOrder(orderId)), HttpStatus.OK);
+    }
 
+    @PutMapping({"/{orderId}/add/{productId}/{quantity}"})
+    public ResponseEntity<OrderRequest> addNewProduct(@PathVariable Long orderId, @PathVariable Long productId, Long quantity) {
+        return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
+                .apply(orderRequestService.addNewProduct(orderId, productId, quantity)), HttpStatus.OK);
+    }
 
+    @PutMapping({"/{orderId}/remove/{productId}/{quantity}"})
+    public ResponseEntity<OrderRequest> addRemoveProduct(@PathVariable Long orderId, @PathVariable Long productId, Long quantity) {
+        return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
+                .apply(orderRequestService.removeProduct(orderId, productId, quantity)), HttpStatus.OK);
+    }
 
 }

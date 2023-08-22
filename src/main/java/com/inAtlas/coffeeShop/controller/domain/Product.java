@@ -7,9 +7,7 @@ class Product extends Base {
 
     private Long id;
     private String name;
-    private String description;
-    private String status;
-    private Double quantity;
+    private Long quantity;
     private Double priceUnit;
 
 }
