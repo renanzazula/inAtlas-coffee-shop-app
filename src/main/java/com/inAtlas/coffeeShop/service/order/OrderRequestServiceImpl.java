@@ -2,27 +2,26 @@ package com.inAtlas.coffeeShop.service.order;
 
 
 import com.inAtlas.coffeeShop.repository.entity.OrderHasProductEntity;
-import com.inAtlas.coffeeShop.repository.entity.ProductEntity;
 import com.inAtlas.coffeeShop.repository.entity.StatusOrderEnum;
 import com.inAtlas.coffeeShop.repository.order.OrderHasProductRepository;
 import com.inAtlas.coffeeShop.repository.product.ProductRepository;
 import com.inAtlas.coffeeShop.service.dto.OrderRequestDto;
 import com.inAtlas.coffeeShop.repository.entity.OrderRequestEntity;
 import com.inAtlas.coffeeShop.repository.order.OrderRequestRepository;
+import com.inAtlas.coffeeShop.utils.Constants;
 import com.inAtlas.coffeeShop.utils.functions.EntityToDtoAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
 public class OrderRequestServiceImpl implements OrderRequestService {
-
-    public static final String ORDER_NOT_FOUND = "Order not Found!";
 
     private final OrderRequestRepository orderRequestRepository;
     private final ProductRepository productRepository;
@@ -49,50 +48,75 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     @Transactional
-    public OrderRequestDto addNewProduct(Long orderId, Long productId, Long quantity) {
+    public OrderRequestDto addProduct(long orderId, long productId) {
+        orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+        productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND));
 
         OrderHasProductEntity orderHasProductEntity = new OrderHasProductEntity();
         orderHasProductEntity.setProduct(productRepository.getById(productId));
         orderHasProductEntity.setPriceUnit(productRepository.getById(productId).getPriceUnit());
         orderHasProductEntity.setOrderRequest(orderRequestRepository.getById(orderId));
-        orderHasProductRepository.save(orderHasProductEntity);
 
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
         // orderRequestEntity.setPromotionDiscount(0);
 
-        orderRequestEntity.setTotalQuantity(0L);
-        orderRequestEntity.setTotalAmount(0D);
-        orderRequestEntity.setTotalDiscount(0D);
+        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getTotalQuantity(), orderRequestEntity.getOrderHasProduct()));
+        orderRequestEntity.setTotalAmount(calculateTotalAmount(orderRequestEntity.getTotalAmount(), orderRequestEntity.getOrderHasProduct()));
+        orderRequestEntity.setTotalDiscount(calculateTotalDiscount(orderRequestEntity.getTotalDiscount(), orderRequestEntity.getOrderHasProduct()));
+
+        orderRequestEntity.getOrderHasProduct().add(orderHasProductEntity);
         orderRequestRepository.save(orderRequestEntity);
-
-        OrderRequestEntity x = orderRequestRepository.getById(orderId);
-
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(x);
-    }
-
-
-    @Override
-    @Transactional
-    public OrderRequestDto removeProduct(Long orderId, Long productId, Long quantity) {
-        OrderRequestEntity entity = orderRequestRepository.getById(orderId);
-        entity.getOrderHasProduct().removeIf(orderHasProductItem -> orderHasProductItem.getId() == productId);
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.saveAndFlush(entity));
+                .apply(orderRequestRepository.save(orderRequestEntity));
     }
+
 
     @Override
     @Transactional
-    public OrderRequestDto closeOrder(Long orderId) {
-        OrderRequestEntity entity = orderRequestRepository.getById(orderId);
-        entity.setStatus(StatusOrderEnum.CLOSE);
+    public OrderRequestDto removeProduct(long orderId, long productId) {
+        OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
+
+        Optional<OrderHasProductEntity> orderHasProductToRemove =
+                orderRequestEntity
+                        .getOrderHasProduct()
+                        .stream()
+                        .findFirst()
+                        .filter(orderHasProduct -> orderHasProduct.getProduct().getId()==(productId));
+
+        Set<OrderHasProductEntity> orderHasProductToUpdateEntity = orderHasProductToRemove.stream()
+                .filter(Predicate.not(orderRequestEntity.getOrderHasProduct()::contains))
+                .collect(Collectors.toSet());
+
+        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getTotalQuantity(), orderHasProductToUpdateEntity));
+        orderRequestEntity.setTotalAmount(calculateTotalAmount(orderRequestEntity.getTotalAmount(), orderHasProductToUpdateEntity));
+        orderRequestEntity.setTotalDiscount(calculateTotalDiscount(orderRequestEntity.getTotalDiscount(), orderHasProductToUpdateEntity));
+        orderRequestEntity.setOrderHasProduct(orderHasProductToUpdateEntity);
+
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.saveAndFlush(entity));
+                .apply(orderRequestRepository.save(orderRequestEntity));
     }
 
     @Override
     @Transactional
-    public OrderRequestDto delete(Long id) {
-        OrderRequestEntity entity = orderRequestRepository.getById(id);
+    public OrderRequestDto closeOrder(long orderId) {
+        orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+        OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
+
+        // calculate to generate the rececpt
+        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getTotalQuantity(), orderRequestEntity.getOrderHasProduct()));
+        orderRequestEntity.setTotalAmount(calculateTotalAmount(orderRequestEntity.getTotalAmount(), orderRequestEntity.getOrderHasProduct()));
+        orderRequestEntity.setTotalDiscount(calculateTotalDiscount(orderRequestEntity.getTotalDiscount(), orderRequestEntity.getOrderHasProduct()));
+
+        orderRequestEntity.setStatus(StatusOrderEnum.CLOSE);
+        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
+                .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
+    }
+
+    @Override
+    @Transactional
+    public OrderRequestDto delete(long orderId) {
+        orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+        OrderRequestEntity entity = orderRequestRepository.getById(orderId);
         entity.setStatus(StatusOrderEnum.DELETE);
         orderRequestRepository.save(entity);
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
@@ -111,10 +135,26 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public OrderRequestDto getById(Long id) {
+    public OrderRequestDto getById(long id) {
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                 .apply(orderRequestRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(ORDER_NOT_FOUND)));
+                        new EntityNotFoundException(Constants.ORDER_NOT_FOUND)));
+    }
+
+    private long calculateTotalQuantity(long actualAmount, Set<OrderHasProductEntity> orderHasProducts) {
+        return 10L;
+    }
+
+    private Double calculateTotalAmount(double actualAmount, Set<OrderHasProductEntity> orderHasProducts) {
+        return 10D;
+    }
+
+    private Double calculateTotalDiscount(double actualAmount, Set<OrderHasProductEntity> orderHasProducts) {
+        return 10D;
+    }
+
+    private Double calculatePromotionDiscount(OrderRequestEntity orderRequest){
+      return 10D;
     }
 
 }

@@ -3,6 +3,7 @@ package com.inAtlas.coffeeShop.service.product;
 import com.inAtlas.coffeeShop.repository.entity.ProductEntity;
 import com.inAtlas.coffeeShop.repository.product.ProductRepository;
 import com.inAtlas.coffeeShop.service.dto.ProductDto;
+import com.inAtlas.coffeeShop.utils.Constants;
 import com.inAtlas.coffeeShop.utils.functions.EntityToDtoAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +15,6 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    public static final String PRODUCT_NOT_FOUND = "Product not Found!";
-
     private final ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepository productRepository) {
@@ -25,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductDto add(ProductDto obj) {
+        // add validation if product exist with this name
         ProductEntity productEntity = new ProductEntity();
         productEntity.setName(obj.getName());
         productEntity.setDescription(obj.getDescription());
@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductDto update(Long id, ProductDto obj) {
-        productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(PRODUCT_NOT_FOUND));
+    public ProductDto update(long id, ProductDto obj) {
+        productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND));
         ProductEntity productEntity = productRepository.getById(id);
         productEntity.setName(obj.getName());
         productEntity.setDescription(obj.getDescription());
@@ -53,7 +53,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(long id) {
+        productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND));
         ProductEntity productEntity = productRepository.getById(id);
         productEntity.setStatus("INATIVO");
         productRepository.save(productEntity);
@@ -67,8 +68,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public ProductDto getById(Long id) {
-        return EntityToDtoAdapter.productEntityToProductDtoAdapter.apply(productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(PRODUCT_NOT_FOUND)));
+    public ProductDto getById(long id) {
+        return EntityToDtoAdapter.productEntityToProductDtoAdapter.apply(productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND)));
     }
 
 }

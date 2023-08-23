@@ -13,9 +13,6 @@ import java.io.Serializable;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseAuditEntity extends AuditEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+
 
 }

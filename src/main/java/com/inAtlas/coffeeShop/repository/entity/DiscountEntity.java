@@ -1,13 +1,13 @@
 package com.inAtlas.coffeeShop.repository.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "discount")
 @EqualsAndHashCode
@@ -16,6 +16,10 @@ public @Data class DiscountEntity extends BaseAuditEntity {
 
     private static final long serialVersionUID = 320781767776608424L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     @Column(name = "status")
     private String status;

@@ -32,7 +32,7 @@ public class OrdersController {
     }
 
     @GetMapping({"/{orderId}"})
-    public ResponseEntity<OrderRequest> getOrderById(@PathVariable Long orderId) {
+    public ResponseEntity<OrderRequest> getOrderById(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.getById(orderId)), HttpStatus.OK);
     }
@@ -45,27 +45,27 @@ public class OrdersController {
 
     @DeleteMapping({"/{orderId}"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<OrderRequest> delete(@PathVariable Long orderId) {
+    public ResponseEntity<OrderRequest> delete(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.delete(orderId)), HttpStatus.OK);
     }
 
     @PutMapping({"/{orderId}/close"})
-    public ResponseEntity<OrderRequest> closeOrder(@PathVariable Long orderId) {
+    public ResponseEntity<OrderRequest> closeOrder(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.closeOrder(orderId)), HttpStatus.OK);
     }
 
-    @PutMapping({"/{orderId}/add/{productId}/{quantity}"})
-    public ResponseEntity<OrderRequest> addNewProduct(@PathVariable Long orderId, @PathVariable Long productId, Long quantity) {
+    @PutMapping({"/{orderId}/add/{productId}"})
+    public ResponseEntity<OrderRequest> addProduct(@PathVariable long orderId, @PathVariable long productId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.addNewProduct(orderId, productId, quantity)), HttpStatus.OK);
+                .apply(orderRequestService.addProduct(orderId, productId)), HttpStatus.OK);
     }
 
-    @PutMapping({"/{orderId}/remove/{productId}/{quantity}"})
-    public ResponseEntity<OrderRequest> addRemoveProduct(@PathVariable Long orderId, @PathVariable Long productId, Long quantity) {
+    @PutMapping({"/{orderId}/remove/{productId}"})
+    public ResponseEntity<OrderRequest> removeProduct(@PathVariable long orderId, @PathVariable long productId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.removeProduct(orderId, productId, quantity)), HttpStatus.OK);
+                .apply(orderRequestService.removeProduct(orderId, productId)), HttpStatus.OK);
     }
 
 }

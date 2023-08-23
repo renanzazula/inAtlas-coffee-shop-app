@@ -56,4 +56,7 @@ public class DiscountServiceImpl implements DiscountService {
                 .apply(discountRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException("Discount not Found!")));
     }
+
+
+
 }

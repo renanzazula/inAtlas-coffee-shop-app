@@ -1,8 +1,6 @@
 package com.inAtlas.coffeeShop.repository.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,6 +11,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "order_request")
 @EqualsAndHashCode(exclude = {"orderHasProduct"})
@@ -22,6 +24,10 @@ class OrderRequestEntity extends BaseAuditEntity {
 
     private static final long serialVersionUID = -1728370995890730077L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
 
     @CreationTimestamp
     @Column(name = "date")
@@ -40,6 +46,10 @@ class OrderRequestEntity extends BaseAuditEntity {
     @ColumnDefault(value = "0")
     @Column(name = "discount")
     private Double totalDiscount;
+
+    @ColumnDefault(value = "0")
+    @Column(name = "promotion_discount")
+    private Double promotionDiscount;
 
     @NotNull
     @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
