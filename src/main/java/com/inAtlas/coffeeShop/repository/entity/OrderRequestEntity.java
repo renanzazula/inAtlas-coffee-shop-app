@@ -51,7 +51,7 @@ class OrderRequestEntity extends BaseAuditEntity {
     @Column(name = "promotion_discount")
     private Double promotionDiscount;
 
-    @NotNull
-    @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_request_id")
     private Set<OrderHasProductEntity> orderHasProduct = new HashSet<>();
 }

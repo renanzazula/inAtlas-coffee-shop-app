@@ -20,7 +20,7 @@ public @Data class OrderHasProductEntity {
     @Column(name = "order_request_has_product_id")
     private Long orderRequestHasProductId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "order_request_id",  updatable = false)
     private OrderRequestEntity orderRequest;
 

@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,16 +58,17 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         orderHasProductEntity.setOrderRequest(orderRequestRepository.getById(orderId));
 
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
-        // orderRequestEntity.setPromotionDiscount(0);
-
-        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getTotalQuantity(), orderRequestEntity.getOrderHasProduct()));
-        orderRequestEntity.setTotalAmount(calculateTotalAmount(orderRequestEntity.getTotalAmount(), orderRequestEntity.getOrderHasProduct()));
-        orderRequestEntity.setTotalDiscount(calculateTotalDiscount(orderRequestEntity.getTotalDiscount(), orderRequestEntity.getOrderHasProduct()));
-
         orderRequestEntity.getOrderHasProduct().add(orderHasProductEntity);
-        orderRequestRepository.save(orderRequestEntity);
+        orderRequestRepository.saveAndFlush(orderRequestEntity);
+
+        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
+        // orderRequestEntityTotals.setPromotionDiscount(0);
+        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderHasProduct()));
+        orderRequestEntityTotals.setTotalAmount(calculateSumAmount(orderRequestEntityTotals.getOrderHasProduct()));
+        orderRequestEntityTotals.setTotalDiscount(calculateTotalDiscount(orderRequestEntityTotals.getTotalDiscount(), orderRequestEntityTotals.getOrderHasProduct()));
+
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.save(orderRequestEntity));
+                .apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
     }
 
 
@@ -83,17 +84,21 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                         .findFirst()
                         .filter(orderHasProduct -> orderHasProduct.getProduct().getId()==(productId));
 
-        Set<OrderHasProductEntity> orderHasProductToUpdateEntity = orderHasProductToRemove.stream()
-                .filter(Predicate.not(orderRequestEntity.getOrderHasProduct()::contains))
-                .collect(Collectors.toSet());
-
-        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getTotalQuantity(), orderHasProductToUpdateEntity));
-        orderRequestEntity.setTotalAmount(calculateTotalAmount(orderRequestEntity.getTotalAmount(), orderHasProductToUpdateEntity));
-        orderRequestEntity.setTotalDiscount(calculateTotalDiscount(orderRequestEntity.getTotalDiscount(), orderHasProductToUpdateEntity));
+        Set<OrderHasProductEntity> orderHasProductToUpdateEntity = new HashSet<>();
+        orderRequestEntity.getOrderHasProduct().forEach(orderHasProductEntity -> {
+            if(orderHasProductEntity.getOrderRequestHasProductId() != orderHasProductToRemove.get().getOrderRequestHasProductId()){
+                orderHasProductToUpdateEntity.add(orderHasProductEntity);
+            }
+        });
         orderRequestEntity.setOrderHasProduct(orderHasProductToUpdateEntity);
+        orderRequestRepository.save(orderRequestEntity);
 
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.save(orderRequestEntity));
+        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
+        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderHasProduct()));
+        orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderHasProduct()));
+        orderRequestEntityTotals.setTotalDiscount(calculateTotalDiscount(orderRequestEntityTotals.getTotalDiscount(), orderRequestEntityTotals.getOrderHasProduct()));
+
+        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.save(orderRequestEntityTotals));
     }
 
     @Override
@@ -102,9 +107,8 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
 
-        // calculate to generate the rececpt
-        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getTotalQuantity(), orderRequestEntity.getOrderHasProduct()));
-        orderRequestEntity.setTotalAmount(calculateTotalAmount(orderRequestEntity.getTotalAmount(), orderRequestEntity.getOrderHasProduct()));
+        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getOrderHasProduct()));
+        orderRequestEntity.setTotalAmount(calculateSumAmount(orderRequestEntity.getOrderHasProduct()));
         orderRequestEntity.setTotalDiscount(calculateTotalDiscount(orderRequestEntity.getTotalDiscount(), orderRequestEntity.getOrderHasProduct()));
 
         orderRequestEntity.setStatus(StatusOrderEnum.CLOSE);
@@ -141,12 +145,19 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                         new EntityNotFoundException(Constants.ORDER_NOT_FOUND)));
     }
 
-    private long calculateTotalQuantity(long actualAmount, Set<OrderHasProductEntity> orderHasProducts) {
-        return 10L;
+    private long calculateTotalQuantity(Set<OrderHasProductEntity> orderHasProducts) {
+        return orderHasProducts.size();
     }
 
-    private Double calculateTotalAmount(double actualAmount, Set<OrderHasProductEntity> orderHasProducts) {
-        return 10D;
+    private Double calculateSumAmount(Set<OrderHasProductEntity> orderHasProducts) {
+        return orderHasProducts.stream().mapToDouble(orderHasProductEntity -> orderHasProductEntity.getProduct().getPriceUnit()).sum();
+    }
+
+    private Double calculateMinusAmount(Set<OrderHasProductEntity> orderHasProducts) {
+        return orderHasProducts
+                .stream()
+                .mapToDouble(orderHasProductEntity -> orderHasProductEntity.getProduct().getPriceUnit())
+                .min().orElse(0);
     }
 
     private Double calculateTotalDiscount(double actualAmount, Set<OrderHasProductEntity> orderHasProducts) {
