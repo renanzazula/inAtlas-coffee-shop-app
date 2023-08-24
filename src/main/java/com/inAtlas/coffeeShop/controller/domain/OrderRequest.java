@@ -5,6 +5,7 @@ import com.inAtlas.coffeeShop.utils.Constants;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public  @Data
@@ -17,5 +18,5 @@ class OrderRequest extends Base {
     private Long totalQuantity;
     private Double totalAmount;
     private Double totalDiscount;
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 }

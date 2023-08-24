@@ -13,7 +13,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = false)
 @EntityListeners(AuditingEntityListener.class)
@@ -51,4 +50,72 @@ public class AuditEntity implements Serializable {
     @Column(name = "who_update")
     private Long whoUpdate;
 
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Date getTimeCreate() {
+        return timeCreate;
+    }
+
+    public void setTimeCreate(Date timeCreate) {
+        this.timeCreate = timeCreate;
+    }
+
+    public Long getWhoCreate() {
+        return whoCreate;
+    }
+
+    public void setWhoCreate(Long whoCreate) {
+        this.whoCreate = whoCreate;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
+
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
+    }
+
+    public Date getTimeUpdate() {
+        return timeUpdate;
+    }
+
+    public void setTimeUpdate(Date timeUpdate) {
+        this.timeUpdate = timeUpdate;
+    }
+
+    public Long getWhoUpdate() {
+        return whoUpdate;
+    }
+
+    public void setWhoUpdate(Long whoUpdate) {
+        this.whoUpdate = whoUpdate;
+    }
+
+    @Override
+    public String toString() {
+        return "AuditEntity{" +
+                "dateCreate=" + dateCreate +
+                ", timeCreate=" + timeCreate +
+                ", whoCreate=" + whoCreate +
+                ", version=" + version +
+                ", dateUpdate=" + dateUpdate +
+                ", timeUpdate=" + timeUpdate +
+                ", whoUpdate=" + whoUpdate +
+                '}';
+    }
 }

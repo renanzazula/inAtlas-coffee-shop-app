@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
+
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = false)
 @EntityListeners(AuditingEntityListener.class)
