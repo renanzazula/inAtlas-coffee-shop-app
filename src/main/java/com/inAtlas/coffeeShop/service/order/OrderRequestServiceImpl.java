@@ -57,14 +57,12 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         orderRequest.addOrderItem(orderRequestItem);
         orderRequestRepository.saveAndFlush(orderRequest);
 
-//        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
-        // orderRequestEntityTotals.setPromotionDiscount(0);
-//        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
-//        orderRequestEntityTotals.setTotalAmount(calculateSumAmount(orderRequestEntityTotals.getOrderItems()));
-//        orderRequestEntityTotals.setTotalDiscount(calculateTotalDiscount(orderRequestEntityTotals.getTotalDiscount(), orderRequestEntityTotals.getOrderItems()));
+        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
+        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
+        orderRequestEntityTotals.setTotalAmount(calculateSumAmount(orderRequestEntityTotals.getOrderItems()));
 
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.saveAndFlush(orderRequestRepository.saveAndFlush(orderRequest)));
+                .apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
     }
 
 
@@ -80,17 +78,12 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                         .findFirst()
                         .filter(orderHasProduct -> orderHasProduct.getProduct().getId() == (productId));
 
-        // orderRequestItemsProductRepository.getById(itemProductToRemove.get().getId())
         orderRequestToUpdate.removeOrderHasProduct(itemProductToRemove.get());
-
-
         OrderRequestEntity orderRequestToUpdated = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
 
-//        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
-//        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
-//        orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems()));
-//        orderRequestEntityTotals.setTotalDiscount(calculateTotalDiscount(orderRequestEntityTotals.getTotalDiscount(), orderRequestEntityTotals.getOrderItems()));
-
+        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
+        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
+        orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems()));
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestToUpdated);
     }
 
@@ -100,9 +93,8 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
 
-//        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getOrderItems()));
-//        orderRequestEntity.setTotalAmount(calculateSumAmount(orderRequestEntity.getOrderItems()));
-//        orderRequestEntity.setTotalDiscount(calculateTotalDiscount(orderRequestEntity.getTotalDiscount(), orderRequestEntity.getOrderItems()));
+        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getOrderItems()));
+        orderRequestEntity.setTotalAmount(calculateSumAmount(orderRequestEntity.getOrderItems()));
 
         orderRequestEntity.setStatus(StatusOrderEnum.CLOSE);
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
@@ -138,22 +130,23 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                         new EntityNotFoundException(Constants.ORDER_NOT_FOUND)));
     }
 
-    private long calculateTotalQuantity(Set<OrderRequestItemsEntity> orderHasProducts) {
+    private long calculateTotalQuantity(List<OrderRequestItemsEntity> orderHasProducts) {
         return orderHasProducts.size();
     }
 
-    private Double calculateSumAmount(Set<OrderRequestItemsEntity> orderHasProducts) {
+    private Double calculateSumAmount(List<OrderRequestItemsEntity> orderHasProducts) {
         return orderHasProducts.stream().mapToDouble(orderRequestItemsEntity -> orderRequestItemsEntity.getProduct().getPriceUnit()).sum();
     }
 
-    private Double calculateMinusAmount(Set<OrderRequestItemsEntity> orderHasProducts) {
+    private Double calculateMinusAmount(List<OrderRequestItemsEntity> orderHasProducts) {
         return orderHasProducts
                 .stream()
                 .mapToDouble(orderRequestItemsEntity -> orderRequestItemsEntity.getProduct().getPriceUnit())
                 .min().orElse(0);
     }
 
-    private Double calculateTotalDiscount(double actualAmount, Set<OrderRequestItemsEntity> orderHasProducts) {
+    private Double calculateTotalDiscount(double originalPrice, double discountPercentage) {
+        double discountAmount = (discountPercentage / 100) * originalPrice;
         return 10D;
     }
 
