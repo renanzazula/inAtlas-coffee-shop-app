@@ -1,12 +1,11 @@
 package com.inAtlas.coffeeShop.service.order;
 
 
-import com.inAtlas.coffeeShop.repository.entity.OrderRequestEntity;
-import com.inAtlas.coffeeShop.repository.entity.OrderRequestItemsEntity;
-import com.inAtlas.coffeeShop.repository.entity.StatusOrderEnum;
-import com.inAtlas.coffeeShop.repository.order.OrderRequestItemsProductRepository;
+import com.inAtlas.coffeeShop.repository.discount.DiscountRepository;
+import com.inAtlas.coffeeShop.repository.entity.*;
 import com.inAtlas.coffeeShop.repository.order.OrderRequestRepository;
 import com.inAtlas.coffeeShop.repository.product.ProductRepository;
+import com.inAtlas.coffeeShop.service.dto.DiscountDto;
 import com.inAtlas.coffeeShop.service.dto.OrderRequestDto;
 import com.inAtlas.coffeeShop.utils.Constants;
 import com.inAtlas.coffeeShop.utils.functions.EntityToDtoAdapter;
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,13 +21,13 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     private final OrderRequestRepository orderRequestRepository;
     private final ProductRepository productRepository;
-    private final OrderRequestItemsProductRepository orderRequestItemsProductRepository;
+    private final DiscountRepository discountRepository;
 
 
-    public OrderRequestServiceImpl(OrderRequestRepository orderRequestRepository, ProductRepository productRepository, OrderRequestItemsProductRepository orderRequestItemsProductRepository) {
+    public OrderRequestServiceImpl(OrderRequestRepository orderRequestRepository, ProductRepository productRepository, DiscountRepository discountRepository) {
         this.orderRequestRepository = orderRequestRepository;
         this.productRepository = productRepository;
-        this.orderRequestItemsProductRepository = orderRequestItemsProductRepository;
+        this.discountRepository = discountRepository;
     }
 
     @Override
@@ -78,7 +75,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                         .findFirst()
                         .filter(orderHasProduct -> orderHasProduct.getProduct().getId() == (productId));
 
-        orderRequestToUpdate.removeOrderHasProduct(itemProductToRemove.get());
+        orderRequestToUpdate.removeOrderItem(itemProductToRemove.get());
         OrderRequestEntity orderRequestToUpdated = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
 
         OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
@@ -95,6 +92,9 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
         orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getOrderItems()));
         orderRequestEntity.setTotalAmount(calculateSumAmount(orderRequestEntity.getOrderItems()));
+
+        DiscountDto discountDto = calculateTotalDiscount(orderId);
+        orderRequestEntity.setTotalDiscount(discountDto != null ? discountDto.getDiscount() : 0D);
 
         orderRequestEntity.setStatus(StatusOrderEnum.CLOSE);
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
@@ -145,9 +145,29 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                 .min().orElse(0);
     }
 
-    private Double calculateTotalDiscount(double originalPrice, double discountPercentage) {
-        double discountAmount = (discountPercentage / 100) * originalPrice;
-        return 10D;
+    // we based discount in number of product we have at list
+    private DiscountDto calculateTotalDiscount(long orderId) {
+        OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
+
+        // get product from order
+        List<ProductEntity> allProductsFromOrder = orderRequestEntity.getOrderItems().stream().map(OrderRequestItemsEntity::getProduct).collect(Collectors.toList());
+
+        // get discount from db
+        List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDate(new Date());
+
+        List<DiscountDto> listOfDiscountsToApply = new ArrayList<>();
+        for (int i = 0; i < discountListFromDb.size(); i++) {
+            DiscountEntity discount = discountListFromDb.get(i);
+            if(discount.getDiscountItems().size() == allProductsFromOrder.size()){
+                DiscountDto discountsToApply = new DiscountDto();
+                discountsToApply.setDiscount((discount.getDiscount() / 100) * orderRequestEntity.getTotalAmount());
+                listOfDiscountsToApply.add(discountsToApply);
+            }
+        }
+
+        return listOfDiscountsToApply.stream()
+                .max(Comparator.comparingDouble(DiscountDto::getDiscount))
+                .orElse(null);
     }
 
     private Double calculatePromotionDiscount(OrderRequestEntity orderRequest) {

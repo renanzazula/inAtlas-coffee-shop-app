@@ -26,8 +26,8 @@ public class DiscountsController {
 
 
     @GetMapping({""})
-    public ResponseEntity<List<Discount>> get() {
-        return new ResponseEntity<>(discountService.get()
+    public ResponseEntity<List<Discount>> getAll() {
+        return new ResponseEntity<>(discountService.getAll()
                 .stream()
                 .map(DtoToDomainAdapter.discountDtoToDiscountAdapter)
                 .collect(Collectors.toList()), HttpStatus.OK);

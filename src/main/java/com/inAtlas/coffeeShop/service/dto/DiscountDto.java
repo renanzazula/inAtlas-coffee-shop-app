@@ -1,5 +1,19 @@
 package com.inAtlas.coffeeShop.service.dto;
 
-public class DiscountDto extends BaseDto {
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public @Data
+class DiscountDto extends BaseDto {
+
+    private Long id;
+    private String status;
+    private Date fromDate;
+    private Date toDate;
+    private Double discount;
+    private List<ProductDto> products = new ArrayList<>();
 
 }

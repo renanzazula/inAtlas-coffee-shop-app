@@ -10,7 +10,7 @@ public interface DiscountService {
     DiscountDto add(DiscountDto obj);
     DiscountDto update(Long id, DiscountDto obj);
     void delete(Long id);
-    List<DiscountDto> get();
+    List<DiscountDto> getAll();
     DiscountDto getById(Long id);
 
 

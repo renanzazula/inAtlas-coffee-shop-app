@@ -6,3 +6,7 @@ INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price
 INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price_unit`,`who_update`, `who_create`, `date_update`, `date_create`, `time_create`, `version`) VALUES (5, 'Capuccino',  'Capuccino',  'available', 100, 8,     0, 0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0);
 INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price_unit`,`who_update`, `who_create`, `date_update`, `date_create`, `time_create`, `version`) VALUES (6, 'Tea',        'Tea',        'available', 100, 6.1,   0, 0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0);
 
+INSERT INTO `DISCOUNT` (`id`, `date_create`, `date_update`, `time_create`, `time_update`, `version`, `who_create`, `who_update`, `discount`, `start_date`, `status`, `to_date`) VALUES (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP(), 1, 0, 0, 10.0, CURRENT_TIMESTAMP(), 'Active',CURRENT_TIMESTAMP());
+INSERT INTO `DISCOUNT_ITEM` (`DISCOUNT_ITEM_ID`, `DISCOUNT_ID`, `PRODUCT_ID`) VALUES (1, 1, 1);
+INSERT INTO `DISCOUNT_ITEM` (`DISCOUNT_ITEM_ID`, `DISCOUNT_ID`, `PRODUCT_ID`) VALUES (2, 1, 1);
+

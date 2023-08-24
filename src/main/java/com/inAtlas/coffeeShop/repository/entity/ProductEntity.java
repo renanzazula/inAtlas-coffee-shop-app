@@ -1,12 +1,11 @@
 package com.inAtlas.coffeeShop.repository.entity;
 
-import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product")
@@ -86,5 +85,31 @@ public class ProductEntity extends BaseAuditEntity {
 
     public void setPriceUnit(Double priceUnit) {
         this.priceUnit = priceUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ProductEntity that = (ProductEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(status, that.status) && Objects.equals(quantity, that.quantity) && Objects.equals(priceUnit, that.priceUnit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, name, description, status, quantity, priceUnit);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", quantity=" + quantity +
+                ", priceUnit=" + priceUnit +
+                '}';
     }
 }

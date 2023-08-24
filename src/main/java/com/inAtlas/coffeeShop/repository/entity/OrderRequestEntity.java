@@ -124,9 +124,8 @@ public class OrderRequestEntity extends BaseAuditEntity {
         }
     }
 
-    public void removeOrderHasProduct(OrderRequestItemsEntity orderItem){
+    public void removeOrderItem(OrderRequestItemsEntity orderItem){
         if(orderItems != null){
-//            orderItem.setOrderRequest(this);
             orderItems.remove(orderItem);
         }
     }
