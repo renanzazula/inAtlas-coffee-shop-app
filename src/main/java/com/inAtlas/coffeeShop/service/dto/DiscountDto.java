@@ -14,6 +14,6 @@ class DiscountDto extends BaseDto {
     private Date fromDate;
     private Date toDate;
     private Double discount;
-    private List<ProductDto> products = new ArrayList<>();
+    private List<DiscountItemDto> discountItems = new ArrayList<>();
 
 }

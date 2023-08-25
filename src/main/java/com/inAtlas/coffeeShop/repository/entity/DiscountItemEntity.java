@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "discount_item")
-public class DiscountItemsEntity {
+public class DiscountItemEntity {
 
     private static final long serialVersionUID = 7167425684167438414L;
 

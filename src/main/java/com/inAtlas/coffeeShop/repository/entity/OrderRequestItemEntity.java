@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "order_request_request_items")
-public class OrderRequestItemsEntity {
+@Table(name = "order_request_request_item")
+public class OrderRequestItemEntity {
 
     private static final long serialVersionUID = 7167425684167438414L;
 
@@ -19,7 +19,7 @@ public class OrderRequestItemsEntity {
     private OrderRequestEntity orderRequest;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", referencedColumnName = "id", nullable = false ,updatable = false)
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false ,updatable = false)
     private ProductEntity product;
 
     @Column(name = "discount")
@@ -72,7 +72,7 @@ public class OrderRequestItemsEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderRequestItemsEntity that = (OrderRequestItemsEntity) o;
+        OrderRequestItemEntity that = (OrderRequestItemEntity) o;
         return Objects.equals(Id, that.Id) && Objects.equals(orderRequest, that.orderRequest) && Objects.equals(product, that.product) && Objects.equals(discount, that.discount) && Objects.equals(priceUnit, that.priceUnit);
     }
 

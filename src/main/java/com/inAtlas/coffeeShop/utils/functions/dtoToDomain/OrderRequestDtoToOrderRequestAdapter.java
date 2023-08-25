@@ -13,15 +13,12 @@ public class OrderRequestDtoToOrderRequestAdapter implements Function<OrderReque
 
     @Override
     public OrderRequest apply(OrderRequestDto dto) {
-        OrderRequest domain = new OrderRequest();
-        BeanUtils.copyProperties(dto, domain);
-        if(dto.getProducts() != null) {
-            domain.setProducts(dto.getProducts()
-                    .stream()
-                    .map(DtoToDomainAdapter
-                            .productDtoToProductDomainAdapter)
-                    .collect(Collectors.toList()));
-        }
-        return domain;
+        OrderRequest orderRequest = new OrderRequest();
+        BeanUtils.copyProperties(dto, orderRequest);
+        orderRequest.setOrderItems(dto
+                .getOrderItems().stream()
+                .map(DtoToDomainAdapter.orderRequestItemDtoToOrderRequestItemAdapter)
+                .collect(Collectors.toList()));
+        return orderRequest;
     }
 }

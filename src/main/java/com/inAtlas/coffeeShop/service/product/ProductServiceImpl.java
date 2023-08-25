@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductDto> get() {
+    public List<ProductDto> getAll() {
         return productRepository.findAll().stream().map(EntityToDtoAdapter.productEntityToProductDtoAdapter).collect(Collectors.toList());
     }
 

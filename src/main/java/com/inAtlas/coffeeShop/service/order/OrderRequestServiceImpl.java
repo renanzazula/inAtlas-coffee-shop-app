@@ -46,15 +46,14 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     @Transactional
     public OrderRequestDto addProduct(long orderId, long productId) {
         OrderRequestEntity orderRequest = orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
-        productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND));
+        productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException(Constants.PRODUCT_NOT_FOUND + productId));
 
-        OrderRequestItemsEntity orderRequestItem = new OrderRequestItemsEntity();
+        OrderRequestItemEntity orderRequestItem = new OrderRequestItemEntity();
         orderRequestItem.setProduct(productRepository.getById(productId));
         orderRequestItem.setPriceUnit(productRepository.getById(productId).getPriceUnit());
         orderRequest.addOrderItem(orderRequestItem);
-        orderRequestRepository.saveAndFlush(orderRequest);
+        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.saveAndFlush(orderRequest);
 
-        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
         orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
         orderRequestEntityTotals.setTotalAmount(calculateSumAmount(orderRequestEntityTotals.getOrderItems()));
 
@@ -68,19 +67,20 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     public OrderRequestDto removeProduct(long orderId, long productId) {
         OrderRequestEntity orderRequestToUpdate = orderRequestRepository.getById(orderId);
 
-        Optional<OrderRequestItemsEntity> itemProductToRemove =
-                orderRequestToUpdate
+        Optional<OrderRequestItemEntity> itemProductToRemove =
+                Optional.ofNullable(orderRequestToUpdate
                         .getOrderItems()
                         .stream()
                         .findFirst()
-                        .filter(orderHasProduct -> orderHasProduct.getProduct().getId() == (productId));
+                        .filter(orderHasProduct -> orderHasProduct.getProduct().getId() == (productId))
+                        .orElseThrow(() -> new IllegalArgumentException(Constants.PRODUCT_NOT_FOUND + productId)));
 
         orderRequestToUpdate.removeOrderItem(itemProductToRemove.get());
         OrderRequestEntity orderRequestToUpdated = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
 
         OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
         orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
-        orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems()));
+        orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems(), orderRequestEntityTotals.getTotalAmount()));
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestToUpdated);
     }
 
@@ -104,7 +104,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     @Override
     @Transactional
     public OrderRequestDto delete(long orderId) {
-        orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+        orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
         OrderRequestEntity entity = orderRequestRepository.getById(orderId);
         entity.setStatus(StatusOrderEnum.DELETE);
         orderRequestRepository.save(entity);
@@ -124,33 +124,32 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public OrderRequestDto getById(long id) {
+    public OrderRequestDto getById(long orderId) {
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(Constants.ORDER_NOT_FOUND)));
+                .apply(orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId)));
     }
 
-    private long calculateTotalQuantity(List<OrderRequestItemsEntity> orderHasProducts) {
+    private long calculateTotalQuantity(List<OrderRequestItemEntity> orderHasProducts) {
         return orderHasProducts.size();
     }
 
-    private Double calculateSumAmount(List<OrderRequestItemsEntity> orderHasProducts) {
+    private Double calculateSumAmount(List<OrderRequestItemEntity> orderHasProducts) {
         return orderHasProducts.stream().mapToDouble(orderRequestItemsEntity -> orderRequestItemsEntity.getProduct().getPriceUnit()).sum();
     }
 
-    private Double calculateMinusAmount(List<OrderRequestItemsEntity> orderHasProducts) {
-        return orderHasProducts
+    private Double calculateMinusAmount(List<OrderRequestItemEntity> orderHasProducts, double currentAmount) {
+        return currentAmount - orderHasProducts
                 .stream()
                 .mapToDouble(orderRequestItemsEntity -> orderRequestItemsEntity.getProduct().getPriceUnit())
                 .min().orElse(0);
     }
 
-    // we based discount in number of product we have at list
+
     private DiscountDto calculateTotalDiscount(long orderId) {
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
 
         // get product from order
-        List<ProductEntity> allProductsFromOrder = orderRequestEntity.getOrderItems().stream().map(OrderRequestItemsEntity::getProduct).collect(Collectors.toList());
+        List<ProductEntity> allProductsFromOrder = orderRequestEntity.getOrderItems().stream().map(OrderRequestItemEntity::getProduct).collect(Collectors.toList());
 
         // get discount from db
         List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDate(new Date());

@@ -26,8 +26,8 @@ public class OrderRequestEntity extends BaseAuditEntity {
     private Long id;
 
     @CreationTimestamp
-    @Column(name = "date")
-    private LocalDateTime date;
+    @Column(name = "order_date_time")
+    private LocalDateTime orderDateTime;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -48,7 +48,7 @@ public class OrderRequestEntity extends BaseAuditEntity {
     private Double promotionDiscount;
 
     @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
-    private List<OrderRequestItemsEntity> orderItems = new ArrayList<>();
+    private List<OrderRequestItemEntity> orderItems = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -58,12 +58,12 @@ public class OrderRequestEntity extends BaseAuditEntity {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getOrderDateTime() {
+        return orderDateTime;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setOrderDateTime(LocalDateTime date) {
+        this.orderDateTime = date;
     }
 
     public StatusOrderEnum getStatus() {
@@ -106,15 +106,15 @@ public class OrderRequestEntity extends BaseAuditEntity {
         this.promotionDiscount = promotionDiscount;
     }
 
-    public List<OrderRequestItemsEntity> getOrderItems() {
+    public List<OrderRequestItemEntity> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(List<OrderRequestItemsEntity> orderHasProduct) {
+    public void setOrderItems(List<OrderRequestItemEntity> orderHasProduct) {
         this.orderItems = orderHasProduct;
     }
 
-    public void addOrderItem(OrderRequestItemsEntity orderItem){
+    public void addOrderItem(OrderRequestItemEntity orderItem){
         if(orderItems != null){
             if(orderItems == null){
                 orderItems = new ArrayList<>();
@@ -124,7 +124,7 @@ public class OrderRequestEntity extends BaseAuditEntity {
         }
     }
 
-    public void removeOrderItem(OrderRequestItemsEntity orderItem){
+    public void removeOrderItem(OrderRequestItemEntity orderItem){
         if(orderItems != null){
             orderItems.remove(orderItem);
         }
@@ -136,19 +136,19 @@ public class OrderRequestEntity extends BaseAuditEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         OrderRequestEntity entity = (OrderRequestEntity) o;
-        return Objects.equals(id, entity.id) && Objects.equals(date, entity.date) && status == entity.status && Objects.equals(totalQuantity, entity.totalQuantity) && Objects.equals(totalAmount, entity.totalAmount) && Objects.equals(totalDiscount, entity.totalDiscount) && Objects.equals(promotionDiscount, entity.promotionDiscount) && Objects.equals(orderItems, entity.orderItems);
+        return Objects.equals(id, entity.id) && Objects.equals(orderDateTime, entity.orderDateTime) && status == entity.status && Objects.equals(totalQuantity, entity.totalQuantity) && Objects.equals(totalAmount, entity.totalAmount) && Objects.equals(totalDiscount, entity.totalDiscount) && Objects.equals(promotionDiscount, entity.promotionDiscount) && Objects.equals(orderItems, entity.orderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, date, status, totalQuantity, totalAmount, totalDiscount, promotionDiscount, orderItems);
+        return Objects.hash(super.hashCode(), id, orderDateTime, status, totalQuantity, totalAmount, totalDiscount, promotionDiscount, orderItems);
     }
 
     @Override
     public String toString() {
         return "OrderRequestEntity{" +
                 "id=" + id +
-                ", date=" + date +
+                ", date=" + orderDateTime +
                 ", status=" + status +
                 ", totalQuantity=" + totalQuantity +
                 ", totalAmount=" + totalAmount +

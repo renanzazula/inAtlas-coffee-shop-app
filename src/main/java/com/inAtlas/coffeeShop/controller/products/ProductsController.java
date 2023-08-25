@@ -27,7 +27,7 @@ public class ProductsController {
 
     @GetMapping({""})
     public ResponseEntity<List<Product>> get() {
-        return new ResponseEntity<>(productService.get()
+        return new ResponseEntity<>(productService.getAll()
                 .stream()
                 .map(DtoToDomainAdapter.productDtoToProductDomainAdapter)
                 .collect(Collectors.toList()), HttpStatus.OK);

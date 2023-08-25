@@ -7,6 +7,11 @@ INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price
 INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price_unit`,`who_update`, `who_create`, `date_update`, `date_create`, `time_create`, `version`) VALUES (6, 'Tea',        'Tea',        'available', 100, 6.1,   0, 0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0);
 
 INSERT INTO `DISCOUNT` (`id`, `date_create`, `date_update`, `time_create`, `time_update`, `version`, `who_create`, `who_update`, `discount`, `start_date`, `status`, `to_date`) VALUES (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP(), 1, 0, 0, 10.0, CURRENT_TIMESTAMP(), 'Active',CURRENT_TIMESTAMP());
-INSERT INTO `DISCOUNT_ITEM` (`DISCOUNT_ITEM_ID`, `DISCOUNT_ID`, `PRODUCT_ID`) VALUES (1, 1, 1);
-INSERT INTO `DISCOUNT_ITEM` (`DISCOUNT_ITEM_ID`, `DISCOUNT_ID`, `PRODUCT_ID`) VALUES (2, 1, 1);
+INSERT INTO `DISCOUNT_ITEM` (`discount_item_id`, `discount_id`, `product_id`) VALUES (1, 1, 1);
+INSERT INTO `DISCOUNT_ITEM` (`discount_item_id`, `discount_id`, `product_id`) VALUES (2, 1, 1);
+
+INSERT INTO `ORDER_REQUEST` (`id`, `date_create`, `date_update`, `time_create`, `time_update`, `version`, `who_create`, `who_update`, `order_date_time`, `promotion_discount`, `status`, `total_amount`, `discount`, `total_quantity`) VALUES (1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0, 0, 0, CURRENT_TIMESTAMP(), 0,'OPEN', 12.0, 0.0, 4);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (1, 0, 1, 4.0, 1);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (2, 0, 1, 4.0, 1);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (3, 0, 1, 4.0, 1);
 

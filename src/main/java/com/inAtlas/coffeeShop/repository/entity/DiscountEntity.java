@@ -33,7 +33,7 @@ public class DiscountEntity extends BaseAuditEntity {
     private Double discount;
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DiscountItemsEntity> discountItems = new ArrayList<>();
+    private List<DiscountItemEntity> discountItems = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -75,15 +75,15 @@ public class DiscountEntity extends BaseAuditEntity {
         this.discount = discount;
     }
 
-    public List<DiscountItemsEntity> getDiscountItems() {
+    public List<DiscountItemEntity> getDiscountItems() {
         return discountItems;
     }
 
-    public void setDiscountItems(List<DiscountItemsEntity> discountItems) {
+    public void setDiscountItems(List<DiscountItemEntity> discountItems) {
         this.discountItems = discountItems;
     }
 
-    public void addDiscountItem(DiscountItemsEntity discountItem) {
+    public void addDiscountItem(DiscountItemEntity discountItem) {
         if (discountItems != null) {
             if (discountItems == null) {
                 discountItems = new ArrayList<>();
@@ -93,7 +93,7 @@ public class DiscountEntity extends BaseAuditEntity {
         }
     }
 
-    public void removeDiscountItem(DiscountItemsEntity discountItem) {
+    public void removeDiscountItem(DiscountItemEntity discountItem) {
         if (discountItems != null) {
             discountItems.remove(discountItem);
         }

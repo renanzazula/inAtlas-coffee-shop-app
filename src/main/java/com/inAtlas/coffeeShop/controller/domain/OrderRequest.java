@@ -12,11 +12,12 @@ public  @Data
 class OrderRequest extends Base {
 
     @JsonFormat(pattern= Constants.PATTERN_DATE_TIME_FORMAT)
-    private LocalDateTime date;
+    private LocalDateTime orderDateTime;
 
     private String status;
     private Long totalQuantity;
+
     private Double totalAmount;
     private Double totalDiscount;
-    private List<Product> products = new ArrayList<>();
+    private List<OrderRequestItem> orderItems = new ArrayList<>();
 }

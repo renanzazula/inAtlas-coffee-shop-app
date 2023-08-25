@@ -11,10 +11,10 @@ public  @Data
 class OrderRequestDto extends BaseDto {
 
     @JsonFormat(pattern= Constants.PATTERN_DATE_TIME_FORMAT)
-    private LocalDateTime date;
+    private LocalDateTime orderDateTime;
     private String status;
     private Long totalQuantity;
     private Double totalAmount;
     private Double totalDiscount;
-    private List<ProductDto> products;
+    private List<OrderRequestItemDto> orderItems;
 }
