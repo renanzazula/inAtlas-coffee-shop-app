@@ -37,10 +37,10 @@ public class OrdersController {
                 .apply(orderRequestService.getById(orderId)), HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<OrderRequest> createNewOrder() {
+    @PostMapping("/open")
+    public ResponseEntity<OrderRequest> openOrder() {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.createNewOrder()), HttpStatus.CREATED);
+                .apply(orderRequestService.openOrder()), HttpStatus.CREATED);
     }
 
     @DeleteMapping({"/{orderId}"})
@@ -54,6 +54,18 @@ public class OrdersController {
     public ResponseEntity<OrderRequest> closeOrder(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.closeOrder(orderId)), HttpStatus.OK);
+    }
+
+    @PutMapping({"/{orderId}/reOpen"})
+    public ResponseEntity<OrderRequest> openOrder(@PathVariable long orderId) {
+        return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
+                .apply(orderRequestService.reopenOrder(orderId)), HttpStatus.OK);
+    }
+
+    @PutMapping({"/{orderId}/receipt"})
+    public ResponseEntity<OrderRequest> printOrder(@PathVariable long orderId) {
+        return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
+                .apply(orderRequestService.getById(orderId)), HttpStatus.OK);
     }
 
     @PutMapping({"/{orderId}/add/{productId}"})

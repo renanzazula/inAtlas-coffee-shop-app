@@ -32,7 +32,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     @Transactional
-    public OrderRequestDto createNewOrder() {
+    public OrderRequestDto openOrder() {
         OrderRequestEntity entity = new OrderRequestEntity();
         entity.setTotalAmount(0D);
         entity.setTotalQuantity(0L);
@@ -65,7 +65,9 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     @Override
     @Transactional
     public OrderRequestDto removeProduct(long orderId, long productId) {
-        OrderRequestEntity orderRequestToUpdate = orderRequestRepository.getById(orderId);
+        OrderRequestEntity orderRequestToUpdate = orderRequestRepository
+                .findById(orderId).orElseThrow(() ->
+                        new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
 
         Optional<OrderRequestItemEntity> itemProductToRemove =
                 Optional.ofNullable(orderRequestToUpdate
@@ -87,8 +89,8 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     @Override
     @Transactional
     public OrderRequestDto closeOrder(long orderId) {
-        orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
-        OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
+        OrderRequestEntity orderRequestEntity = orderRequestRepository
+                .findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
 
         orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getOrderItems()));
         orderRequestEntity.setTotalAmount(calculateSumAmount(orderRequestEntity.getOrderItems()));
@@ -103,14 +105,22 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     @Transactional
+    public OrderRequestDto reopenOrder(long orderId) {
+        OrderRequestEntity orderRequestEntity = orderRequestRepository
+                .findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+        orderRequestEntity.setStatus(StatusOrderEnum.OPEN);
+        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
+                .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
+    }
+
+    @Override
+    @Transactional
     public OrderRequestDto delete(long orderId) {
-        orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
-        OrderRequestEntity entity = orderRequestRepository.getById(orderId);
+        OrderRequestEntity entity = orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
         entity.setStatus(StatusOrderEnum.DELETE);
         orderRequestRepository.save(entity);
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                 .apply(orderRequestRepository.saveAndFlush(entity));
-
     }
 
     @Override
