@@ -16,7 +16,7 @@ public class OrderRequestItemDtoToOrderRequestItemAdapter implements Function<Or
     public OrderRequestItem apply(OrderRequestItemDto orderRequestItemDto) {
         OrderRequestItem orderRequestItem = new OrderRequestItem();
         BeanUtils.copyProperties(orderRequestItemDto, orderRequestItem);
-        orderRequestItem.setProduct(DtoToDomainAdapter.productDtoToProductDomainAdapter.apply(orderRequestItemDto.getProduct()));
+        orderRequestItem.setProduct(DtoToDomainAdapter.productDtoToProductItemOrderAdapter.apply(orderRequestItemDto.getProduct()));
         return orderRequestItem;
     }
 }

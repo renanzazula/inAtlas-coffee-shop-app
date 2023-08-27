@@ -2,6 +2,7 @@ package com.inAtlas.coffeeShop.service.order;
 
 
 import com.inAtlas.coffeeShop.service.dto.OrderRequestDto;
+import com.inAtlas.coffeeShop.service.dto.PrintReceiptDto;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ public interface OrderRequestService {
 
     List<OrderRequestDto> getAll();
     OrderRequestDto getById(long id);
-
+    PrintReceiptDto printOrder(long id);
 
 }

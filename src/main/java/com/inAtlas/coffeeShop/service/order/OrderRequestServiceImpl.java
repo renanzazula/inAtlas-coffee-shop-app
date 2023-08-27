@@ -5,8 +5,7 @@ import com.inAtlas.coffeeShop.repository.discount.DiscountRepository;
 import com.inAtlas.coffeeShop.repository.entity.*;
 import com.inAtlas.coffeeShop.repository.order.OrderRequestRepository;
 import com.inAtlas.coffeeShop.repository.product.ProductRepository;
-import com.inAtlas.coffeeShop.service.dto.DiscountDto;
-import com.inAtlas.coffeeShop.service.dto.OrderRequestDto;
+import com.inAtlas.coffeeShop.service.dto.*;
 import com.inAtlas.coffeeShop.utils.Constants;
 import com.inAtlas.coffeeShop.utils.functions.EntityToDtoAdapter;
 import org.springframework.stereotype.Service;
@@ -78,12 +77,11 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                         .orElseThrow(() -> new IllegalArgumentException(Constants.PRODUCT_NOT_FOUND + productId)));
 
         orderRequestToUpdate.removeOrderItem(itemProductToRemove.get());
-        OrderRequestEntity orderRequestToUpdated = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
 
-        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.getById(orderId);
+        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
         orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
         orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems(), orderRequestEntityTotals.getTotalAmount()));
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestToUpdated);
+        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
     }
 
     @Override
@@ -118,9 +116,9 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     public OrderRequestDto delete(long orderId) {
         OrderRequestEntity entity = orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
         entity.setStatus(StatusOrderEnum.DELETE);
-        orderRequestRepository.save(entity);
+
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.saveAndFlush(entity));
+                .apply(orderRequestRepository.save(entity));
     }
 
     @Override
@@ -178,6 +176,31 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                 .max(Comparator.comparingDouble(DiscountDto::getDiscount))
                 .orElse(null);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PrintReceiptDto printOrder(long orderId) {
+        OrderRequestEntity orderRequestEntity = orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
+
+        PrintReceiptDto printReceiptDto = new PrintReceiptDto();
+        printReceiptDto.setTotal(orderRequestEntity.getTotalAmount());
+
+        List<PrintReceiptItemDto> printReceiptItemDtos = new ArrayList<>();
+
+        Map<Long, List<OrderRequestItemEntity>> groupedByProductId = orderRequestEntity.getOrderItems().stream().collect(Collectors.groupingBy(orderItem -> orderItem.getProduct().getId()));
+        for (Map.Entry<Long, List<OrderRequestItemEntity>> entry : groupedByProductId.entrySet()) {
+            List<OrderRequestItemEntity> orderItemsForProduct = entry.getValue();
+            PrintReceiptItemDto printReceiptItemDto = new PrintReceiptItemDto();
+            printReceiptItemDto.setAmount(orderItemsForProduct.size());
+            printReceiptItemDto.setProductName(orderItemsForProduct.get(0).getProduct().getName());
+            printReceiptItemDto.setUnitPrice(orderItemsForProduct.get(0).getProduct().getPriceUnit());
+            printReceiptItemDto.setTotal(orderItemsForProduct.stream().mapToDouble(orderRequestItemsEntity -> orderRequestItemsEntity.getProduct().getPriceUnit()).sum());
+            printReceiptItemDtos.add(printReceiptItemDto);
+        }
+        printReceiptDto.setReceiptItems(printReceiptItemDtos);
+        return printReceiptDto;
+    }
+
 
     private Double calculatePromotionDiscount(OrderRequestEntity orderRequest) {
         return 10D;

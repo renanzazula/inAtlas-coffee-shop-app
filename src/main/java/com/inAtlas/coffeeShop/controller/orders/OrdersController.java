@@ -1,6 +1,7 @@
 package com.inAtlas.coffeeShop.controller.orders;
 
 import com.inAtlas.coffeeShop.controller.domain.OrderRequest;
+import com.inAtlas.coffeeShop.controller.domain.PrintReceipt;
 import com.inAtlas.coffeeShop.service.order.OrderRequestService;
 import com.inAtlas.coffeeShop.utils.ConstantsApi;
 import com.inAtlas.coffeeShop.utils.functions.DtoToDomainAdapter;
@@ -14,8 +15,10 @@ import java.util.stream.Collectors;
 
 @Api(value = "Manage Orders", tags = "order")
 @RestController
-@RequestMapping(ConstantsApi.ORDER)
+@RequestMapping(OrdersController.ORDER_CONTROLER_BASE_URL)
 public class OrdersController {
+
+    public static final String ORDER_CONTROLER_BASE_URL = ConstantsApi.ORDER;
 
     private final OrderRequestService orderRequestService;
 
@@ -43,7 +46,7 @@ public class OrdersController {
                 .apply(orderRequestService.openOrder()), HttpStatus.CREATED);
     }
 
-    @DeleteMapping({"/{orderId}"})
+    @PutMapping({"/{orderId}/delete"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderRequest> delete(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
@@ -56,16 +59,16 @@ public class OrdersController {
                 .apply(orderRequestService.closeOrder(orderId)), HttpStatus.OK);
     }
 
-    @PutMapping({"/{orderId}/reOpen"})
-    public ResponseEntity<OrderRequest> openOrder(@PathVariable long orderId) {
+    @PutMapping({"/{orderId}/reopen"})
+    public ResponseEntity<OrderRequest> reopenOrder(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.reopenOrder(orderId)), HttpStatus.OK);
     }
 
-    @PutMapping({"/{orderId}/receipt"})
-    public ResponseEntity<OrderRequest> printOrder(@PathVariable long orderId) {
-        return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.getById(orderId)), HttpStatus.OK);
+    @GetMapping({"/{orderId}/receipt"})
+    public ResponseEntity<PrintReceipt> printOrder(@PathVariable long orderId) {
+        return new ResponseEntity<>(DtoToDomainAdapter.printReceiptDtoToPrintReceiptAdapter
+                .apply(orderRequestService.printOrder(orderId)), HttpStatus.OK);
     }
 
     @PutMapping({"/{orderId}/add/{productId}"})

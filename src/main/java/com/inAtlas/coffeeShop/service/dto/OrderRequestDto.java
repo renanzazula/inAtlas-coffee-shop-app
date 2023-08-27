@@ -5,6 +5,7 @@ import com.inAtlas.coffeeShop.utils.Constants;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public  @Data
@@ -15,6 +16,6 @@ class OrderRequestDto extends BaseDto {
     private String status;
     private Long totalQuantity;
     private Double totalAmount;
-    private Double totalDiscount;
-    private List<OrderRequestItemDto> orderItems;
+    private Double totalDiscount = null;
+    private List<OrderRequestItemDto> orderItems = new ArrayList<>();
 }
