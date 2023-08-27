@@ -15,15 +15,16 @@ INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, 
 INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (2, 0, 1, 4.0, 2);
 INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (3, 0, 1, 4.0, 2);
 INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (4, 0, 1, 6.0, 6);
---
--- INSERT INTO `ORDER_REQUEST` (`id`, `date_create`, `date_update`, `time_create`, `time_update`, `version`, `who_create`, `who_update`, `order_date_time`, `promotion_discount`, `status`, `total_amount`, `discount`, `total_quantity`) VALUES (2, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0, 0, 0, CURRENT_TIMESTAMP(), 0,'CLOSE', 12.0, 0.0, 4);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (6 , 0, 2,   4.0, 2);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (5 , 0, 2,   5.3, 1);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (7 , 0, 2, 10.10, 3);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (8 , 0, 2,   1.0, 4);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (9 , 0, 2,   9.0, 5);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (10, 0, 2,   8.0, 6);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (11, 0, 2,   8.0, 6);
--- INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (12, 0, 2,   8.0, 6);
+
+--If the order have more than 8 products give a 5% discount on the total.
+INSERT INTO `ORDER_REQUEST` (`id`, `date_create`, `date_update`, `time_create`, `time_update`, `version`, `who_create`, `who_update`, `order_date_time`, `promotion_discount`, `status`, `total_amount`, `discount`, `total_quantity`) VALUES (2, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0, 0, 0, CURRENT_TIMESTAMP(), 0,'OPEN', 12.0, 0.0, 4);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (6 , 0, 2,   4.0, 2);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (5 , 0, 2,   5.3, 1);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (7 , 0, 2, 10.10, 3);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (8 , 0, 2,   1.0, 4);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (9 , 0, 2,   9.0, 5);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (10, 0, 2,   8.0, 6);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (11, 0, 2,   8.0, 6);
+INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (12, 0, 2,   8.0, 6);
 
 
