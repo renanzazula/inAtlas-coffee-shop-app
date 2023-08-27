@@ -1,11 +1,10 @@
 package com.inAtlas.coffeeShop.repository.discount;
 
 import com.inAtlas.coffeeShop.repository.entity.DiscountEntity;
-import com.inAtlas.coffeeShop.repository.entity.ProductEntity;
+import com.inAtlas.coffeeShop.repository.entity.DiscountTypeEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -13,5 +12,5 @@ import java.util.List;
 public interface DiscountRepository extends JpaRepository<DiscountEntity, Long> {
 
 
-    List<DiscountEntity> findAllByToDate(Date toDate);
+    List<DiscountEntity> findAllByToDateAndDiscountType(Date toDate, DiscountTypeEnum discountType);
 }

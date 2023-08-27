@@ -5,7 +5,10 @@ import com.inAtlas.coffeeShop.repository.discount.DiscountRepository;
 import com.inAtlas.coffeeShop.repository.entity.*;
 import com.inAtlas.coffeeShop.repository.order.OrderRequestRepository;
 import com.inAtlas.coffeeShop.repository.product.ProductRepository;
-import com.inAtlas.coffeeShop.service.dto.*;
+import com.inAtlas.coffeeShop.service.dto.DiscountDto;
+import com.inAtlas.coffeeShop.service.dto.OrderRequestDto;
+import com.inAtlas.coffeeShop.service.dto.PrintReceiptDto;
+import com.inAtlas.coffeeShop.service.dto.PrintReceiptItemDto;
 import com.inAtlas.coffeeShop.utils.Constants;
 import com.inAtlas.coffeeShop.utils.functions.EntityToDtoAdapter;
 import org.springframework.stereotype.Service;
@@ -95,7 +98,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
         DiscountDto discountDto = calculateTotalDiscount(orderId);
         orderRequestEntity.setTotalDiscount(discountDto != null ? discountDto.getDiscount() : 0D);
-
+        orderRequestEntity.setTotalAmount(orderRequestEntity.getTotalAmount()-orderRequestEntity.getTotalDiscount());
         orderRequestEntity.setStatus(StatusOrderEnum.CLOSE);
         return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                 .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
@@ -156,25 +159,54 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     private DiscountDto calculateTotalDiscount(long orderId) {
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
 
-        // get product from order
         List<ProductEntity> allProductsFromOrder = orderRequestEntity.getOrderItems().stream().map(OrderRequestItemEntity::getProduct).collect(Collectors.toList());
 
-        // get discount from db
-        List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDate(new Date());
+        List<DiscountDto> listOfOrderDiscountsToApply = calculateTotalDiscountOrder(orderRequestEntity, allProductsFromOrder);
+        DiscountDto orderDiscountsToApply = listOfOrderDiscountsToApply.stream().max(Comparator.comparingDouble(DiscountDto::getDiscount)).orElse(null);
 
+        //List<DiscountDto> discountPromotionList = calculateTotalDiscountPromotion(orderRequestEntity, allProductsFromOrder);
+
+        return orderDiscountsToApply;
+    }
+
+    private List<DiscountDto> calculateTotalDiscountOrder(OrderRequestEntity orderRequestEntity, List<ProductEntity> allProductsFromOrder) {
+        List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDateAndDiscountType(new Date(), DiscountTypeEnum.DISCOUNT_ORDER);
         List<DiscountDto> listOfDiscountsToApply = new ArrayList<>();
         for (int i = 0; i < discountListFromDb.size(); i++) {
             DiscountEntity discount = discountListFromDb.get(i);
-            if(discount.getDiscountItems().size() == allProductsFromOrder.size()){
+            if(orderRequestEntity.getOrderItems().size() >= discount.getQuantityItems()){
                 DiscountDto discountsToApply = new DiscountDto();
                 discountsToApply.setDiscount((discount.getDiscount() / 100) * orderRequestEntity.getTotalAmount());
                 listOfDiscountsToApply.add(discountsToApply);
             }
         }
+        return listOfDiscountsToApply;
+    }
 
-        return listOfDiscountsToApply.stream()
-                .max(Comparator.comparingDouble(DiscountDto::getDiscount))
-                .orElse(null);
+    private  List<DiscountDto> calculateTotalDiscountPromotion(OrderRequestEntity orderRequestEntity, List<ProductEntity> allProductsFromOrder) {
+        List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDateAndDiscountType(new Date(), DiscountTypeEnum.DISCOUNT_PROMOTION);
+        List<DiscountDto> listOfDiscountsToApply = new ArrayList<>();
+
+        for (int i = 0; i < discountListFromDb.size(); i++) {
+            DiscountEntity discount = discountListFromDb.get(i);
+
+            List<Long> idsDiscountItemConfiguration = new ArrayList<>();
+            for (int j = 0; j < discount.getDiscountItems().size(); j++) {
+                idsDiscountItemConfiguration.add(discount.getDiscountItems().get(j).getProduct().getId());
+            }
+
+            List<Long> idsOrderItems = new ArrayList<>();
+            for (int j = 0; j < orderRequestEntity.getOrderItems().size(); j++) {
+                idsOrderItems.add(orderRequestEntity.getOrderItems().get(j).getProduct().getId());
+            }
+
+            if(idsOrderItems.containsAll(idsDiscountItemConfiguration)){
+                listOfDiscountsToApply.add(EntityToDtoAdapter.discountEntityToDiscountDtoAdapter.apply(discount));
+            }
+        }
+
+
+        return listOfDiscountsToApply;
     }
 
     @Override

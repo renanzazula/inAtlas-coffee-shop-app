@@ -32,6 +32,13 @@ public class DiscountEntity extends BaseAuditEntity {
     @Column(name = "discount")
     private Double discount;
 
+    @Column(name = "quantity_items")
+    private Double quantityItems;
+
+    @Column(name = "discount_type")
+    @Enumerated(EnumType.STRING)
+    private DiscountTypeEnum discountType;
+
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiscountItemEntity> discountItems = new ArrayList<>();
 
@@ -81,6 +88,22 @@ public class DiscountEntity extends BaseAuditEntity {
 
     public void setDiscountItems(List<DiscountItemEntity> discountItems) {
         this.discountItems = discountItems;
+    }
+
+    public Double getQuantityItems() {
+        return quantityItems;
+    }
+
+    public void setQuantityItems(Double quantityItems) {
+        this.quantityItems = quantityItems;
+    }
+
+    public DiscountTypeEnum getDiscountType() {
+        return discountType;
+    }
+
+    public void setDiscountType(DiscountTypeEnum discounType) {
+        this.discountType = discounType;
     }
 
     public void addDiscountItem(DiscountItemEntity discountItem) {
