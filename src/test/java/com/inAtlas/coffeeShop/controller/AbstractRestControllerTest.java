@@ -2,9 +2,7 @@ package com.inAtlas.coffeeShop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inAtlas.coffeeShop.repository.entity.StatusOrderEnum;
-import com.inAtlas.coffeeShop.service.dto.OrderRequestDto;
-import com.inAtlas.coffeeShop.service.dto.OrderRequestItemDto;
-import com.inAtlas.coffeeShop.service.dto.ProductDto;
+import com.inAtlas.coffeeShop.service.dto.*;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -12,7 +10,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class AbstractRestControllerTest {
 
-    protected OrderRequestDto orderRequest;
+    protected OrderRequestDto orderRequestDto;
+    protected PrintReceiptDto printReceiptDto;
+
 
     static String asJsonString(final Object obj) {
         try {
@@ -22,7 +22,7 @@ public abstract class AbstractRestControllerTest {
         }
     }
 
-    protected OrderRequestDto setUpOrder(){
+    protected OrderRequestDto setUpOrderDto(){
         OrderRequestDto orderRequest = new OrderRequestDto();
         orderRequest.setId(1L);
         orderRequest.setOrderDateTime(LocalDateTime.now());
@@ -33,7 +33,7 @@ public abstract class AbstractRestControllerTest {
        return orderRequest;
     }
 
-    protected OrderRequestDto setUpOrderWithItems(){
+    protected OrderRequestDto setUpOrderWithItemsDto(){
         OrderRequestDto orderRequest = new OrderRequestDto();
         orderRequest.setId(1L);
         orderRequest.setOrderDateTime(LocalDateTime.now());
@@ -41,13 +41,11 @@ public abstract class AbstractRestControllerTest {
         orderRequest.setTotalQuantity(0L);
         orderRequest.setTotalAmount(0D);
         orderRequest.setTotalDiscount(0D);
-        orderRequest.setOrderItems(Arrays.asList(setUpOrderRequestItem()));
+        orderRequest.setOrderItems(Arrays.asList(setUpOrderRequestItemDto()));
         return orderRequest;
     }
 
-
-
-    protected ProductDto setUpProduct(){
+    protected ProductDto setUpProductDto(){
         ProductDto product = new ProductDto();
         product.setId(1L);
         product.setName("Latte");
@@ -56,15 +54,29 @@ public abstract class AbstractRestControllerTest {
         return product;
     }
 
-    protected OrderRequestItemDto setUpOrderRequestItem(){
+    protected OrderRequestItemDto setUpOrderRequestItemDto(){
         OrderRequestItemDto orderRequestItem = new OrderRequestItemDto();
         orderRequestItem.setId(ThreadLocalRandom.current().nextLong());
         orderRequestItem.setPriceUnit(5.3);
-        orderRequestItem.setProduct(setUpProduct());
+        orderRequestItem.setProduct(setUpProductDto());
         return orderRequestItem;
     }
 
+    protected PrintReceiptDto setUpPrintReceiptDto(){
+        PrintReceiptDto printReceiptDto = new PrintReceiptDto();
+        printReceiptDto.setTotal(12.0);
+        printReceiptDto.setReceiptItems(Arrays.asList(setUpPrintReceiptItemDto()));
+        return printReceiptDto;
+    }
 
+    protected PrintReceiptItemDto setUpPrintReceiptItemDto(){
+        PrintReceiptItemDto printReceiptItemDto = new PrintReceiptItemDto();
+        printReceiptItemDto.setTotal(12.0);
+        printReceiptItemDto.setUnitPrice(4.0);
+        printReceiptItemDto.setProductName("Espresso");
+        printReceiptItemDto.setAmount(3);
+        return printReceiptItemDto;
+    }
 
 
 }
