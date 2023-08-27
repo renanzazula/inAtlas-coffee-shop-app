@@ -3,9 +3,8 @@ package com.inAtlas.coffeeShop.controller.domain;
 import lombok.Data;
 
 public @Data
-class OrderRequestItem extends Base {
+class OrderRequestItem {
 
-    private Long Id;
     private Product product;
 
 

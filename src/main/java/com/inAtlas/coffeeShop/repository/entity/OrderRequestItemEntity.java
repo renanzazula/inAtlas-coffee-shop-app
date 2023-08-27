@@ -20,6 +20,7 @@ public class OrderRequestItemEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false ,updatable = false)
+    @OrderBy("id")
     private ProductEntity product;
 
     @Column(name = "discount")
