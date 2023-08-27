@@ -1,6 +1,7 @@
 package com.inAtlas.coffeeShop.controller.products;
 
 
+import com.inAtlas.coffeeShop.controller.domain.PrintMenu;
 import com.inAtlas.coffeeShop.controller.domain.Product;
 import com.inAtlas.coffeeShop.service.product.ProductService;
 import com.inAtlas.coffeeShop.utils.ConstantsApi;
@@ -26,10 +27,18 @@ public class ProductsController {
     }
 
     @GetMapping({""})
-    public ResponseEntity<List<Product>> get() {
+    public ResponseEntity<List<Product>> getAll() {
         return new ResponseEntity<>(productService.getAll()
                 .stream()
                 .map(DtoToDomainAdapter.productDtoToProductDomainAdapter)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @GetMapping({"/print/menu"})
+    public ResponseEntity<List<PrintMenu>> getPrintMenu() {
+        return new ResponseEntity<>(productService.getAll()
+                .stream()
+                .map(DtoToDomainAdapter.productDtoToPrintMenuAdapter)
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
