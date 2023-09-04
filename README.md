@@ -1,4 +1,4 @@
-## inAtlas Coffee Shop - API
+## Standard Coffee Shop - API
 
 ### Functionalities
   - Manage products.
@@ -42,7 +42,7 @@ The application when starts will create H2 memory database and insert a list of 
 
  - To check the database access the URL below:
 
-`http://localhost:8080/inAtlas-coffeeShopApp/h2-console`
+`http://localhost:8080/standard-coffeeShopApp/h2-console`
 
 - User Name: root
 - Password: root
