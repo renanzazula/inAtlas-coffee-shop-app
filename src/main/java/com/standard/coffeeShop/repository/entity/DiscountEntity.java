@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "discount")
@@ -18,6 +17,9 @@ public class DiscountEntity extends BaseAuditEntity {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "status")
     private String status;
 
@@ -28,6 +30,12 @@ public class DiscountEntity extends BaseAuditEntity {
     @Temporal(TemporalType.DATE)
     @Column(name = "to_date")
     private Date toDate;
+
+    @Column(name = "amount_from")
+    private Double amountFrom;
+
+    @Column(name = "amount_to")
+    private Double amountTo;
 
     @Column(name = "discount")
     private Double discount;
@@ -41,6 +49,17 @@ public class DiscountEntity extends BaseAuditEntity {
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiscountItemEntity> discountItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DiscountItemEntity> comboItems = new ArrayList<>();
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Long getId() {
         return id;
@@ -122,29 +141,28 @@ public class DiscountEntity extends BaseAuditEntity {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        DiscountEntity that = (DiscountEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(status, that.status) && Objects.equals(fromDate, that.fromDate) && Objects.equals(toDate, that.toDate) && Objects.equals(discount, that.discount) && Objects.equals(discountItems, that.discountItems);
+    public Double getAmountFrom() {
+        return amountFrom;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id, status, fromDate, toDate, discount, discountItems);
+    public void setAmountFrom(Double amountFrom) {
+        this.amountFrom = amountFrom;
     }
 
-    @Override
-    public String toString() {
-        return "DiscountEntity{" +
-                "id=" + id +
-                ", status='" + status + '\'' +
-                ", fromDate=" + fromDate +
-                ", toDate=" + toDate +
-                ", discount=" + discount +
-                ", discountItems=" + discountItems +
-                '}';
+    public Double getAmountTo() {
+        return amountTo;
+    }
+
+    public void setAmountTo(Double amountTo) {
+        this.amountTo = amountTo;
+    }
+
+
+    public List<DiscountItemEntity> getComboItems() {
+        return comboItems;
+    }
+
+    public void setComboItems(List<DiscountItemEntity> comboItems) {
+        this.comboItems = comboItems;
     }
 }

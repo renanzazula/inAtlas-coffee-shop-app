@@ -3,10 +3,10 @@ package com.standard.coffeeShop.repository.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "discount_item")
-public class DiscountItemEntity {
+@Table(name = "combo_item")
+public class ComboItemEntity {
 
-    private static final long serialVersionUID = 7167425684167438414L;
+    private static final long serialVersionUID = 3722675736039704604L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

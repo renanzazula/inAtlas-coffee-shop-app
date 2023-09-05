@@ -184,7 +184,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     }
 
     private  List<DiscountDto> calculateTotalDiscountPromotion(OrderRequestEntity orderRequestEntity, List<ProductEntity> allProductsFromOrder) {
-        List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDateAndDiscountType(new Date(), DiscountTypeEnum.DISCOUNT_PROMOTION);
+        List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDateAndDiscountType(new Date(), DiscountTypeEnum.DISCOUNT_PRODUCT_COMBO);
         List<DiscountDto> listOfDiscountsToApply = new ArrayList<>();
 
         for (int i = 0; i < discountListFromDb.size(); i++) {
