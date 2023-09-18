@@ -3,6 +3,7 @@ package com.standard.coffeeShop.service.discount;
 import com.standard.coffeeShop.repository.discount.DiscountRepository;
 import com.standard.coffeeShop.repository.entity.DiscountEntity;
 import com.standard.coffeeShop.repository.entity.ComboItemEntity;
+import com.standard.coffeeShop.repository.entity.DiscountItemEntity;
 import com.standard.coffeeShop.repository.entity.DiscountTypeEnum;
 import com.standard.coffeeShop.repository.product.ProductRepository;
 import com.standard.coffeeShop.service.dto.DiscountDto;
@@ -60,7 +61,7 @@ public class DiscountServiceImpl implements DiscountService {
         discountEntity.setAmountFrom(obj.getAmountFrom());
         discountEntity.setAmountTo(obj.getAmountTo());
         for (int i = 0; i < obj.getDiscountItems().size(); i++) {
-            ComboItemEntity discountItem = new ComboItemEntity();
+            DiscountItemEntity discountItem = new DiscountItemEntity();
             discountItem.setProduct(productRepository.getById(obj.getDiscountItems().get(i).getProduct().getId()));
             discountEntity.addDiscountItem(discountItem);
         }
@@ -116,7 +117,7 @@ public class DiscountServiceImpl implements DiscountService {
         discountEntity.setDiscount(obj.getDiscount());
         discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
         for (int i = 0; i < obj.getDiscountItems().size(); i++) {
-            ComboItemEntity discountItem = new ComboItemEntity();
+            DiscountItemEntity discountItem = new DiscountItemEntity();
             discountItem.setProduct(productRepository.getById(obj.getDiscountItems().get(i).getProduct().getId()));
             discountEntity.addDiscountItem(discountItem);
         }
@@ -134,7 +135,7 @@ public class DiscountServiceImpl implements DiscountService {
         discountEntity.setDiscount(obj.getDiscount());
         discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
         for (int i = 0; i < obj.getDiscountItems().size(); i++) {
-            ComboItemEntity discountItem = new ComboItemEntity();
+            DiscountItemEntity discountItem = new DiscountItemEntity();
             discountItem.setProduct(productRepository.getById(obj.getDiscountItems().get(i).getProduct().getId()));
             discountEntity.addDiscountItem(discountItem);
         }
