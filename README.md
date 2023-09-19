@@ -50,5 +50,5 @@ The application when starts will create H2 memory database and insert a list of 
 
  - To access the functionalities we can check the swagger at URL below: 
 
-`http://localhost:8080/inAtlas-coffeeShopApp/swagger-ui/#/`
+`http://localhost:8080/standard-coffeeShopApp/swagger-ui/#/`
 

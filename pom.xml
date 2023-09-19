@@ -9,8 +9,8 @@
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.coffeeShop.inAtlas</groupId>
-    <artifactId>inAtlasCoffeeShop</artifactId>
+    <groupId>com.coffeeShop.standard</groupId>
+    <artifactId>standardCoffeeShop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>inAtlasCoffeeShop</name>
     <description>inAtlasCoffeeShop</description>
