@@ -1,13 +1,17 @@
 package com.standard.coffeeShop.service.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-public @Data
-class DiscountDto extends BaseDto {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public @Data class DiscountDto extends BaseDto {
 
     private Long id;
     private String title;
@@ -21,5 +25,6 @@ class DiscountDto extends BaseDto {
     private String discountType;
 
     private List<DiscountItemDto> discountItems = new ArrayList<>();
+    private List<DiscountItemDto> comboItems = new ArrayList<>();
 
 }
