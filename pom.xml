@@ -39,11 +39,11 @@
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
+        <junit-jupiter-api.version>5.3.1</junit-jupiter-api.version>
         <junit-platform.version>5.3.1</junit-platform.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <jaxb.version>2.3.0.1</jaxb.version>
-        <junit-jupiter-api.version>5.3.1</junit-jupiter-api.version>
         <maven-surefire-report-plugin.version>2.22.0</maven-surefire-report-plugin.version>
         <cglib-nodep.version>3.2.9</cglib-nodep.version>
         <jaxb-core.version>2.3.0.1</jaxb-core.version>
@@ -109,6 +109,19 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox-swagger-ui.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>5.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,3 +1,38 @@
+INSERT INTO `USER`(`id`,`username`,`password`,`account_non_expired`,`account_non_locked`,`credential_non_expired`,`enable`) VALUES(1, 'admin',    '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true);
+INSERT INTO `USER`(`id`,`username`,`password`,`account_non_expired`,`account_non_locked`,`credential_non_expired`,`enable`) VALUES(2, 'user',     '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true);
+INSERT INTO `USER`(`id`,`username`,`password`,`account_non_expired`,`account_non_locked`,`credential_non_expired`,`enable`) VALUES(3, 'customer', '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true);
+
+INSERT INTO `ROLE` (`id`,`name`) VALUES(1, 'ADMIN');
+INSERT INTO `ROLE` (`id`,`name`) VALUES(2, 'USER');
+INSERT INTO `ROLE` (`id`,`name`) VALUES(3, 'CUSTOMER');
+
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (1, 'ORDER_OPEN');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (2, 'ORDER_ADD');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (3, 'ORDER_REMOVE');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (4, 'ORDER_CLOSE');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (5, 'ORDER_PRINT');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (6, 'ORDER_DELETE');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (7, 'ORDER_REOPEN');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (8, 'ORDER_SEARCH');
+INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (9, 'CUSTOMER_SEARCH');
+
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(1, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(2, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(3, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(4, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(5, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(6, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(7, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(8, 1);
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(9, 1);
+
+INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(9, 3);
+
+INSERT INTO `USER_ROLE` (`role_id`, `user_id`) VALUES(1, 1);
+INSERT INTO `USER_ROLE` (`role_id`, `user_id`) VALUES(2, 2);
+INSERT INTO `USER_ROLE` (`role_id`, `user_id`) VALUES(3, 3);
+
+
 INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price_unit`,`who_update`, `who_create`, `date_update`, `date_create`, `time_create`, `version`) VALUES (1, 'Latte',      'Latte',      'available', 100,   5.3, 0, 0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0);
 INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price_unit`,`who_update`, `who_create`, `date_update`, `date_create`, `time_create`, `version`) VALUES (2, 'Espresso',   'Espresso',   'available', 100,   4.0, 0, 0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0);
 INSERT INTO `PRODUCT` (`id`, `name`, `description`, `status`, `quantity`, `price_unit`,`who_update`, `who_create`, `date_update`, `date_create`, `time_create`, `version`) VALUES (3, 'Sandwich',   'Sandwich',   'available', 100, 10.10, 0, 0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0);

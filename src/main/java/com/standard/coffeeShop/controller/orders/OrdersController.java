@@ -8,6 +8,8 @@ import com.standard.coffeeShop.utils.functions.DtoToDomainAdapter;
 import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class OrdersController {
         this.orderRequestService = orderRequestService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_SEARCH')")
     @GetMapping({""})
     public ResponseEntity<List<OrderRequest>> getAllOrders() {
         return new ResponseEntity<>(orderRequestService.getAll()
@@ -34,18 +37,21 @@ public class OrdersController {
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_SEARCH')")
     @GetMapping({"/{orderId}"})
     public ResponseEntity<OrderRequest> getOrderById(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.getById(orderId)), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_OPEN')")
     @PostMapping("/open")
     public ResponseEntity<OrderRequest> openOrder() {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.openOrder()), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_DELETE')")
     @PutMapping({"/{orderId}/delete"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<OrderRequest> delete(@PathVariable long orderId) {
@@ -53,30 +59,35 @@ public class OrdersController {
                 .apply(orderRequestService.delete(orderId)), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_CLOSE')")
     @PutMapping({"/{orderId}/close"})
     public ResponseEntity<OrderRequest> closeOrder(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.closeOrder(orderId)), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_REOPEN')")
     @PutMapping({"/{orderId}/reopen"})
     public ResponseEntity<OrderRequest> reopenOrder(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.reopenOrder(orderId)), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_PRINT')")
     @GetMapping({"/{orderId}/receipt"})
     public ResponseEntity<PrintReceipt> printOrder(@PathVariable long orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.printReceiptDtoToPrintReceiptAdapter
                 .apply(orderRequestService.printOrder(orderId)), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_ADD')")
     @PutMapping({"/{orderId}/add/{productId}"})
     public ResponseEntity<OrderRequest> addProduct(@PathVariable long orderId, @PathVariable long productId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
                 .apply(orderRequestService.addProduct(orderId, productId)), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ORDER_REMOVE')")
     @PutMapping({"/{orderId}/remove/{productId}"})
     public ResponseEntity<OrderRequest> removeProduct(@PathVariable long orderId, @PathVariable long productId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
