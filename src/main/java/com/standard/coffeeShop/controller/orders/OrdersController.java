@@ -8,7 +8,6 @@ import com.standard.coffeeShop.utils.functions.DtoToDomainAdapter;
 import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +16,10 @@ import java.util.stream.Collectors;
 
 @Api(value = "Manage Orders", tags = "order")
 @RestController
-@RequestMapping(OrdersController.ORDER_CONTROLER_BASE_URL)
+@RequestMapping(OrdersController.ORDER_CONTROLLER_BASE_URL)
 public class OrdersController {
 
-    public static final String ORDER_CONTROLER_BASE_URL = ConstantsApi.ORDER;
+    public static final String ORDER_CONTROLLER_BASE_URL = ConstantsApi.ORDER;
 
     private final OrderRequestService orderRequestService;
 

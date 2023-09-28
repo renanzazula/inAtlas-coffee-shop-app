@@ -31,7 +31,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
     public void testGetAllOrders() throws Exception {
         orderRequestDto = setUpOrderWithItemsDto();
         //   when(orderRequestService.getAll()).thenReturn(Arrays.asList(orderRequestDto));
-        mockMvc.perform(get(OrdersController.ORDER_CONTROLER_BASE_URL)
+        mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL)
                         .with(httpBasic("admin", "spring"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -44,7 +44,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
     public void testGetOrderById() throws Exception {
         orderRequestDto = setUpOrderWithItemsDto();
         //       when(orderRequestService.getById(1)).thenReturn(orderRequestDto);
-        mockMvc.perform(get(OrdersController.ORDER_CONTROLER_BASE_URL + "/1")
+        mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(1)));
@@ -53,7 +53,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
 
     @Test
     void testOpenOrder() throws Exception {
-        mockMvc.perform(post(OrdersController.ORDER_CONTROLER_BASE_URL + "/open")
+        mockMvc.perform(post(OrdersController.ORDER_CONTROLLER_BASE_URL + "/open")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", equalTo(1)));
@@ -62,7 +62,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
     @Test
     void testAddProduct() throws Exception {
         orderRequestDto = setUpOrderWithItemsDto();
-        mockMvc.perform(put(OrdersController.ORDER_CONTROLER_BASE_URL + "/1/add/1").
+        mockMvc.perform(put(OrdersController.ORDER_CONTROLLER_BASE_URL + "/1/add/1").
                         contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.orderItems", hasSize(1)))
@@ -73,7 +73,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
 
     @Test
     void testRemoveProduct() throws Exception {
-        mockMvc.perform(put(OrdersController.ORDER_CONTROLER_BASE_URL + "/1/remove/1").
+        mockMvc.perform(put(OrdersController.ORDER_CONTROLLER_BASE_URL + "/1/remove/1").
                         contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.orderItems", hasSize(0)))
@@ -85,7 +85,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
     @Test
     void testPrintOrder() throws Exception {
         printReceiptDto = setUpPrintReceiptDto();
-        mockMvc.perform(get(OrdersController.ORDER_CONTROLER_BASE_URL + "/1/receipt").
+        mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL + "/1/receipt").
                         contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.receiptItems", hasSize(1)))
@@ -97,7 +97,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
     public void testDelete() throws Exception {
         orderRequestDto = setUpOrderWithItemsDto();
         orderRequestDto.setStatus(StatusOrderEnum.DELETE.toString());
-        mockMvc.perform(put(OrdersController.ORDER_CONTROLER_BASE_URL + "/1/delete").
+        mockMvc.perform(put(OrdersController.ORDER_CONTROLLER_BASE_URL + "/1/delete").
                         contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is(StatusOrderEnum.DELETE.toString())));

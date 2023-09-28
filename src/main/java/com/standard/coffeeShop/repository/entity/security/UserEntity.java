@@ -1,7 +1,12 @@
 package com.standard.coffeeShop.repository.entity.security;
 
+import com.standard.coffeeShop.repository.entity.CustomerEntity;
 import lombok.Getter;
 import lombok.Singular;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,7 +16,7 @@ import java.util.stream.Collectors;
 @Getter
 @Entity
 @Table(name = "user")
-public class UserEntity implements Serializable {
+public class UserEntity implements UserDetails, CredentialsContainer, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,13 +33,14 @@ public class UserEntity implements Serializable {
 
     @Getter
     @Singular
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
     private Set<RoleEntity> roles;
 
-    @Transient
-    private Set<AuthorityEntity> authorities;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CustomerEntity customer;
 
     @Getter
     @Column(name = "accountNonExpired")
@@ -50,7 +56,6 @@ public class UserEntity implements Serializable {
     @Getter
     @Column(name = "enable")
     private boolean enable = true;
-
 
     public void setId(Long id) {
         this.id = id;
@@ -84,11 +89,37 @@ public class UserEntity implements Serializable {
         this.enable = enable;
     }
 
-    public Set<AuthorityEntity> getAuthorities() {
+    @Transient
+    public Set<GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(RoleEntity::getAuthorities)
                 .flatMap(Set::stream)
+                .map(authorityEntity -> {
+                    return new SimpleGrantedAuthority(authorityEntity.getPermission());
+                })
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.credentialNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enable;
+    }
+
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
+    }
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
 }

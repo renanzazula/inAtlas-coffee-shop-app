@@ -47,6 +47,9 @@ public class OrderRequestEntity extends BaseAuditEntity {
     @Column(name = "promotion_discount")
     private Double promotionDiscount;
 
+    @ManyToOne
+    private CustomerEntity customer;
+
     @OneToMany(mappedBy = "orderRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
     private List<OrderRequestItemEntity> orderItems = new ArrayList<>();
 
@@ -130,6 +133,14 @@ public class OrderRequestEntity extends BaseAuditEntity {
         }
     }
 
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -148,13 +159,14 @@ public class OrderRequestEntity extends BaseAuditEntity {
     public String toString() {
         return "OrderRequestEntity{" +
                 "id=" + id +
-                ", date=" + orderDateTime +
+                ", orderDateTime=" + orderDateTime +
                 ", status=" + status +
                 ", totalQuantity=" + totalQuantity +
                 ", totalAmount=" + totalAmount +
                 ", totalDiscount=" + totalDiscount +
                 ", promotionDiscount=" + promotionDiscount +
-                ", orderHasProduct=" + orderItems +
+                ", customer=" + customer +
+                ", orderItems=" + orderItems +
                 '}';
     }
 }
