@@ -1,16 +1,20 @@
 package com.standard.coffeeShop.repository.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Objects;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "product")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
-public class ProductEntity extends BaseAuditEntity {
+public @Data class ProductEntity extends BaseAuditEntity {
 
     private static final long serialVersionUID = -7008578354674160248L;
 
@@ -39,77 +43,5 @@ public class ProductEntity extends BaseAuditEntity {
     @Column(name = "price_unit")
     private Double priceUnit;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPriceUnit() {
-        return priceUnit;
-    }
-
-    public void setPriceUnit(Double priceUnit) {
-        this.priceUnit = priceUnit;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        ProductEntity that = (ProductEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(status, that.status) && Objects.equals(quantity, that.quantity) && Objects.equals(priceUnit, that.priceUnit);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id, name, description, status, quantity, priceUnit);
-    }
-
-    @Override
-    public String toString() {
-        return "ProductEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                ", quantity=" + quantity +
-                ", priceUnit=" + priceUnit +
-                '}';
-    }
 }

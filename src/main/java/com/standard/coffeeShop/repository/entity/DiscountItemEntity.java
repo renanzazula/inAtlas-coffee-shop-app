@@ -1,10 +1,16 @@
 package com.standard.coffeeShop.repository.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "discount_item")
-public class DiscountItemEntity {
+public @Data class DiscountItemEntity {
 
     private static final long serialVersionUID = 7167425684167438414L;
 

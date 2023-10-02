@@ -3,8 +3,8 @@ INSERT INTO `USER`(`id`,`username`,`password`,`account_non_expired`,`account_non
 INSERT INTO `USER`(`id`,`username`,`password`,`account_non_expired`,`account_non_locked`,`credential_non_expired`,`enable`) VALUES(3, 'customer', '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true);
 
 INSERT INTO `ROLE` (`id`,`name`) VALUES(1, 'ADMIN');
-INSERT INTO `ROLE` (`id`,`name`) VALUES(2, 'USER');
-INSERT INTO `ROLE` (`id`,`name`) VALUES(3, 'CUSTOMER');
+INSERT INTO `ROLE` (`id`,`name`) VALUES(2, 'USER');     -- user application internal
+INSERT INTO `ROLE` (`id`,`name`) VALUES(3, 'CUSTOMER'); -- user application external or second role
 
 -- admin
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (1,  'ORDER_OPEN');
@@ -15,10 +15,11 @@ INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (5,  'ORDER_PRINT');
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (6,  'ORDER_DELETE');
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (7,  'ORDER_REOPEN');
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (8,  'ORDER_SEARCH');
+
 -- customer
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (9,  'CUSTOMER_SEARCH');
 
--- product
+-- product/admin
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (10, 'PRODUCT_PRINT');
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (11, 'PRODUCT_SEARCH');
 INSERT INTO `AUTHORITY`(`id`,`permission`) VALUES (12, 'PRODUCT_ADD');
@@ -45,8 +46,6 @@ INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(11, 1);
 INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(12, 1);
 INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(13, 1);
 INSERT INTO `ROLE_AUTHORITY` (`authority_id`, `role_id`) VALUES(14, 1);
-
-
 
 INSERT INTO `USER_ROLE` (`role_id`, `user_id`) VALUES(1, 1);
 INSERT INTO `USER_ROLE` (`role_id`, `user_id`) VALUES(2, 2);

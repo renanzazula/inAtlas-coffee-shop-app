@@ -12,8 +12,8 @@
     <groupId>com.coffeeShop.standard</groupId>
     <artifactId>standardCoffeeShop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>inAtlasCoffeeShop</name>
-    <description>inAtlasCoffeeShop</description>
+    <name>standardCoffeeShop</name>
+    <description>standardCoffeeShop</description>
 
     <developers>
         <developer>

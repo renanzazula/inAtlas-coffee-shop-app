@@ -1,8 +1,7 @@
 package com.standard.coffeeShop.repository.entity.security;
 
 import com.standard.coffeeShop.repository.entity.CustomerEntity;
-import lombok.Getter;
-import lombok.Singular;
+import lombok.*;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,10 +12,14 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Setter
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user")
-public class UserEntity implements UserDetails, CredentialsContainer, Serializable {
+public  class UserEntity implements UserDetails, CredentialsContainer, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,7 +41,6 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
     private Set<RoleEntity> roles;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     private CustomerEntity customer;
 
@@ -56,38 +58,6 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
     @Getter
     @Column(name = "enable")
     private boolean enable = true;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRoles(Set<RoleEntity> roles) {
-        this.roles = roles;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public void setCredentialNonExpired(boolean credentialNonExpired) {
-        this.credentialNonExpired = credentialNonExpired;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
 
     @Transient
     public Set<GrantedAuthority> getAuthorities() {
@@ -115,11 +85,4 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
         this.password = null;
     }
 
-    public CustomerEntity getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
-    }
 }
