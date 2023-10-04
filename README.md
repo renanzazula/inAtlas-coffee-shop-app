@@ -25,11 +25,11 @@
     - getOrderById
 ****
 ### Execute the application
-To execute the application we can run the command line bellow with local profile    
+To execute the application, we can run the command line below with local profile    
 
 `mvnw spring-boot:run -Dmaven.test.skip=true -Dspring-boot.run.profiles=local`
 
-The application when starts will create H2 memory database and insert a list of product bellow 
+The application, when it starts, will create an H2 memory database and insert a list of products below 
 
     - Product Name 
     - Latte $ 5.3 
@@ -37,10 +37,10 @@ The application when starts will create H2 memory database and insert a list of 
     - Sandwich $10.10
     - Milk $ 1
     - Cake Slice $ 9
-    - Capuccino $ 8
+    - Cappuccino $ 8
     - Tea $ 6.1
 
- - To check the database access the URL below:
+ - To check the database, access the URL below:
 
 `http://localhost:8080/standard-coffeeShopApp/h2-console`
 
@@ -48,7 +48,7 @@ The application when starts will create H2 memory database and insert a list of 
 - Password: root
 
 
- - To access the functionalities we can check the swagger at URL below: 
+ - To access the functionalities, we can check the swagger at the URL below: 
 
-`http://localhost:8080/inAtlas-coffeeShopApp/swagger-ui/#/`
+`http://localhost:8080/standard-coffeeShopApp/swagger-ui/#/`
 
