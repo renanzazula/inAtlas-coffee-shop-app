@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table(name = "discount")
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public @Data class DiscountEntity extends BaseAuditEntity {

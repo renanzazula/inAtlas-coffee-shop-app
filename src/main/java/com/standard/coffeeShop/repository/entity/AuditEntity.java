@@ -14,9 +14,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @EntityListeners(AuditingEntityListener.class)
 public @Data class AuditEntity implements Serializable {

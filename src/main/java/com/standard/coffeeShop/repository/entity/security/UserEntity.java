@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 
 @Setter
 @Getter
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "user")
 public  class UserEntity implements UserDetails, CredentialsContainer, Serializable {
 
@@ -26,15 +26,13 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Getter
+
     @Column(name = "username")
     private String username;
 
-    @Getter
     @Column(name = "password")
     private String password;
 
-    @Getter
     @Singular
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
@@ -44,20 +42,34 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
     @ManyToOne(fetch = FetchType.EAGER)
     private CustomerEntity customer;
 
-    @Getter
+    @Builder.Default
     @Column(name = "accountNonExpired")
     private boolean accountNonExpired = true;
-    @Getter
+
+    @Builder.Default
     @Column(name = "accountNonLocked")
     private boolean accountNonLocked = true;
 
-    @Getter
+    @Builder.Default
     @Column(name = "credentialNonExpired")
     private boolean credentialNonExpired = true;
 
-    @Getter
+    @Builder.Default
     @Column(name = "enable")
     private boolean enable = true;
+
+    @Getter
+    @Builder.Default
+    @Column(name = "use_google_2fa")
+    private boolean useGoogle2fa = false;
+
+    @Column(name = "user_google_2_fa_secret")
+    private String userGoogle2faSecret;
+
+    @Getter
+    @Builder.Default
+    @Transient
+    private boolean userGoogle2FaRequired = true;
 
     @Transient
     public Set<GrantedAuthority> getAuthorities() {
@@ -85,4 +97,11 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
         this.password = null;
     }
 
+    public void setUseGoogle2fa(boolean useGoogle2fa) {
+        this.useGoogle2fa = useGoogle2fa;
+    }
+
+    public void setUserGoogle2FaRequired(boolean userGoogle2FaRequired) {
+        this.userGoogle2FaRequired = userGoogle2FaRequired;
+    }
 }

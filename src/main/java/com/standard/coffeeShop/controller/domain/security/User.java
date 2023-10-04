@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class User implements Serializable {
 
+    private Integer id;
     private String username;
     private String password;
     private Set<Authority> authorities;
