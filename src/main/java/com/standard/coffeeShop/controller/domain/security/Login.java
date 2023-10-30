@@ -1,15 +1,16 @@
 package com.standard.coffeeShop.controller.domain.security;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
-@AllArgsConstructor
 @NoArgsConstructor
-public  @Data class VerifyCode implements Serializable {
+@AllArgsConstructor
+public @Data class Login {
 
-    private int code;
+    private String user;
+    private String password;
+
 
 }

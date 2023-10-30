@@ -6,6 +6,7 @@ import com.standard.coffeeShop.service.order.OrderRequestService;
 import com.standard.coffeeShop.utils.ConstantsApi;
 import com.standard.coffeeShop.utils.functions.DtoToDomainAdapter;
 import io.swagger.annotations.Api;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,16 +17,12 @@ import java.util.stream.Collectors;
 
 @Api(value = "Manage Orders", tags = "order")
 @RestController
+@AllArgsConstructor
 @RequestMapping(OrdersController.ORDER_CONTROLLER_BASE_URL)
 public class OrdersController {
-
     public static final String ORDER_CONTROLLER_BASE_URL = ConstantsApi.ORDER;
 
     private final OrderRequestService orderRequestService;
-
-    public OrdersController(OrderRequestService orderRequestService) {
-        this.orderRequestService = orderRequestService;
-    }
 
     @PreAuthorize("hasAnyAuthority('ORDER_SEARCH')")
     @GetMapping({""})

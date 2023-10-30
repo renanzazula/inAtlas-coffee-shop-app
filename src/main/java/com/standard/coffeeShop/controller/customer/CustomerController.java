@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class CustomerController {
 
     public static final String CUSTOMER_CONTROLLER_BASE_URL = ConstantsApi.CUSTOMER;
-
     @PreAuthorize("hasAnyAuthority('CUSTOMER_SEARCH')")
     @GetMapping({""})
     public ResponseEntity<List<Customer>> getAll() {

@@ -2,10 +2,11 @@ package com.standard.coffeeShop.utils.functions;
 
 
 import com.standard.coffeeShop.utils.functions.dtoToDomain.*;
-import com.standard.coffeeShop.utils.functions.dtoToDomain.*;
 
 public class DtoToDomainAdapter {
 
+    public static final UserDtoToUserAdapter userDtoToUserAdapter = new UserDtoToUserAdapter();
+    public static final AuthorityDtoToAuthorityAdapter authorityDtoToUserAdapter = new AuthorityDtoToAuthorityAdapter();
     public static final DiscountDtoToDiscountAdapter discountDtoToDiscountAdapter = new DiscountDtoToDiscountAdapter();
     public static final OrderRequestDtoToOrderRequestAdapter orderRequestDtoToOrderRequestAdapter = new OrderRequestDtoToOrderRequestAdapter();
     public static final ProductDtoToProductAdapter productDtoToProductDomainAdapter = new ProductDtoToProductAdapter();

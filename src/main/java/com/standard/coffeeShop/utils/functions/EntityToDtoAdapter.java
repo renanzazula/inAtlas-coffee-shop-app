@@ -1,16 +1,15 @@
 package com.standard.coffeeShop.utils.functions;
 
 
-import com.standard.coffeeShop.utils.functions.entityToDto.DiscountEntityToDiscountDtoAdapter;
-import com.standard.coffeeShop.utils.functions.entityToDto.OrderRequestEntityToOrderRequestDtoAdapter;
-import com.standard.coffeeShop.utils.functions.entityToDto.OrderRequestItemEntityToOrderRequestItemDtoAdapter;
-import com.standard.coffeeShop.utils.functions.entityToDto.ProductEntityToProductDtoAdapter;
+import com.standard.coffeeShop.utils.functions.entityToDto.*;
 
 public class EntityToDtoAdapter {
 
     public EntityToDtoAdapter() {
     }
 
+    public static final AuthorityEntityToAuthorityDtoAdapter authorityEntityToAuthorityDtoAdapter = new AuthorityEntityToAuthorityDtoAdapter();
+    public static final UserEntityToUserDtoAdapter userEntityToUserDtoAdapter = new UserEntityToUserDtoAdapter();
     public static final ProductEntityToProductDtoAdapter productEntityToProductDtoAdapter = new ProductEntityToProductDtoAdapter();
     public static final DiscountEntityToDiscountDtoAdapter discountEntityToDiscountDtoAdapter = new DiscountEntityToDiscountDtoAdapter();
     public static final OrderRequestEntityToOrderRequestDtoAdapter orderRequestEntityToOrderRequestDtoAdapter = new OrderRequestEntityToOrderRequestDtoAdapter();

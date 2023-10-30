@@ -8,6 +8,8 @@ import com.standard.coffeeShop.utils.ConstantsApi;
 import com.standard.coffeeShop.utils.functions.DomainToDtoAdapter;
 import com.standard.coffeeShop.utils.functions.DtoToDomainAdapter;
 import io.swagger.annotations.Api;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,17 +19,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value = "Manage Products", tags = "products")
+@Slf4j
 @RestController
+@AllArgsConstructor
 @RequestMapping(ConstantsApi.PRODUCT)
 public class ProductsController {
 
     public static final String PRODUCT_CONTROLLER_BASE_URL = ConstantsApi.PRODUCT;
 
     private final ProductService productService;
-
-    public ProductsController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @PreAuthorize("hasAnyAuthority('PRODUCT_SEARCH')")
     @GetMapping({""})

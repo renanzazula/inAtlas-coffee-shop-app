@@ -1,12 +1,13 @@
 package com.standard.coffeeShop.service.dto.security;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Set;
 
-public class UserDto implements Serializable {
+public @Data class UserDto implements Serializable {
 
     private String username;
-    private String password;
     private Set<AuthorityDto> authorities;
     private boolean accountNonExpired;
     private boolean accountNonLocked;

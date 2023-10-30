@@ -8,7 +8,11 @@ public class ConstantsApi {
     public static final String DISCOUNT = MANAGE + "/discount";
     public static final String ORDER = MANAGE + "/order";
     public static final String CUSTOMER = MANAGE + "/customer";
-    public static final String USER = BASE_URL + "/authentication/2fa"; // maybe this should be authentication/user
+
+    public static final String AUTHENTICATION = BASE_URL + "/authentication";
+
+    public static final String USER = AUTHENTICATION +"/user"; // maybe this should be authentication/user
+    public static final String USER_2FA = AUTHENTICATION +"/2fa"; // maybe this should be authentication/user
 
 
 }

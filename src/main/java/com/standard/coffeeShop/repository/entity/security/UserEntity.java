@@ -58,7 +58,6 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
     @Column(name = "enable")
     private boolean enable = true;
 
-    @Getter
     @Builder.Default
     @Column(name = "use_google_2fa")
     private boolean useGoogle2fa = false;
@@ -69,7 +68,7 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
     @Getter
     @Builder.Default
     @Transient
-    private boolean userGoogle2FaRequired = true;
+    private boolean userGoogle2FaRequired = false;
 
     @Transient
     public Set<GrantedAuthority> getAuthorities() {
@@ -97,11 +96,4 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
         this.password = null;
     }
 
-    public void setUseGoogle2fa(boolean useGoogle2fa) {
-        this.useGoogle2fa = useGoogle2fa;
-    }
-
-    public void setUserGoogle2FaRequired(boolean userGoogle2FaRequired) {
-        this.userGoogle2FaRequired = userGoogle2FaRequired;
-    }
 }
