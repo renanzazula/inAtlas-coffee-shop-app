@@ -11,10 +11,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,31 +23,31 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(AuthenticationController.AUTHENTICATION)
 @RequiredArgsConstructor
 public class AuthenticationController {
-
     public static final String AUTHENTICATION = ConstantsApi.AUTHENTICATION;
-
     private final HttpServletRequest request;
-
     private final HttpServletResponse response;
-
     private final AuthenticationManager authenticationManager;
+    private final SessionAuthenticationStrategy sessionAuthenticationStrategy;
 
     @PostMapping("/login")
     public ResponseEntity<Boolean> authentication(@RequestBody Login authentication){
-        Authentication authResp = authenticate(new UsernamePasswordAuthenticationToken(authentication.getUser(), authentication.getPassword()), request, response);
+        Authentication authResp = authenticate(new UsernamePasswordAuthenticationToken(authentication.getUserId(), authentication.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authResp);
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
-    private Authentication authenticate(UsernamePasswordAuthenticationToken authRequest,
-                               HttpServletRequest request,
-                               HttpServletResponse response) {
+    @GetMapping("/logout")
+    public void logout() {
+        SecurityContextHolder.clearContext();
+    }
+
+    private Authentication authenticate(UsernamePasswordAuthenticationToken authRequest) {
         Authentication authResp = null;
         try {
             log.info("Authenticating...");
             authResp = authenticationManager.authenticate(authRequest);
             log.info("Applying session fixation...");
-            //sessionAuthenticationStrategy.onAuthentication(authResp, request, response);
+            sessionAuthenticationStrategy.onAuthentication(authResp, request, response);
             log.info("after session Authentication Strategy - onAuthentication...");
         } catch (Exception exception) {
             SecurityContextHolder.clearContext();

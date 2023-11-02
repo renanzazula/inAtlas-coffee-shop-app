@@ -1,6 +1,7 @@
 package com.standard.coffeeShop.service.security;
 
 import com.standard.coffeeShop.repository.security.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,13 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@AllArgsConstructor
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
-
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     @Transactional
@@ -24,4 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.debug("loadUserByUsername: {}",username);
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User name: " + username + "not found"));
     }
+
+
 }

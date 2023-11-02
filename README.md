@@ -52,3 +52,6 @@ The application when starts will create H2 memory database and insert a list of 
 
 `http://localhost:8080/standard-coffeeShopApp/swagger-ui/#/`
 
+---
+For profiles with Mysql at local (faster)
+ - docker run -p 3307:3306 --name standard-my-sql -e MYSQL_ROOT_PASSWORD=root -d mysql/mysql-server:latest
