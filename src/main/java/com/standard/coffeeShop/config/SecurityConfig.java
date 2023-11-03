@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.security.web.session.SessionManagementFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -39,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(google2faFilter, SessionManagementFilter.class);
+        //http.addFilterBefore(google2faFilter, SessionManagementFilter.class);
         http.addFilterBefore(concurrencyFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(logoutFilter, LogoutFilter.class);
 
@@ -71,10 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManager();
     }
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider();
-//        auth.authenticationProvider(anonymousAuthProvider);
-//    }
+
 
 }
