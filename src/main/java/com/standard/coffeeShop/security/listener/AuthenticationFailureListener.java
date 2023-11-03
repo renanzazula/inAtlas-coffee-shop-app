@@ -25,7 +25,7 @@ public class AuthenticationFailureListener {
     private final UserRepository userRepository;
 
     @EventListener
-    public void errlisten(AuthenticationFailureBadCredentialsEvent event){
+    public void failureListen(AuthenticationFailureBadCredentialsEvent event){
         log.debug("Login failure ");
         if(event.getSource() instanceof UsernamePasswordAuthenticationToken){
             UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getSource();

@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(google2faFilter, SessionManagementFilter.class);
         http.addFilterBefore(concurrencyFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(logoutFilter, LogoutFilter.class);
+
         http.authorizeRequests(authorizes -> {
                     authorizes.antMatchers("/h2-console/**",
                                            "/swagger-ui.html",

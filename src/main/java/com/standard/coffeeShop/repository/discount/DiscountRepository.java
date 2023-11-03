@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface DiscountRepository extends JpaRepository<DiscountEntity, Long> {
 
-
     List<DiscountEntity> findAllByToDateAndDiscountType(Date toDate, DiscountTypeEnum discountType);
+
 }
