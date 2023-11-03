@@ -18,9 +18,9 @@ public @Data class ConfigParamEntity implements Serializable {
 
     @Id
     @Column(name = "id", nullable = false, length = 45)
-    private String id;
+    private Long id;
 
-    @Id
+
     @Column(name = "value", nullable = false, length = 150)
     private String value;
 
