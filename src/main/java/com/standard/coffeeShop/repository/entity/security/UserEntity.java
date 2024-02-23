@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Getter
 @Entity
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
@@ -30,7 +31,7 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", insertable = false, updatable = false)
     private String password;
 
     @Singular

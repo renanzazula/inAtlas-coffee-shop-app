@@ -32,8 +32,12 @@ public class AuthenticationFailureListener {
             LoginFailureEntity.LoginFailureEntityBuilder builder = LoginFailureEntity.builder();
 
             if(token.getPrincipal() instanceof String){
-                builder.username((String) token.getPrincipal());
-                userRepository.findByUsername((String) token.getPrincipal()).ifPresent(builder::user);
+
+
+//                p = token.getPrincipal();
+//
+//                builder.username((String) token.getPrincipal());
+//                userRepository.findByUsername((String) token.getPrincipal()).ifPresent(builder);
                 log.debug("Attempted username: " + token.getPrincipal());
             }
 
@@ -43,17 +47,17 @@ public class AuthenticationFailureListener {
                 log.debug("Source IP: " + details.getRemoteAddress());
             }
 
-            LoginFailureEntity loginFailure = loginFailureRepository.save(builder.build());
-            log.debug("Failure event: " + loginFailure.getId());
+         //   LoginFailureEntity loginFailure = loginFailureRepository.save(builder.);
+     //       log.debug("Failure event: " + loginFailure.getId());
 
-            if(loginFailure.getUser() != null){
-                lockUserAccount(loginFailure.getUser());
-            }
+//            if(loginFailure.getUser() != null){
+//                lockUserAccount(loginFailure.getUser());
+//            }
         }
     }
 
     private void lockUserAccount(UserEntity user) {
-        List<LoginFailureEntity> failures = loginFailureRepository.findAllByUsernameAndCreatedDateAfter(user.getUsername(),
+        List<LoginFailureEntity> failures = loginFailureRepository.findAllByUserIdAndCreatedDateAfter(user.getId(),
                 Timestamp.valueOf(LocalDateTime.now().minusDays(1)));
 
         if(failures.size() > 3){

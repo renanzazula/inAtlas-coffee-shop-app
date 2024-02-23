@@ -24,8 +24,11 @@ public @Data class LoginSuccessEntity implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    private UserEntity user;
+    @Column(name = "userId")
+    private Long userId;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "sourceIp")
     private String sourceIp;

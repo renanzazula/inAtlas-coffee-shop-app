@@ -81,4 +81,17 @@ INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, 
 INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (11, 0, 2,   8.0, 6);
 INSERT INTO `ORDER_REQUEST_REQUEST_ITEM` (`order_request_items_id`, `discount`, `order_request_id`, `price_unit`, `product_id`) VALUES (12, 0, 2,   8.0, 6);
 
-
+CREATE TABLE customer
+(
+    id            BIGINT       NOT NULL,
+    date_create   date         NULL,
+    time_create   time         NULL,
+    who_create    BIGINT       NULL,
+    version       BIGINT       NULL,
+    date_update   date         NULL,
+    time_update   time         NULL,
+    who_update    BIGINT       NULL,
+    customer_name VARCHAR(255) NULL,
+    api_key       VARCHAR(255) NULL,
+    CONSTRAINT pk_customer PRIMARY KEY (id)
+);

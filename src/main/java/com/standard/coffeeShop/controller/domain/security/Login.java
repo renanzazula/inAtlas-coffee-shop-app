@@ -16,7 +16,6 @@ public @Data class Login {
     private String userId;
 
     @NotEmpty
-
     private String password;
 
 

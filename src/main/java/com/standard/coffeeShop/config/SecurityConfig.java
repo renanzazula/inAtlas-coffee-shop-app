@@ -1,7 +1,6 @@
 package com.standard.coffeeShop.config;
 
 import com.standard.coffeeShop.security.filter.ConcurrentSessionFilter;
-import com.standard.coffeeShop.security.google.Google2faFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,19 +25,17 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final LogoutFilter logoutFilter;
-    private final Google2faFilter google2faFilter;
     private final UserDetailsService userDetailsService;
     private final ConcurrentSessionFilter concurrencyFilter;
     private final HttpSessionCsrfTokenRepository csrfTokenRepository;
     private final PersistentTokenRepository persistentTokenRepository;
-    //private final AnonymousAuthenticationProvider anonymousAuthProvider;
     private final CompositeSessionAuthenticationStrategy compositeSessionAuthenticationStrategy;
 
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //http.addFilterBefore(google2faFilter, SessionManagementFilter.class);
+
         http.addFilterBefore(concurrencyFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(logoutFilter, LogoutFilter.class);
 
@@ -48,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                            "/resources/**",
                                            "/swagger-resources/**",
                                            "/api/v1/authentication/login").permitAll();
+                    authorizes.antMatchers("/api/**").authenticated();
         })
         .authorizeRequests().anyRequest().authenticated()
               .and().csrf().ignoringAntMatchers("/h2-console/**", "/api/**")

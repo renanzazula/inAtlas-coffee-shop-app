@@ -24,12 +24,8 @@ public @Data class LoginFailureEntity implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    private UserEntity user;
-
-    @Column(name = "username")
-    private String username;
-
+    @Column(name = "userId")
+    private Long userId;
 
     @Column(name = "sourceIp")
     private String sourceIp;

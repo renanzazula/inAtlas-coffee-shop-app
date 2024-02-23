@@ -2,6 +2,7 @@ package com.standard.coffeeShop.utils;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -73,5 +74,14 @@ public class PasswordEncodingTests {
 
         String salted = PASSWORD + "ThisIsMySALTVALUE";
         System.out.println(DigestUtils.md5DigestAsHex(salted.getBytes()));
+    }
+
+
+    @Test
+    void argon2Example(){
+        String rawPassword = "spring";
+        Argon2PasswordEncoder arg2SpringSecurity = new Argon2PasswordEncoder(16, 32, 1, 60000, 10);
+        String springBouncyHash = arg2SpringSecurity.encode(rawPassword);
+        assertTrue(arg2SpringSecurity.matches(rawPassword, springBouncyHash));
     }
 }

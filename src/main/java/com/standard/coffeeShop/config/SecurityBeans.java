@@ -7,9 +7,6 @@ import com.standard.coffeeShop.security.filter.ConcurrentSessionFilter;
 import com.standard.coffeeShop.security.handler.LogoutUnregisterHandler;
 import com.standard.coffeeShop.security.handler.RedirectSuccessFilter;
 import com.standard.coffeeShop.service.security.UserSessionService;
-import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorConfig;
-import com.warrenstrange.googleauth.ICredentialRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +26,6 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 @Configuration
 public class SecurityBeans {
@@ -37,15 +33,6 @@ public class SecurityBeans {
     private final UserSessionService userSessionService;
     private final UserSessionRepository userSessionRepository;
 
-    @Bean
-    public GoogleAuthenticator googleAuthenticator(ICredentialRepository credentialRepository){
-        GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder configBuilder = new GoogleAuthenticatorConfig.GoogleAuthenticatorConfigBuilder();
-        configBuilder.setTimeStepSizeInMillis(TimeUnit.SECONDS.toMillis(60)).setNumberOfScratchCodes(0);
-        GoogleAuthenticator googleAuthenticator = new GoogleAuthenticator(configBuilder.build());
-        googleAuthenticator.setCredentialRepository(credentialRepository);
-        return googleAuthenticator;
-
-    }
     @Bean
     public AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
         return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
