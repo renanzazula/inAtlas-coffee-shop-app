@@ -48,7 +48,7 @@ public class RegisterSessionAuthenticationStrategy implements SessionAuthenticat
     @Transactional
     public void registerNewSession(HttpServletRequest request, int concurrentSessions, String userId) {
         UserSessionEntity userSession = getUserAttribute(userId);
-        String value = buildNewValue(request, concurrentSessions, userSession.getActiveSessions());
+        String value = buildNewValue(request, concurrentSessions, userSession != null ? userSession.getActiveSessions() : null);
         userSession.setActiveSessions(value);
         userSessionRepository.saveAndFlush(userSession);
     }

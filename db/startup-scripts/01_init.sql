@@ -185,7 +185,8 @@ CREATE TABLE IF NOT EXISTS `standardcoffeeshopapp`.`login_success` (
                                                                        `created_date` DATETIME NULL DEFAULT NULL,
                                                                        `last_modified_date` DATETIME NULL DEFAULT NULL,
                                                                        `source_ip` VARCHAR(255) NULL DEFAULT NULL,
-    `user_id` BIGINT NULL DEFAULT NULL,
+                                                                        `username` VARCHAR(255) NULL DEFAULT NULL,
+`user_id` BIGINT NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     INDEX `FKbhp83p080sodt4vrtcgbsdl9e` (`user_id` ASC) VISIBLE,
     CONSTRAINT `FKbhp83p080sodt4vrtcgbsdl9e`
@@ -195,6 +196,25 @@ CREATE TABLE IF NOT EXISTS `standardcoffeeshopapp`.`login_success` (
     AUTO_INCREMENT = 3
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `standardcoffeeshopapp`.`customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `standardcoffeeshopapp`.`customer`
+(
+    id            BIGINT       NOT NULL,
+    date_create   date         NULL,
+    time_create   time         NULL,
+    who_create    BIGINT       NULL,
+    version       BIGINT       NULL,
+    date_update   date         NULL,
+    time_update   time         NULL,
+    who_update    BIGINT       NULL,
+    customer_name VARCHAR(255) NULL,
+    api_key       VARCHAR(255) NULL,
+    CONSTRAINT pk_customer PRIMARY KEY (id)
+);
 
 
 -- -----------------------------------------------------

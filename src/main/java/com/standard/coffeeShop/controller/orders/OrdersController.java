@@ -25,7 +25,7 @@ public class OrdersController {
     private final OrderRequestService orderRequestService;
 
     @PreAuthorize("hasAnyAuthority('ORDER_SEARCH')")
-    @GetMapping({""})
+    @GetMapping({"/"})
     public ResponseEntity<List<OrderRequest>> getAllOrders() {
         return new ResponseEntity<>(orderRequestService.getAll()
                 .stream()

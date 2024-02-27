@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/product",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/product",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -20,6 +20,8 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"product"
 					]
@@ -33,7 +35,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/product/6",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/product/6",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -41,6 +43,8 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"product",
 						"6"
@@ -64,7 +68,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/product",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/product",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -72,6 +76,8 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"product"
 					]
@@ -94,7 +100,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/product/7",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/product/7",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -102,6 +108,8 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"product",
 						"7"
