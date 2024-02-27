@@ -1,0 +1,42 @@
+{
+	"info": {
+		"_postman_id": "46f4e6d7-8dc7-4515-8e0f-efea7ae8b750",
+		"name": "Manage Promotions(Discount)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3279078"
+	},
+	"item": [
+		{
+			"name": "new Discount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \r\n        \"name\": \"Capuccino  2\",\r\n        \"description\": \"Capuccino 2\",\r\n        \"status\": \"available\",\r\n        \"quantity\": 101.0,\r\n        \"priceUnit\": 9.0\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order",
+					"protocol": "{{http}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"api",
+						"v1",
+						"manage",
+						"order"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
