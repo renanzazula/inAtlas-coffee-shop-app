@@ -91,34 +91,31 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private DiscountDto configureDiscountOrder(DiscountDto obj){
-        DiscountEntity discountEntity = new DiscountEntity();
-        discountEntity.setTitle(obj.getTitle());
-        discountEntity.setStatus(obj.getStatus());
-        discountEntity.setFromDate(obj.getFromDate());
-        discountEntity.setToDate(obj.getToDate());
-        discountEntity.setAmountFrom(obj.getAmountFrom());
-        discountEntity.setAmountTo(obj.getAmountTo());
-        discountEntity.setDiscount(obj.getDiscount());
-        discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
+        DiscountEntity discountEntity = getDiscountEntity(obj);
         return EntityToDtoAdapter.discountEntityToDiscountDtoAdapter.apply(discountRepository.saveAndFlush(discountEntity));
     }
 
     private DiscountDto configureDiscountProduct(DiscountDto obj){
-        DiscountEntity discountEntity = new DiscountEntity();
-        discountEntity.setTitle(obj.getTitle());
-        discountEntity.setStatus(obj.getStatus());
-        discountEntity.setFromDate(obj.getFromDate());
-        discountEntity.setToDate(obj.getToDate());
-        discountEntity.setAmountFrom(obj.getAmountFrom());
-        discountEntity.setAmountTo(obj.getAmountTo());
-        discountEntity.setDiscount(obj.getDiscount());
-        discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
+        DiscountEntity discountEntity = getDiscountEntity(obj);
         for (int i = 0; i < obj.getDiscountItems().size(); i++) {
             DiscountItemEntity discountItem = new DiscountItemEntity();
             discountItem.setProduct(productRepository.getById(obj.getDiscountItems().get(i).getProduct().getId()));
             discountEntity.addDiscountItem(discountItem);
         }
         return EntityToDtoAdapter.discountEntityToDiscountDtoAdapter.apply(discountRepository.saveAndFlush(discountEntity));
+    }
+
+    private DiscountEntity getDiscountEntity(DiscountDto obj) {
+        DiscountEntity discountEntity = new DiscountEntity();
+        discountEntity.setTitle(obj.getTitle());
+        discountEntity.setStatus(obj.getStatus());
+        discountEntity.setFromDate(obj.getFromDate());
+        discountEntity.setToDate(obj.getToDate());
+        discountEntity.setAmountFrom(obj.getAmountFrom());
+        discountEntity.setAmountTo(obj.getAmountTo());
+        discountEntity.setDiscount(obj.getDiscount());
+        discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
+        return discountEntity;
     }
 
 }
