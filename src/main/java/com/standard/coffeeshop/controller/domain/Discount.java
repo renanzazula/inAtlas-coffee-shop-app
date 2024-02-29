@@ -13,7 +13,7 @@ class Discount extends Base {
     private String status;
     private Date fromDate;
     private Date toDate;
-    private Double discount;
+    private Double amount;
     private List<Product> products = new ArrayList<>();
 
 }

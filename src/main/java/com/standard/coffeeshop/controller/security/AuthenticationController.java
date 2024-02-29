@@ -30,7 +30,7 @@ public class AuthenticationController {
     private final SessionAuthenticationStrategy sessionAuthenticationStrategy;
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> authentication(@RequestBody Login authentication){
+    public ResponseEntity<Boolean> login(@RequestBody Login authentication){
         Authentication authResp = authenticate(new UsernamePasswordAuthenticationToken(authentication.getUserId(), authentication.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authResp);
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);

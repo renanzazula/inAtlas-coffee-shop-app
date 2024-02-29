@@ -76,8 +76,7 @@ public class SecurityBeans {
 
     @Bean
     public ConcurrentSessionFilter concurrencyFilter() {
-        ConcurrentSessionFilter concurrentSessionFilter = new ConcurrentSessionFilter(userSessionRepository);
-        return concurrentSessionFilter;
+        return new ConcurrentSessionFilter(userSessionRepository);
     }
 
     @Bean

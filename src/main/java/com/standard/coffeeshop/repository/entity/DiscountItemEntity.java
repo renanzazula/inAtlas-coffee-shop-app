@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "discount_item")
-public @Data class DiscountItemEntity {
+public @Data class DiscountItemEntity implements Serializable {
 
     private static final long serialVersionUID = 7167425684167438414L;
 

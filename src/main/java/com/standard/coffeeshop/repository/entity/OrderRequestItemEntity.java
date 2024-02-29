@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "order_request_request_item")
-public @Data class OrderRequestItemEntity {
+public @Data class OrderRequestItemEntity implements Serializable {
 
     private static final long serialVersionUID = 7167425684167438414L;
 
