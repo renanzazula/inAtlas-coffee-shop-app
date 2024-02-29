@@ -1,4 +1,4 @@
-package com.standard.coffeeshop.utils.functions.domainToDto;
+package com.standard.coffeeshop.utils.functions.domain;
 
 
 import com.standard.coffeeshop.controller.domain.Discount;

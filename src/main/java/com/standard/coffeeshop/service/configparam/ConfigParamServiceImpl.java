@@ -1,6 +1,6 @@
-package com.standard.coffeeshop.service.configParam;
+package com.standard.coffeeshop.service.configparam;
 
-import com.standard.coffeeshop.repository.configParam.ConfigParamRepository;
+import com.standard.coffeeshop.repository.configparam.ConfigParamRepository;
 import com.standard.coffeeshop.repository.entity.ConfigParamEntity;
 import com.standard.coffeeshop.service.dto.ConfigParamsEnum;
 import lombok.AllArgsConstructor;

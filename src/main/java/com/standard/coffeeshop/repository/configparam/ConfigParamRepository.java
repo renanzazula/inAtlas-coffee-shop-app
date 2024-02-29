@@ -1,4 +1,4 @@
-package com.standard.coffeeshop.repository.configParam;
+package com.standard.coffeeshop.repository.configparam;
 
 import com.standard.coffeeshop.repository.entity.ConfigParamEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

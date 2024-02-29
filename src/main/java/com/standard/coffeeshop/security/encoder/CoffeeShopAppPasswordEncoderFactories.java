@@ -1,4 +1,4 @@
-package com.standard.coffeeshop.security.passwordEncoder;
+package com.standard.coffeeshop.security.encoder;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
