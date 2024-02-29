@@ -23,7 +23,7 @@ public class LogoutUnregisterHandler implements LogoutHandler {
 			UserEntity user = (UserEntity) authentication.getPrincipal();
 			String sessionId = (request.getSession(false) != null) ? request.getSession(false).getId() : null;
 			if (sessionId != null) {
-				String sessionIdHashed = HashUtils.hashString(sessionId);
+				String sessionIdHashed = String.valueOf(HashUtils.hashString(sessionId));
 				userSessionService.unregisterUserSession(user.getUsername(), sessionIdHashed);
 				log.info("unregisterUserSession {} done", sessionIdHashed);
 			}

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ProductServiceImplTestIT extends BaseTest {
+ class ProductServiceImplTestIT extends BaseTest {
 
     @Autowired
     private ProductRepository productRepository;
@@ -31,14 +31,14 @@ public class ProductServiceImplTestIT extends BaseTest {
     ProductDto obj = null;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         obj = setUpProduct();
         productService = new ProductServiceImpl(productRepository);
         productService.add(obj);
     }
 
     @Test
-    public void add() {
+     void add() {
         ProductDto saved = productService.add(obj);
         assertNotNull(saved);
         ProductDto found = productService.getById(saved.getId());
@@ -51,7 +51,7 @@ public class ProductServiceImplTestIT extends BaseTest {
     }
 
     @Test
-    public void getById() {
+     void getById() {
         obj = productService.add(obj);
         ProductDto found = productService.getById(obj.getId());
         assertNotNull(found);
@@ -59,7 +59,7 @@ public class ProductServiceImplTestIT extends BaseTest {
     }
 
     @Test
-    public void update() {
+     void update() {
         obj = productService.add(obj);
         ProductDto found = productService.getById(obj.getId());
         found.setName(PRODUCT_LATTE_TEST +  " update");
@@ -78,7 +78,7 @@ public class ProductServiceImplTestIT extends BaseTest {
 
 
     @Test
-    public void delete() {
+     void delete() {
         obj = productService.add(obj);
         ProductDto found = productService.getById(obj.getId());
         assertNotNull(found);
@@ -86,7 +86,7 @@ public class ProductServiceImplTestIT extends BaseTest {
     }
 
     @Test
-    public void getAll() {
+     void getAll() {
         obj = productService.add(obj);
         List<ProductDto> products = productService.getAll();
         assertNotNull(products);
