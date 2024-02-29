@@ -30,7 +30,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 
     private final UserSessionRepository userSessionRepository;
 
-    private static final String expiredUrl = "/session/invalid";
+    private static final String EXPIRED_URL = "/session/invalid";
     private final LogoutHandler[] handlers = new LogoutHandler[]{new SecurityContextLogoutHandler()};
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -47,7 +47,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
             final Authentication current = SecurityContextHolder.getContext().getAuthentication();
             if (current != null && !isInConcurrentSessionsRegistered(current.getName(), session.getId())) {
                 doLogout(request, response);
-                redirectStrategy.sendRedirect(request, response, expiredUrl);
+                redirectStrategy.sendRedirect(request, response, EXPIRED_URL);
                 return;
             }
         }
@@ -56,7 +56,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 
     @Override
     public void afterPropertiesSet() {
-        Assert.isTrue(expiredUrl == null || UrlUtils.isValidRedirectUrl(expiredUrl), expiredUrl + " isn't a valid redirect URL");
+        Assert.isTrue(EXPIRED_URL == null || UrlUtils.isValidRedirectUrl(EXPIRED_URL), EXPIRED_URL + " isn't a valid redirect URL");
     }
 
     private void doLogout(HttpServletRequest request, HttpServletResponse response) {
