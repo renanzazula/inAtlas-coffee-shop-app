@@ -1,6 +1,5 @@
 package com.standard.coffeeshop.utils;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,10 +11,6 @@ import org.springframework.util.DigestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Created by jt on 6/16/20.
- */
-@Disabled
 class PasswordEncodingTests {
 
     static final String PASSWORD = "spring";
