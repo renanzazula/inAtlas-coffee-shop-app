@@ -92,7 +92,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
         Optional<UserSessionEntity> userAttribute = userSessionRepository.findById(userId);
         if (userAttribute.isPresent()) {
             String value = (userAttribute.get().getActiveSessions() == null) ? "" : userAttribute.get().getActiveSessions();
-            String idReceived = HashUtils.hashString(sessionId);
+            String idReceived = String.valueOf(HashUtils.hashString(sessionId));
             if (StringUtils.commaDelimitedListToSet(value).contains(idReceived)) {
                 resp = true;
             } else {
