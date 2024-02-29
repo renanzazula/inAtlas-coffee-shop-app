@@ -8,13 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile({"mySql", "local"})
+@Profile({"local"})
 public class H2Config {
 
     @Bean
-
-    ServletRegistrationBean h2servletRegistration(){
-        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
+    public ServletRegistrationBean<WebServlet> h2servletRegistration(){
+        ServletRegistrationBean<WebServlet> registrationBean = new ServletRegistrationBean<>(new WebServlet());
         registrationBean.addUrlMappings("/h2-console/*");
         return registrationBean;
     }

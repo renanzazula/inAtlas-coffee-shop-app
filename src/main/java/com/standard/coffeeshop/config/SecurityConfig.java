@@ -31,8 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PersistentTokenRepository persistentTokenRepository;
     private final CompositeSessionAuthenticationStrategy compositeSessionAuthenticationStrategy;
 
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 

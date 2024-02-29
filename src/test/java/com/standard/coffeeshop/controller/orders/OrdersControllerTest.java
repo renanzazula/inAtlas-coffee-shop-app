@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Disabled
 @SpringBootTest
-public class OrdersControllerTest extends AbstractRestControllerTest {
+class OrdersControllerTest extends AbstractRestControllerTest {
 
     @BeforeEach
     void setUp() {
@@ -41,7 +41,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    public void testGetOrderById() throws Exception {
+    void testGetOrderById() throws Exception {
         orderRequestDto = setUpOrderWithItemsDto();
         //       when(orderRequestService.getById(1)).thenReturn(orderRequestDto);
         mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL + "/1")
@@ -94,7 +94,7 @@ public class OrdersControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    void testDelete() throws Exception {
         orderRequestDto = setUpOrderWithItemsDto();
         orderRequestDto.setStatus(StatusOrderEnum.DELETE.toString());
         mockMvc.perform(put(OrdersController.ORDER_CONTROLLER_BASE_URL + "/1/delete").

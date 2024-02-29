@@ -15,6 +15,5 @@ public class DtoToDomainAdapter {
     public static final OrderRequestItemDtoToOrderRequestItemAdapter orderRequestItemDtoToOrderRequestItemAdapter = new OrderRequestItemDtoToOrderRequestItemAdapter();
     public static final PrintReceiptDtoToPrintReceiptAdapter printReceiptDtoToPrintReceiptAdapter = new PrintReceiptDtoToPrintReceiptAdapter();
     public static final PrintReceiptItemDtoToPrintReceiptItemAdapter printReceiptItemDtoToPrintReceiptItemAdapter = new PrintReceiptItemDtoToPrintReceiptItemAdapter();
-    public DtoToDomainAdapter() {
-    }
+
 }

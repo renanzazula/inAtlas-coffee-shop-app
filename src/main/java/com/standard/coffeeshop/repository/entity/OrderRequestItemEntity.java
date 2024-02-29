@@ -18,7 +18,7 @@ public @Data class OrderRequestItemEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_request_items_id")
-    private Long Id;
+    private Long id;
 
     @ManyToOne(targetEntity = OrderRequestEntity.class)
     @JoinColumn(name = "order_request_id", referencedColumnName = "id", nullable = false, updatable = false)

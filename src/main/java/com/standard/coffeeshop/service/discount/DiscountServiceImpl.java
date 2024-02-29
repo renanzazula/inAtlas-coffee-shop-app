@@ -70,9 +70,9 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     @Transactional
     public void delete(Long id) {
-        DiscountEntity DiscountEntity = discountRepository.getById(id);
-        DiscountEntity.setStatus("INATIVO");
-        discountRepository.save(DiscountEntity);
+        DiscountEntity discountEntity = discountRepository.getById(id);
+        discountEntity.setStatus("INATIVO");
+        discountRepository.save(discountEntity);
     }
 
     @Override
