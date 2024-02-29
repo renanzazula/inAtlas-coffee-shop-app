@@ -27,33 +27,31 @@ public class AuthenticationFailureListener {
     @EventListener
     public void failureListen(AuthenticationFailureBadCredentialsEvent event){
         log.debug("Login failure ");
-        if(event.getSource() instanceof UsernamePasswordAuthenticationToken){
+
+        if (event.getSource() instanceof UsernamePasswordAuthenticationToken) {
             UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getSource();
             LoginFailureEntity.LoginFailureEntityBuilder builder = LoginFailureEntity.builder();
 
-            if(token.getPrincipal() instanceof String){
-
-
-//                p = token.getPrincipal();
-//
-//                builder.username((String) token.getPrincipal());
-//                userRepository.findByUsername((String) token.getPrincipal()).ifPresent(builder);
-                log.debug("Attempted username: " + token.getPrincipal());
+            if (token.getPrincipal() instanceof String) {
+                log.debug("Attempted Username: " + token.getPrincipal());
+                builder.username((String) token.getPrincipal());
+                userRepository.findByUsername((String) token.getPrincipal()).ifPresent(builder::user);
             }
 
-            if (token.getDetails() instanceof WebAuthenticationDetails){
+            if (token.getDetails() instanceof WebAuthenticationDetails) {
                 WebAuthenticationDetails details = (WebAuthenticationDetails) token.getDetails();
-                builder.sourceIp(details.getRemoteAddress());
+
                 log.debug("Source IP: " + details.getRemoteAddress());
+                builder.sourceIp(details.getRemoteAddress());
             }
+            LoginFailureEntity failure = loginFailureRepository.save(builder.build());
+            log.debug("Failure Event: " + failure.getId());
 
-         //   LoginFailureEntity loginFailure = loginFailureRepository.save(builder.);
-     //       log.debug("Failure event: " + loginFailure.getId());
-
-//            if(loginFailure.getUser() != null){
-//                lockUserAccount(loginFailure.getUser());
-//            }
+            if (failure.getUser() != null) {
+                lockUserAccount(failure.getUser());
+            }
         }
+
     }
 
     private void lockUserAccount(UserEntity user) {
