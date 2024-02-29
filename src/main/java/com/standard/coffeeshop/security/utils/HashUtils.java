@@ -9,6 +9,8 @@ import java.security.MessageDigest;
 public class HashUtils {
 	private static final Logger log= LoggerFactory.getLogger(HashUtils.class);
 
+	private HashUtils() {
+	}
 
 	public static StringBuilder hashString(String input) {
 		try {
