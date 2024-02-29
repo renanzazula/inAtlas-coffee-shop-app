@@ -83,7 +83,7 @@ public class RegisterSessionAuthenticationStrategy implements SessionAuthenticat
     }
 
     private String buildNewValue(HttpServletRequest request, int concurrentSessions, String oldValue) {
-        String value = HashUtils.hashString(request.getSession(false).getId());
+        String value = String.valueOf(HashUtils.hashString(request.getSession(false).getId()));
         if (oldValue == null) {
             oldValue = "";
         }

@@ -8,7 +8,11 @@ import java.security.MessageDigest;
 
 public class HashUtils {
 	private static final Logger log= LoggerFactory.getLogger(HashUtils.class);
-	public static String hashString(String input) {
+
+	public HashUtils() {
+	}
+
+	public static StringBuilder hashString(String input) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
 			md.reset();
@@ -16,9 +20,9 @@ public class HashUtils {
 			md.update(buffer);
 			byte[] digest = md.digest();
 	
-			String hexStr = "";
+			StringBuilder hexStr = new StringBuilder("");
 			for (int i = 0; i < digest.length; i++) {
-				hexStr += Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1);
+				hexStr.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
 			}
 			return hexStr;
 		}

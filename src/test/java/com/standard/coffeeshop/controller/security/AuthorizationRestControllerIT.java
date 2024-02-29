@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class AuthorizationRestControllerIT extends BaseIT {
+ class AuthorizationRestControllerIT extends BaseIT {
 
     @DisplayName("Authorization Test For Order Controller")
     @Nested
@@ -26,7 +26,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("Admin should have access")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamAdmin")
-        public void testGetAllOrdersAccessSuccessForAdmin(String user, String pwd) throws Exception {
+         void testGetAllOrdersAccessSuccessForAdmin(String user, String pwd) throws Exception {
             mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -36,7 +36,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("Customer should have access (Forbidden)")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamCustomer")
-        public void testGetAllOrdersAccessForbiddenForCustomer(String user, String pwd) throws Exception {
+         void testGetAllOrdersAccessForbiddenForCustomer(String user, String pwd) throws Exception {
             mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -46,7 +46,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("User should have access (Forbidden)")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamUser")
-        public void testGetAllOrdersAccessForbiddenForUser(String user, String pwd) throws Exception {
+         void testGetAllOrdersAccessForbiddenForUser(String user, String pwd) throws Exception {
             mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -55,7 +55,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
 
         @DisplayName("All Users should have access (Unauthorized)")
         @Test
-        public void testGetAllOrdersHttpBasicNotAuth() throws Exception {
+         void testGetAllOrdersHttpBasicNotAuth() throws Exception {
             mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isUnauthorized());
@@ -69,7 +69,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("Admin should have access")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamAdmin")
-        public void testGetAllCustomersAccessSuccessForAdmin(String user, String pwd) throws Exception {
+         void testGetAllCustomersAccessSuccessForAdmin(String user, String pwd) throws Exception {
             mockMvc.perform(get(CustomerController.CUSTOMER_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -79,7 +79,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("Customer should have access")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamCustomer")
-        public void testGetAllCustomersAccessSuccessForCustomer(String user, String pwd) throws Exception {
+         void testGetAllCustomersAccessSuccessForCustomer(String user, String pwd) throws Exception {
             mockMvc.perform(get(CustomerController.CUSTOMER_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -89,7 +89,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("User should have access (Forbidden)")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamUser")
-        public void testGetAllCustomersForbiddenForForUser(String user, String pwd) throws Exception {
+         void testGetAllCustomersForbiddenForForUser(String user, String pwd) throws Exception {
             mockMvc.perform(get(CustomerController.CUSTOMER_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -98,7 +98,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
 
         @DisplayName("All Users should have access (Unauthorized)")
         @Test
-        public void testGetAllCustomersHttpBasicNotAuth() throws Exception {
+         void testGetAllCustomersHttpBasicNotAuth() throws Exception {
             mockMvc.perform(get(CustomerController.CUSTOMER_CONTROLLER_BASE_URL)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isUnauthorized());
@@ -112,7 +112,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("Admin should have access")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamAdmin")
-        public void testGetAllCustomersAccessSuccessForAdmin(String user, String pwd) throws Exception {
+         void testGetAllCustomersAccessSuccessForAdmin(String user, String pwd) throws Exception {
             mockMvc.perform(get(ProductsController.PRODUCT_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -122,7 +122,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("Customer should have access (Forbidden)")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamCustomer")
-        public void testGetAllCustomersAccessSuccessForCustomer(String user, String pwd) throws Exception {
+         void testGetAllCustomersAccessSuccessForCustomer(String user, String pwd) throws Exception {
             mockMvc.perform(get(ProductsController.PRODUCT_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -132,7 +132,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
         @DisplayName("User should have access (Forbidden)")
         @ParameterizedTest(name = "#{index} with [{arguments}]")
         @MethodSource("com.standard.coffeeShop.controller.security.BaseIT#getStreamUser")
-        public void testGetAllCustomersForbiddenForForUser(String user, String pwd) throws Exception {
+         void testGetAllCustomersForbiddenForForUser(String user, String pwd) throws Exception {
             mockMvc.perform(get(ProductsController.PRODUCT_CONTROLLER_BASE_URL)
                             .with(httpBasic(user, pwd))
                             .contentType(MediaType.APPLICATION_JSON))
@@ -141,7 +141,7 @@ public class AuthorizationRestControllerIT extends BaseIT {
 
         @DisplayName("All Users should have access (Unauthorized)")
         @Test
-        public void testGetAllCustomersHttpBasicNotAuth() throws Exception {
+         void testGetAllCustomersHttpBasicNotAuth() throws Exception {
             mockMvc.perform(get(ProductsController.PRODUCT_CONTROLLER_BASE_URL)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isUnauthorized());

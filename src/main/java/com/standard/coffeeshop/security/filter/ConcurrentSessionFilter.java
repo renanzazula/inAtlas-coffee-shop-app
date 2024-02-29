@@ -30,7 +30,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 
     private final UserSessionRepository userSessionRepository;
 
-    private final String expiredUrl = "/session/invalid";
+    private static final String expiredUrl = "/session/invalid";
     private final LogoutHandler[] handlers = new LogoutHandler[]{new SecurityContextLogoutHandler()};
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 

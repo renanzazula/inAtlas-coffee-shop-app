@@ -4,7 +4,10 @@ package com.standard.coffeeshop.utils.functions;
 import com.standard.coffeeshop.utils.functions.entity.*;
 
 public class EntityToDtoAdapter {
-    
+
+    private EntityToDtoAdapter() {
+    }
+
     public static final AuthorityEntityToAuthorityDtoAdapter authorityEntityToAuthorityDtoAdapter = new AuthorityEntityToAuthorityDtoAdapter();
     public static final UserEntityToUserDtoAdapter userEntityToUserDtoAdapter = new UserEntityToUserDtoAdapter();
     public static final ProductEntityToProductDtoAdapter productEntityToProductDtoAdapter = new ProductEntityToProductDtoAdapter();

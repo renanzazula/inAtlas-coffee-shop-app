@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Created by jt on 6/16/20.
  */
 @Disabled
-public class PasswordEncodingTests {
+class PasswordEncodingTests {
 
     static final String PASSWORD = "spring";
 
@@ -26,7 +26,7 @@ public class PasswordEncodingTests {
 
         System.out.println(bcrypt.encode(PASSWORD));
         System.out.println(bcrypt.encode(PASSWORD));
-        System.out.println(bcrypt.  encode("tiger"));
+        System.out.println(bcrypt.encode("tiger"));
 
     }
 
@@ -56,7 +56,7 @@ public class PasswordEncodingTests {
         System.out.println(ldap.encode("tiger"));
         String encodedPwd = ldap.encode(PASSWORD);
 
-        assertTrue(ldap.matches(PASSWORD, encodedPwd ));
+        assertTrue(ldap.matches(PASSWORD, encodedPwd));
 
     }
 
@@ -78,7 +78,7 @@ public class PasswordEncodingTests {
 
 
     @Test
-    void argon2Example(){
+    void argon2Example() {
         String rawPassword = "spring";
         Argon2PasswordEncoder arg2SpringSecurity = new Argon2PasswordEncoder(16, 32, 1, 60000, 10);
         String springBouncyHash = arg2SpringSecurity.encode(rawPassword);

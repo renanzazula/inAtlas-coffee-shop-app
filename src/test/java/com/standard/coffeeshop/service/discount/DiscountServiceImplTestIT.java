@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class DiscountServiceImplTestIT extends BaseTest {
+class DiscountServiceImplTestIT extends BaseTest {
 
     @BeforeEach
     void setUp() {

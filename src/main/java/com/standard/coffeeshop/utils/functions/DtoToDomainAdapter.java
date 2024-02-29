@@ -5,6 +5,9 @@ import com.standard.coffeeshop.utils.functions.dto.*;
 
 public class DtoToDomainAdapter {
 
+    private DtoToDomainAdapter() {
+    }
+
     public static final UserDtoToUserAdapter userDtoToUserAdapter = new UserDtoToUserAdapter();
     public static final AuthorityDtoToAuthorityAdapter authorityDtoToUserAdapter = new AuthorityDtoToAuthorityAdapter();
     public static final DiscountDtoToDiscountAdapter discountDtoToDiscountAdapter = new DiscountDtoToDiscountAdapter();

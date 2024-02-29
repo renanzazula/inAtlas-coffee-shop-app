@@ -39,7 +39,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductDto update(long id, ProductDto obj) {
-        productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND));
         ProductEntity productEntity = productRepository.getById(id);
         productEntity.setName(obj.getName());
         productEntity.setDescription(obj.getDescription());
