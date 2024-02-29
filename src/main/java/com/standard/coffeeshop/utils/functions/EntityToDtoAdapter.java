@@ -1,7 +1,7 @@
 package com.standard.coffeeshop.utils.functions;
 
 
-import com.standard.coffeeshop.utils.functions.entityToDto.*;
+import com.standard.coffeeshop.utils.functions.entity.*;
 
 public class EntityToDtoAdapter {
 

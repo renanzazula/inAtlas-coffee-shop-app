@@ -1,9 +1,9 @@
 package com.standard.coffeeshop.utils.functions;
 
 
-import com.standard.coffeeshop.utils.functions.domainToDto.DiscountToDiscountDtoAdapter;
-import com.standard.coffeeshop.utils.functions.domainToDto.OrderRequestToOrderRequestDtoAdapter;
-import com.standard.coffeeshop.utils.functions.domainToDto.ProductToProductDtoAdapter;
+import com.standard.coffeeshop.utils.functions.domain.DiscountToDiscountDtoAdapter;
+import com.standard.coffeeshop.utils.functions.domain.OrderRequestToOrderRequestDtoAdapter;
+import com.standard.coffeeshop.utils.functions.domain.ProductToProductDtoAdapter;
 
 public class DomainToDtoAdapter {
 

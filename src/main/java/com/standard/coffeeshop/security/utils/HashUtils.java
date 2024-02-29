@@ -10,7 +10,7 @@ public class HashUtils {
 	private static final Logger log= LoggerFactory.getLogger(HashUtils.class);
 	public static String hashString(String input) {
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA1");
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
 			md.reset();
 			byte[] buffer = input.getBytes("UTF-8");
 			md.update(buffer);

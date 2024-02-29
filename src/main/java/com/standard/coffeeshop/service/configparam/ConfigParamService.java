@@ -1,4 +1,4 @@
-package com.standard.coffeeshop.service.configParam;
+package com.standard.coffeeshop.service.configparam;
 
 import com.standard.coffeeshop.service.dto.ConfigParamsEnum;
 

@@ -1,7 +1,7 @@
 package com.standard.coffeeshop.utils.functions;
 
 
-import com.standard.coffeeshop.utils.functions.dtoToDomain.*;
+import com.standard.coffeeshop.utils.functions.dto.*;
 
 public class DtoToDomainAdapter {
 

@@ -1,4 +1,4 @@
-package com.standard.coffeeshop.utils.functions.entityToDto;
+package com.standard.coffeeshop.utils.functions.entity;
 
 
 import com.standard.coffeeshop.service.dto.security.AuthorityDto;

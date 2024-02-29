@@ -1,7 +1,7 @@
 package com.standard.coffeeshop.security.google;
 
 import com.standard.coffeeshop.repository.entity.security.UserEntity;
-import com.standard.coffeeshop.service.configParam.ConfigParamService;
+import com.standard.coffeeshop.service.configparam.ConfigParamService;
 import com.standard.coffeeshop.service.dto.ConfigParamsEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationTrustResolver;

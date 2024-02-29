@@ -1,4 +1,4 @@
-package com.standard.coffeeshop.utils.functions.dtoToDomain;
+package com.standard.coffeeshop.utils.functions.dto;
 
 
 import com.standard.coffeeshop.controller.domain.Product;
