@@ -159,8 +159,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     private DiscountDto calculateTotalDiscount(long orderId) {
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
         List<DiscountDto> listOfOrderDiscountsToApply = calculateTotalDiscountOrder(orderRequestEntity);
-        DiscountDto orderDiscountsToApply = listOfOrderDiscountsToApply.stream().max(Comparator.comparingDouble(DiscountDto::getDiscount)).orElse(null);
-        return orderDiscountsToApply;
+        return listOfOrderDiscountsToApply.stream().max(Comparator.comparingDouble(DiscountDto::getDiscount)).orElse(null);
     }
 
     private List<DiscountDto> calculateTotalDiscountOrder(OrderRequestEntity orderRequestEntity) {
