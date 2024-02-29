@@ -1,10 +1,16 @@
 package com.standard.coffeeShop.repository.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "discount_item")
-public class DiscountItemEntity {
+public @Data class DiscountItemEntity {
 
     private static final long serialVersionUID = 7167425684167438414L;
 
@@ -21,30 +27,5 @@ public class DiscountItemEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false ,updatable = false)
     private ProductEntity product;
-
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public DiscountEntity getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(DiscountEntity discountEntity) {
-        this.discount = discountEntity;
-    }
-
-    public ProductEntity getProduct() {
-        return product;
-    }
-
-    public void setProduct(ProductEntity product) {
-        this.product = product;
-    }
-
 
 }

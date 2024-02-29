@@ -6,6 +6,7 @@ import com.standard.coffeeShop.utils.ConstantsApi;
 import com.standard.coffeeShop.utils.functions.DomainToDtoAdapter;
 import com.standard.coffeeShop.utils.functions.DtoToDomainAdapter;
 import io.swagger.annotations.Api;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +16,11 @@ import java.util.stream.Collectors;
 
 @Api(value = "Manage discounts", tags = "discount")
 @RestController
+@AllArgsConstructor
 @RequestMapping(ConstantsApi.DISCOUNT)
 public class DiscountsController {
 
     private final DiscountService discountService;
-
-    public DiscountsController(DiscountService discountService) {
-        this.discountService = discountService;
-    }
-
 
     @GetMapping({""})
     public ResponseEntity<List<Discount>> getAll() {

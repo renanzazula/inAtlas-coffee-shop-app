@@ -1,0 +1,41 @@
+#version: '3.3'
+services:
+  standard-coffee-shop-service:
+    build: .
+    # Add "image:" for readability
+    image: standard-coffee-shop-db
+    # Pass environment values to the entrypoint
+    environment:
+      DB_HOST: mysql
+      DB_PORT: ${MYSQL_PORT}
+      # etc.
+    # Add network spec to make it explicit what services can communicate together
+    networks:
+      - mySql-network
+    # Add "depends_on:" to improve "docker-run scheduling":
+    depends_on:
+      - mySql
+
+  mySql:
+    # container_name: mySql # unneeded
+    image: mysql:5.7
+    environment:
+      environment:
+        MYSQL_DATABASE: 'standard-coffee-shop-app-data-base'
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATA: /var/lib/mysql/data
+    volumes:
+      - ./.mysql-data/db:/var/lib/mysql/data
+    networks:
+      - mysql-network
+
+networks:
+  mySql-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+    # let's be more explicit
+    driver: local

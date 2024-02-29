@@ -9,10 +9,31 @@
 		{
 			"name": "Print Menu",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "spring",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/product/print/menu",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/product/print/menu",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -20,6 +41,8 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"product",
 						"print",
@@ -36,7 +59,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \r\n        \"name\": \"Capuccino  2\",\r\n        \"description\": \"Capuccino 2\",\r\n        \"status\": \"available\",\r\n        \"quantity\": 101.0,\r\n        \"priceUnit\": 9.0\r\n    }",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -44,7 +67,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/order",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order/open",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -52,8 +75,11 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
-						"order"
+						"order",
+						"open"
 					]
 				}
 			},
@@ -74,7 +100,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/order/1/add/1",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order/{{orderId}}/add/1",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -82,9 +108,11 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"order",
-						"1",
+						"{{orderId}}",
 						"add",
 						"1"
 					]
@@ -107,7 +135,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/order/1/add/1",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order/{{orderId}}/add/1",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -115,9 +143,11 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"order",
-						"1",
+						"{{orderId}}",
 						"add",
 						"1"
 					]
@@ -140,7 +170,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/order/1/remove/1",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order/{{orderId}}/remove/1",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -148,9 +178,11 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"order",
-						"1",
+						"{{orderId}}",
 						"remove",
 						"1"
 					]
@@ -173,7 +205,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/order/1/remove/1",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order/{{orderId}}/remove/1",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -181,9 +213,11 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"order",
-						"1",
+						"{{orderId}}",
 						"remove",
 						"1"
 					]
@@ -209,7 +243,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/order",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -217,6 +251,8 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"order"
 					]
@@ -242,7 +278,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/manage/order",
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/order",
 					"protocol": "{{http}}",
 					"host": [
 						"{{server}}"
@@ -250,6 +286,8 @@
 					"port": "{{port}}",
 					"path": [
 						"{{context}}",
+						"api",
+						"v1",
 						"manage",
 						"order"
 					]

@@ -1,7 +1,7 @@
 version: '3'
 services:
-  inAtlasCoffeeShop-app-app:
-      image: inAtlasCoffeeShop
+  standard-coffee-shop-app:
+      image: standard-coffee-shop-app
       build:
         context: ./
         dockerfile: Dockerfile

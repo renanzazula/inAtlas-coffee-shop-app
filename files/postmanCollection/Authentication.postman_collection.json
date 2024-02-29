@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "5aec84fd-59ca-41d5-929b-4b843fe62f7b",
+		"name": "Authorization - Authentication/Google 2Fa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3279078"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"admin\",\r\n    \"password\": \"spring\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/authentication/login",
+					"protocol": "{{http}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"api",
+						"v1",
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/authentication/user",
+					"protocol": "{{http}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"api",
+						"v1",
+						"authentication",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LogOut",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/authentication/logout",
+					"protocol": "{{http}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"api",
+						"v1",
+						"authentication",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register 2FA",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/authentication/2fa/register",
+					"protocol": "{{http}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"api",
+						"v1",
+						"authentication",
+						"2fa",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm 2FA",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"095680\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/authentication/2fa/confirm",
+					"protocol": "{{http}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"api",
+						"v1",
+						"authentication",
+						"2fa",
+						"confirm"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify 2FA",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \r\n        \"name\": \"Capuccino  2\",\r\n        \"description\": \"Capuccino 2\",\r\n        \"status\": \"available\",\r\n        \"quantity\": 101.0,\r\n        \"priceUnit\": 9.0\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{http}}://{{server}}:{{port}}/{{context}}/api/v1/manage/product",
+					"protocol": "{{http}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{context}}",
+						"api",
+						"v1",
+						"manage",
+						"product"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -4,16 +4,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.standard.coffeeShop.repository.entity.StatusOrderEnum;
 import com.standard.coffeeShop.service.dto.*;
 import com.standard.coffeeShop.service.dto.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 public abstract class AbstractRestControllerTest {
+
+    @Autowired
+    WebApplicationContext wac;
+
+    protected MockMvc mockMvc;
 
     protected OrderRequestDto orderRequestDto;
     protected PrintReceiptDto printReceiptDto;
 
+    @BeforeEach
+    public void setup() {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(wac)
+                .apply(springSecurity())
+                .build();
+    }
 
     static String asJsonString(final Object obj) {
         try {
