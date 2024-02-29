@@ -158,18 +158,12 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     private DiscountDto calculateTotalDiscount(long orderId) {
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
-
-        List<ProductEntity> allProductsFromOrder = orderRequestEntity.getOrderItems().stream().map(OrderRequestItemEntity::getProduct).collect(Collectors.toList());
-
-        List<DiscountDto> listOfOrderDiscountsToApply = calculateTotalDiscountOrder(orderRequestEntity, allProductsFromOrder);
+        List<DiscountDto> listOfOrderDiscountsToApply = calculateTotalDiscountOrder(orderRequestEntity);
         DiscountDto orderDiscountsToApply = listOfOrderDiscountsToApply.stream().max(Comparator.comparingDouble(DiscountDto::getDiscount)).orElse(null);
-
-        //List<DiscountDto> discountPromotionList = calculateTotalDiscountPromotion(orderRequestEntity, allProductsFromOrder);
-
         return orderDiscountsToApply;
     }
 
-    private List<DiscountDto> calculateTotalDiscountOrder(OrderRequestEntity orderRequestEntity, List<ProductEntity> allProductsFromOrder) {
+    private List<DiscountDto> calculateTotalDiscountOrder(OrderRequestEntity orderRequestEntity) {
         List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDateAndDiscountType(new Date(), DiscountTypeEnum.DISCOUNT_ORDER);
         List<DiscountDto> listOfDiscountsToApply = new ArrayList<>();
         for (int i = 0; i < discountListFromDb.size(); i++) {
@@ -183,7 +177,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         return listOfDiscountsToApply;
     }
 
-    private  List<DiscountDto> calculateTotalDiscountPromotion(OrderRequestEntity orderRequestEntity, List<ProductEntity> allProductsFromOrder) {
+    private  List<DiscountDto> calculateTotalDiscountPromotion(OrderRequestEntity orderRequestEntity) {
         List<DiscountEntity> discountListFromDb = discountRepository.findAllByToDateAndDiscountType(new Date(), DiscountTypeEnum.DISCOUNT_PRODUCT_COMBO);
         List<DiscountDto> listOfDiscountsToApply = new ArrayList<>();
 

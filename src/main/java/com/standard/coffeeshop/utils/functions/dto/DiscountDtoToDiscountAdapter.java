@@ -10,9 +10,9 @@ import java.util.function.Function;
 public class DiscountDtoToDiscountAdapter implements Function<DiscountDto, Discount> {
 
     @Override
-    public Discount apply(DiscountDto Discount) {
+    public Discount apply(DiscountDto discount) {
         Discount domain = new Discount();
-        BeanUtils.copyProperties(Discount, domain);
+        BeanUtils.copyProperties(discount, domain);
         return domain;
     }
 }

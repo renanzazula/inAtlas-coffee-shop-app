@@ -11,6 +11,4 @@ public class DomainToDtoAdapter {
     public static final OrderRequestToOrderRequestDtoAdapter orderRequestToOrderRequestDtoAdapter = new OrderRequestToOrderRequestDtoAdapter();
     public static final ProductToProductDtoAdapter productToProductDtoAdapter = new ProductToProductDtoAdapter();
 
-    public DomainToDtoAdapter() {
-    }
 }
