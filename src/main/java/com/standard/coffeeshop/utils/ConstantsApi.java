@@ -2,9 +2,6 @@ package com.standard.coffeeshop.utils;
 
 public class ConstantsApi {
 
-    public ConstantsApi() {
-    }
-
     public static final String BASE_URL = "/api/v1";
     public static final String MANAGE = BASE_URL + "/manage";
     public static final String PRODUCT = MANAGE + "/product";
@@ -15,6 +12,5 @@ public class ConstantsApi {
     public static final String AUTHENTICATION = BASE_URL + "/authentication";
 
     public static final String USER = AUTHENTICATION +"/user"; // maybe this should be authentication/user
-
 
 }

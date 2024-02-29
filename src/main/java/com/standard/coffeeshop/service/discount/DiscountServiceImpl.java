@@ -35,10 +35,8 @@ public class DiscountServiceImpl implements DiscountService {
                 configureDiscountOrder(obj);
                 return getDiscountDto(obj, discountEntity);
             case "DISCOUNT_PRODUCT":
-                configureDiscountProduct(obj);
-                return getDiscountDto(obj, discountEntity);
             case "DISCOUNT_PRODUCT_COMBO":
-                configureDiscountProductCombo(obj);
+                configureDiscountProduct(obj);
                 return getDiscountDto(obj, discountEntity);
             default:
                 throw new IllegalArgumentException("Type not found");
@@ -93,28 +91,12 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private DiscountDto configureDiscountOrder(DiscountDto obj){
-        DiscountEntity discountEntity = new DiscountEntity();
-        discountEntity.setTitle(obj.getTitle());
-        discountEntity.setStatus(obj.getStatus());
-        discountEntity.setFromDate(obj.getFromDate());
-        discountEntity.setToDate(obj.getToDate());
-        discountEntity.setAmountFrom(obj.getAmountFrom());
-        discountEntity.setAmountTo(obj.getAmountTo());
-        discountEntity.setDiscount(obj.getDiscount());
-        discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
+        DiscountEntity discountEntity = getDiscountEntity(obj);
         return EntityToDtoAdapter.discountEntityToDiscountDtoAdapter.apply(discountRepository.saveAndFlush(discountEntity));
     }
 
     private DiscountDto configureDiscountProduct(DiscountDto obj){
-        DiscountEntity discountEntity = new DiscountEntity();
-        discountEntity.setTitle(obj.getTitle());
-        discountEntity.setStatus(obj.getStatus());
-        discountEntity.setFromDate(obj.getFromDate());
-        discountEntity.setToDate(obj.getToDate());
-        discountEntity.setAmountFrom(obj.getAmountFrom());
-        discountEntity.setAmountTo(obj.getAmountTo());
-        discountEntity.setDiscount(obj.getDiscount());
-        discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
+        DiscountEntity discountEntity = getDiscountEntity(obj);
         for (int i = 0; i < obj.getDiscountItems().size(); i++) {
             DiscountItemEntity discountItem = new DiscountItemEntity();
             discountItem.setProduct(productRepository.getById(obj.getDiscountItems().get(i).getProduct().getId()));
@@ -123,7 +105,7 @@ public class DiscountServiceImpl implements DiscountService {
         return EntityToDtoAdapter.discountEntityToDiscountDtoAdapter.apply(discountRepository.saveAndFlush(discountEntity));
     }
 
-    private DiscountDto configureDiscountProductCombo(DiscountDto obj){
+    private DiscountEntity getDiscountEntity(DiscountDto obj) {
         DiscountEntity discountEntity = new DiscountEntity();
         discountEntity.setTitle(obj.getTitle());
         discountEntity.setStatus(obj.getStatus());
@@ -133,12 +115,7 @@ public class DiscountServiceImpl implements DiscountService {
         discountEntity.setAmountTo(obj.getAmountTo());
         discountEntity.setDiscount(obj.getDiscount());
         discountEntity.setDiscountType(DiscountTypeEnum.valueOf(obj.getDiscountType()));
-        for (int i = 0; i < obj.getDiscountItems().size(); i++) {
-            DiscountItemEntity discountItem = new DiscountItemEntity();
-            discountItem.setProduct(productRepository.getById(obj.getDiscountItems().get(i).getProduct().getId()));
-            discountEntity.addDiscountItem(discountItem);
-        }
-        return EntityToDtoAdapter.discountEntityToDiscountDtoAdapter.apply(discountRepository.saveAndFlush(discountEntity));
+        return discountEntity;
     }
 
 }
