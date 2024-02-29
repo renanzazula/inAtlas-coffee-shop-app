@@ -56,7 +56,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 
     @Override
     public void afterPropertiesSet() {
-        Assert.isTrue(EXPIRED_URL == null || UrlUtils.isValidRedirectUrl(EXPIRED_URL), EXPIRED_URL + " isn't a valid redirect URL");
+        Assert.isTrue(UrlUtils.isValidRedirectUrl(EXPIRED_URL), EXPIRED_URL + " isn't a valid redirect URL");
     }
 
     private void doLogout(HttpServletRequest request, HttpServletResponse response) {

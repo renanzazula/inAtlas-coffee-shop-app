@@ -23,17 +23,20 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(AuthenticationController.AUTHENTICATION)
 @RequiredArgsConstructor
 public class AuthenticationController {
+
     public static final String AUTHENTICATION = ConstantsApi.AUTHENTICATION;
+
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final AuthenticationManager authenticationManager;
     private final SessionAuthenticationStrategy sessionAuthenticationStrategy;
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody Login authentication){
+    public ResponseEntity<Login> login (@RequestBody Login authentication){
         Authentication authResp = authenticate(new UsernamePasswordAuthenticationToken(authentication.getUserId(), authentication.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authResp);
-        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        authentication.setPassword(null);
+        return new ResponseEntity<Login>(authentication, HttpStatus.OK);
     }
 
     @GetMapping("/logout")
