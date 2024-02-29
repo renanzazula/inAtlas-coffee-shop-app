@@ -17,7 +17,7 @@ public @Data class ComboItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "discount_item_id")
-    private Long Id;
+    private Long id;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
