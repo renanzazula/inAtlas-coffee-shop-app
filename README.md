@@ -43,7 +43,7 @@ The application when starts will create the database and insert a list of produc
     - Sandwich $10.10
     - Milk $ 1
     - Cake Slice $ 9
-    - Capuccino $ 8
+    - Cappuccino $ 8
     - Tea $ 6.1
 
  - To check the database access the URL below:
