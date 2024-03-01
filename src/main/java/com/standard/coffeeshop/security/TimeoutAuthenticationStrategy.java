@@ -18,7 +18,7 @@ import java.util.Optional;
 public class TimeoutAuthenticationStrategy implements SessionAuthenticationStrategy {
 
     private final ConfigParamService configParamService;
-    private final Integer DEFAULT_TIMEOUT = 60;
+    private static final Integer DEFAULT_SESSION_TIMEOUT = 60;
 
     @Override
     public void onAuthentication(Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws SessionAuthenticationException {
@@ -37,7 +37,7 @@ public class TimeoutAuthenticationStrategy implements SessionAuthenticationStrat
             log.error("Error retrieving session timeout", e);
         }
         if (null == timeout || timeout <= 0) {
-            timeout = DEFAULT_TIMEOUT;
+            timeout = DEFAULT_SESSION_TIMEOUT;
         }
         return timeout * 60;
 
