@@ -1,6 +1,9 @@
 package com.standard.coffeeshop.security;
 
+import com.standard.coffeeshop.service.configparam.ConfigParamService;
+import com.standard.coffeeshop.service.dto.ConfigParamsEnum;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
@@ -8,11 +11,14 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 public class TimeoutAuthenticationStrategy implements SessionAuthenticationStrategy {
 
-    private final Integer defaultTimeout;
+    private final ConfigParamService configParamService;
+    private final Integer DEFAULT_TIMEOUT = 60;
 
     @Override
     public void onAuthentication(Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws SessionAuthenticationException {
@@ -23,7 +29,18 @@ public class TimeoutAuthenticationStrategy implements SessionAuthenticationStrat
     }
 
     private Integer retrieveSessionTimeOut() {
-        return 60;
+        Integer timeout = null;
+        try {
+            Optional<Integer> timeoutValue = configParamService.getParameterValue(ConfigParamsEnum.SESSION_TIMEOUT, Integer.class);
+            timeout = timeoutValue.get();
+        } catch (Exception e) {
+            log.error("Error retrieving session timeout", e);
+        }
+        if (null == timeout || timeout <= 0) {
+            timeout = DEFAULT_TIMEOUT;
+        }
+        return timeout * 60;
+
     }
 
 }
