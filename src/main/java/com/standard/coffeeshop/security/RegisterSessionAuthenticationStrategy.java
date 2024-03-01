@@ -24,6 +24,7 @@ public class RegisterSessionAuthenticationStrategy implements SessionAuthenticat
     private final UserSessionRepository userSessionRepository;
 
     @Override
+    @Transactional
     public void onAuthentication(Authentication authentication,
                                  HttpServletRequest request,
                                  HttpServletResponse response)
