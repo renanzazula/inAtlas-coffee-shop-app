@@ -26,9 +26,6 @@ public @Data class LoginFailureEntity implements Serializable {
 
     private String username;
 
-//    @Column(name = "userId")
-//    private Long userId;
-
     @ManyToOne
     private UserEntity user;
 
