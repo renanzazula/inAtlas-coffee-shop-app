@@ -34,7 +34,6 @@ To execute the application we can run the command line bellow with one of profil
 
 `docker run -p 3307:3306 --name standard-my-sql -e MYSQL_ROOT_PASSWORD=root -d mysql/mysql-server:latest` 
  
-
 The application when starts will create the database and insert a list of product bellow 
 
     - Product Name 

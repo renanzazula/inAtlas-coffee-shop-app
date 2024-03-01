@@ -36,10 +36,8 @@ public class Google2faFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-
         if(configParamService.getParameterValue(ConfigParamsEnum.GOOGLE_2FA, Boolean.class).orElse(Boolean.FALSE)) {
             if (url2fa.matches(request)) {
                 filterChain.doFilter(request, response);
@@ -48,7 +46,7 @@ public class Google2faFilter extends GenericFilterBean {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null && !authenticationTrustResolver.isAnonymous(authentication)) {
                 log.debug("Processing 2FA Filter");
-                if (authentication.getPrincipal() != null && authentication.getPrincipal() instanceof UserEntity) {
+                if (authentication.getPrincipal() instanceof UserEntity) {
                     UserEntity user = (UserEntity) authentication.getPrincipal();
                     if (user.isUseGoogle2fa()) {
                         if (user.isUseGoogle2fa() && user.isUserGoogle2FaRequired()) {
@@ -61,5 +59,4 @@ public class Google2faFilter extends GenericFilterBean {
         }
         filterChain.doFilter(request, response);
     }
-
 }

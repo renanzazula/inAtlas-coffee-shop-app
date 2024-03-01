@@ -7,9 +7,6 @@ public class Base implements Serializable {
 
     private Long id;
 
-    public Base() {
-    }
-
     public Long getId() {
         return id;
     }
