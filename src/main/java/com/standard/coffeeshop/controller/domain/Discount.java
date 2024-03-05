@@ -9,7 +9,7 @@ import java.util.List;
 public @Data
 class Discount extends Base {
 
-    private Long id;
+    private String id;
     private String status;
     private Date fromDate;
     private Date toDate;

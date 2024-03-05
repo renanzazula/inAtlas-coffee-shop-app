@@ -31,7 +31,7 @@ public class DiscountsController {
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<Discount> getById(@PathVariable Long id) {
+    public ResponseEntity<Discount> getById(@PathVariable String id) {
         return new ResponseEntity<>(DtoToDomainAdapter.discountDtoToDiscountAdapter
                 .apply(discountService.getById(id)), HttpStatus.OK);
     }
@@ -46,12 +46,12 @@ public class DiscountsController {
 
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable String id) {
         discountService.delete(id);
     }
 
     @PutMapping({"/{id}"})
-    public ResponseEntity<Discount> update(@PathVariable Long id, @RequestBody Discount obj) {
+    public ResponseEntity<Discount> update(@PathVariable String id, @RequestBody Discount obj) {
         return new ResponseEntity<>(DtoToDomainAdapter
                 .discountDtoToDiscountAdapter
                 .apply(discountService.update(id,

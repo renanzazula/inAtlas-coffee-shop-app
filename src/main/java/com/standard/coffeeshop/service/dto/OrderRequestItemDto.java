@@ -4,7 +4,7 @@ import lombok.Data;
 
 public @Data class OrderRequestItemDto extends BaseDto {
 
-    private Long id;
+    private String id;
     private Double discount;
     private Double priceUnit;
     private ProductDto product;

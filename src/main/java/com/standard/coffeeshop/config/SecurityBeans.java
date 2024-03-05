@@ -6,6 +6,7 @@ import com.standard.coffeeshop.security.TimeoutAuthenticationStrategy;
 import com.standard.coffeeshop.security.filter.ConcurrentSessionFilter;
 import com.standard.coffeeshop.security.handler.LogoutUnregisterHandler;
 import com.standard.coffeeshop.security.handler.RedirectSuccessFilter;
+import com.standard.coffeeshop.service.configparam.ConfigParamService;
 import com.standard.coffeeshop.service.security.UserSessionService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,6 +33,7 @@ public class SecurityBeans {
 
     private final UserSessionService userSessionService;
     private final UserSessionRepository userSessionRepository;
+    private final ConfigParamService configParamService;
 
     @Bean
     public AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher){
@@ -83,7 +85,7 @@ public class SecurityBeans {
     public CompositeSessionAuthenticationStrategy compositeSessionAuthenticationStrategy() {
         List<SessionAuthenticationStrategy> strategies = new ArrayList<>();
         strategies.add(new SessionFixationProtectionStrategy());
-        strategies.add(new TimeoutAuthenticationStrategy(60));
+        strategies.add(new TimeoutAuthenticationStrategy(configParamService));
         strategies.add(new CsrfAuthenticationStrategy(csrfTokenRepository()));
         strategies.add(new RegisterSessionAuthenticationStrategy(userSessionRepository));
         return new CompositeSessionAuthenticationStrategy(strategies);

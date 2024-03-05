@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface DiscountRepository extends JpaRepository<DiscountEntity, Long> {
+public interface DiscountRepository extends JpaRepository<DiscountEntity, String> {
 
     List<DiscountEntity> findAllByToDateAndDiscountType(Date toDate, DiscountTypeEnum discountType);
 

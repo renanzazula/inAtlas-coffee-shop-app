@@ -21,7 +21,7 @@ public @Data class DiscountEntity extends BaseAuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "title")
     private String title;

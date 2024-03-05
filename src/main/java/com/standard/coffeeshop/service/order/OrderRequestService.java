@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface OrderRequestService {
 
-    OrderRequestDto openOrder();
-    OrderRequestDto addProduct(long orderId, long productId);
-    OrderRequestDto removeProduct(long orderId, long productId);
-    OrderRequestDto closeOrder(long id);
-    OrderRequestDto reopenOrder(long id);
-    OrderRequestDto delete(long id);
+    OrderRequestDto openOrder(String customerId);
+    OrderRequestDto addProduct(String customerId, String orderId, String productId);
+    OrderRequestDto removeProduct(String customerId, String orderId, String productId);
+    OrderRequestDto closeOrder(String customerId, String id);
+    OrderRequestDto reopenOrder(String customerId, String id);
+    OrderRequestDto delete(String customerId, String id);
 
-    List<OrderRequestDto> getAll();
-    OrderRequestDto getById(long id);
-    PrintReceiptDto printOrder(long id);
+    List<OrderRequestDto> getAll(String customerId);
+    OrderRequestDto getById(String customerId, String id);
+    PrintReceiptDto printOrder(String customerId, String id);
 
 }

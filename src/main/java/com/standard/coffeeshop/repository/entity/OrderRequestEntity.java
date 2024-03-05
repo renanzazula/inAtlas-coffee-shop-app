@@ -23,7 +23,7 @@ public @Data class OrderRequestEntity extends BaseAuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, insertable = true, updatable = false, nullable = true)
-    private Long id;
+    private String id;
 
     @CreationTimestamp
     @Column(name = "order_date_time")

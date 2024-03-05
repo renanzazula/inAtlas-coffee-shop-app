@@ -18,7 +18,7 @@ public @Data class CustomerEntity  extends BaseAuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "customer_name")
     private String customerName;
@@ -29,7 +29,7 @@ public @Data class CustomerEntity  extends BaseAuditEntity {
     @OneToMany(mappedBy = "customer")
     private Set<OrderRequestEntity> orderRequests;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserEntity> users;
 
 

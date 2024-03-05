@@ -2,7 +2,8 @@ package com.standard.coffeeshop.service.dto;
 
 public enum ConfigParamsEnum {
 
-    GOOGLE_2FA(ConfigParamTypeEnum.STRING);
+    GOOGLE_2FA(ConfigParamTypeEnum.STRING),
+    SESSION_TIMEOUT(ConfigParamTypeEnum.INTEGER);
 
     private final ConfigParamTypeEnum type;
 

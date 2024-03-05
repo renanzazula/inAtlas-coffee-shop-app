@@ -18,7 +18,7 @@ public @Data class DiscountItemEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "discount_item_id")
-    private Long id;
+    private String id;
 
 
     @ManyToOne(fetch = FetchType.EAGER)

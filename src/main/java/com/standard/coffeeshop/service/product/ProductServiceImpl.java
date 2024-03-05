@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductDto update(long id, ProductDto obj) {
+    public ProductDto update(String id, ProductDto obj) {
         ProductEntity productEntity = productRepository.getById(id);
         productEntity.setName(obj.getName());
         productEntity.setDescription(obj.getDescription());
@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void delete(long id) {
+    public void delete(String id) {
         productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND));
         ProductEntity productEntity = productRepository.getById(id);
         productEntity.setStatus("INATIVO");
@@ -67,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public ProductDto getById(long id) {
+    public ProductDto getById(String id) {
         return EntityToDtoAdapter.productEntityToProductDtoAdapter.apply(productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND)));
     }
 

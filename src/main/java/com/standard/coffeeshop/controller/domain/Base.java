@@ -1,17 +1,12 @@
 package com.standard.coffeeshop.controller.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 
-public class Base implements Serializable {
+public @Data class Base implements Serializable {
 
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String id;
 
 }
