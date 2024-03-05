@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public @Data class Login {
+public @Data class Login implements Serializable {
 
     @NotNull
     private String userId;

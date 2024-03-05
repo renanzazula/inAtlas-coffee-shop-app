@@ -1,6 +1,7 @@
 package com.standard.coffeeshop.service.order;
 
 
+import com.standard.coffeeshop.repository.customer.CustomerRepository;
 import com.standard.coffeeshop.repository.discount.DiscountRepository;
 import com.standard.coffeeshop.repository.entity.*;
 import com.standard.coffeeshop.repository.order.OrderRequestRepository;
@@ -25,119 +26,165 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     private final ProductRepository productRepository;
     private final DiscountRepository discountRepository;
 
+    private final CustomerRepository customerRepository;
 
-    public OrderRequestServiceImpl(OrderRequestRepository orderRequestRepository, ProductRepository productRepository, DiscountRepository discountRepository) {
+    public OrderRequestServiceImpl(OrderRequestRepository orderRequestRepository, ProductRepository productRepository, DiscountRepository discountRepository, CustomerRepository customerRepository) {
         this.orderRequestRepository = orderRequestRepository;
         this.productRepository = productRepository;
         this.discountRepository = discountRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
     @Transactional
-    public OrderRequestDto openOrder() {
-        OrderRequestEntity entity = new OrderRequestEntity();
-        entity.setTotalAmount(0D);
-        entity.setTotalQuantity(0L);
-        entity.setTotalDiscount(0D);
-        entity.setStatus(StatusOrderEnum.OPEN);
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.save(entity));
+    public OrderRequestDto openOrder(String customerId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
+            OrderRequestEntity entity = new OrderRequestEntity();
+            entity.setTotalAmount(0D);
+            entity.setTotalQuantity(0L);
+            entity.setTotalDiscount(0D);
+            entity.setStatus(StatusOrderEnum.OPEN);
+            entity.setCustomer(customerOptional.get());
+            return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.save(entity));
+        } else {
+            throw new RuntimeException("Customer Not Found");
+        }
     }
 
     @Override
     @Transactional
-    public OrderRequestDto addProduct(long orderId, long productId) {
-        OrderRequestEntity orderRequest = orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
-        productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException(Constants.PRODUCT_NOT_FOUND + productId));
+    public OrderRequestDto addProduct(String customerId, String orderId, String productId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
 
-        OrderRequestItemEntity orderRequestItem = new OrderRequestItemEntity();
-        orderRequestItem.setProduct(productRepository.getById(productId));
-        orderRequestItem.setPriceUnit(productRepository.getById(productId).getPriceUnit());
-        orderRequest.addOrderItem(orderRequestItem);
-        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.saveAndFlush(orderRequest);
+            OrderRequestEntity orderRequest = orderRequestRepository.findById(orderId)
+                    .orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
 
-        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
-        orderRequestEntityTotals.setTotalAmount(calculateSumAmount(orderRequestEntityTotals.getOrderItems()));
+            ProductEntity product = productRepository.findById(productId)
+                    .orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND + productId));
+            OrderRequestItemEntity orderRequestItem = new OrderRequestItemEntity();
+            orderRequestItem.setProduct(product);
+            orderRequestItem.setPriceUnit(product.getPriceUnit());
+            orderRequest.addOrderItem(orderRequestItem);
+            OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.saveAndFlush(orderRequest);
 
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
+            orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
+            orderRequestEntityTotals.setTotalAmount(calculateSumAmount(orderRequestEntityTotals.getOrderItems()));
+
+            return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
+                    .apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
+        }
     }
 
 
     @Override
     @Transactional
-    public OrderRequestDto removeProduct(long orderId, long productId) {
-        OrderRequestEntity orderRequestToUpdate = orderRequestRepository
-                .findById(orderId).orElseThrow(() ->
-                        new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+    public OrderRequestDto removeProduct(String customerId, String orderId, String productId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
+            OrderRequestEntity orderRequestToUpdate = orderRequestRepository
+                    .findById(orderId).orElseThrow(() ->
+                            new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
 
-        Optional<OrderRequestItemEntity> itemProductToRemove =
-                Optional.ofNullable(orderRequestToUpdate
-                        .getOrderItems()
-                        .stream()
-                        .findFirst()
-                        .filter(orderHasProduct -> orderHasProduct.getProduct().getId() == (productId))
-                        .orElseThrow(() -> new IllegalArgumentException(Constants.PRODUCT_NOT_FOUND + productId)));
+            Optional<OrderRequestItemEntity> itemProductToRemove =
+                    Optional.ofNullable(orderRequestToUpdate
+                            .getOrderItems()
+                            .stream()
+                            .findFirst()
+                            .filter(orderHasProduct -> orderHasProduct.getProduct().getId() == (productId))
+                            .orElseThrow(() -> new IllegalArgumentException(Constants.PRODUCT_NOT_FOUND + productId)));
 
-        orderRequestToUpdate.removeOrderItem(itemProductToRemove.get());
+            orderRequestToUpdate.removeOrderItem(itemProductToRemove.get());
 
-        OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
-        orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
-        orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems(), orderRequestEntityTotals.getTotalAmount()));
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
+            OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
+            orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
+            orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems(), orderRequestEntityTotals.getTotalAmount()));
+            return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
+        }
     }
 
     @Override
     @Transactional
-    public OrderRequestDto closeOrder(long orderId) {
-        OrderRequestEntity orderRequestEntity = orderRequestRepository
-                .findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+    public OrderRequestDto closeOrder(String customerId, String orderId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
 
-        orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getOrderItems()));
-        orderRequestEntity.setTotalAmount(calculateSumAmount(orderRequestEntity.getOrderItems()));
+            OrderRequestEntity orderRequestEntity = orderRequestRepository
+                    .findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
 
-        DiscountDto discountDto = calculateTotalDiscount(orderId);
-        orderRequestEntity.setTotalDiscount(discountDto != null ? discountDto.getDiscount() : 0D);
-        orderRequestEntity.setTotalAmount(orderRequestEntity.getTotalAmount()-orderRequestEntity.getTotalDiscount());
-        orderRequestEntity.setStatus(StatusOrderEnum.CLOSE);
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
+            orderRequestEntity.setTotalQuantity(calculateTotalQuantity(orderRequestEntity.getOrderItems()));
+            orderRequestEntity.setTotalAmount(calculateSumAmount(orderRequestEntity.getOrderItems()));
+
+            DiscountDto discountDto = calculateTotalDiscount(orderId);
+            orderRequestEntity.setTotalDiscount(discountDto != null ? discountDto.getDiscount() : 0D);
+            orderRequestEntity.setTotalAmount(orderRequestEntity.getTotalAmount() - orderRequestEntity.getTotalDiscount());
+            orderRequestEntity.setStatus(StatusOrderEnum.CLOSE);
+            return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
+                    .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
+        }
     }
 
     @Override
     @Transactional
-    public OrderRequestDto reopenOrder(long orderId) {
-        OrderRequestEntity orderRequestEntity = orderRequestRepository
-                .findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
-        orderRequestEntity.setStatus(StatusOrderEnum.OPEN);
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
+    public OrderRequestDto reopenOrder(String customerId, String orderId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
+            OrderRequestEntity orderRequestEntity = orderRequestRepository
+                    .findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND));
+            orderRequestEntity.setStatus(StatusOrderEnum.OPEN);
+            return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
+                    .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
+        }
     }
 
     @Override
     @Transactional
-    public OrderRequestDto delete(long orderId) {
-        OrderRequestEntity entity = orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
-        entity.setStatus(StatusOrderEnum.DELETE);
+    public OrderRequestDto delete(String customerId, String orderId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
+            OrderRequestEntity entity = orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
+            entity.setStatus(StatusOrderEnum.DELETE);
 
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.save(entity));
+            return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
+                    .apply(orderRequestRepository.save(entity));
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderRequestDto> getAll() {
-        return orderRequestRepository.findAll()
-                .stream()
-                .map(EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter)
-                .collect(Collectors.toList());
+    public List<OrderRequestDto> getAll(String customerId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
+            return orderRequestRepository.findAllByCustomer(customerOptional.get())
+                    .stream()
+                    .map(EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter)
+                    .collect(Collectors.toList());
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public OrderRequestDto getById(long orderId) {
-        return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
-                .apply(orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId)));
+    public OrderRequestDto getById(String customerId, String orderId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
+            return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
+                    .apply(orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId)));
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
+        }
     }
 
     private long calculateTotalQuantity(List<OrderRequestItemEntity> orderHasProducts) {
@@ -156,7 +203,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
     }
 
 
-    private DiscountDto calculateTotalDiscount(long orderId) {
+    private DiscountDto calculateTotalDiscount(String orderId) {
         OrderRequestEntity orderRequestEntity = orderRequestRepository.getById(orderId);
         List<DiscountDto> listOfOrderDiscountsToApply = calculateTotalDiscountOrder(orderRequestEntity);
         return listOfOrderDiscountsToApply.stream().max(Comparator.comparingDouble(DiscountDto::getDiscount)).orElse(null);
@@ -183,12 +230,12 @@ public class OrderRequestServiceImpl implements OrderRequestService {
         for (int i = 0; i < discountListFromDb.size(); i++) {
             DiscountEntity discount = discountListFromDb.get(i);
 
-            List<Long> idsDiscountItemConfiguration = new ArrayList<>();
+            List<String> idsDiscountItemConfiguration = new ArrayList<>();
             for (int j = 0; j < discount.getDiscountItems().size(); j++) {
                 idsDiscountItemConfiguration.add(discount.getDiscountItems().get(j).getProduct().getId());
             }
 
-            List<Long> idsOrderItems = new ArrayList<>();
+            List<String> idsOrderItems = new ArrayList<>();
             for (int j = 0; j < orderRequestEntity.getOrderItems().size(); j++) {
                 idsOrderItems.add(orderRequestEntity.getOrderItems().get(j).getProduct().getId());
             }
@@ -204,26 +251,29 @@ public class OrderRequestServiceImpl implements OrderRequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public PrintReceiptDto printOrder(long orderId) {
-        OrderRequestEntity orderRequestEntity = orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId));
+    public PrintReceiptDto printOrder(String customerId, String orderId) {
+        Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
+        if(customerOptional.isPresent()) {
+            OrderRequestEntity orderRequestEntity = orderRequestRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(Constants.ORDER_NOT_FOUND + orderId));
+            PrintReceiptDto printReceiptDto = new PrintReceiptDto();
+            printReceiptDto.setTotal(orderRequestEntity.getTotalAmount());
 
-        PrintReceiptDto printReceiptDto = new PrintReceiptDto();
-        printReceiptDto.setTotal(orderRequestEntity.getTotalAmount());
-
-        List<PrintReceiptItemDto> printReceiptItemDtos = new ArrayList<>();
-
-        Map<Long, List<OrderRequestItemEntity>> groupedByProductId = orderRequestEntity.getOrderItems().stream().collect(Collectors.groupingBy(orderItem -> orderItem.getProduct().getId()));
-        for (Map.Entry<Long, List<OrderRequestItemEntity>> entry : groupedByProductId.entrySet()) {
-            List<OrderRequestItemEntity> orderItemsForProduct = entry.getValue();
-            PrintReceiptItemDto printReceiptItemDto = new PrintReceiptItemDto();
-            printReceiptItemDto.setAmount(orderItemsForProduct.size());
-            printReceiptItemDto.setProductName(orderItemsForProduct.get(0).getProduct().getName());
-            printReceiptItemDto.setUnitPrice(orderItemsForProduct.get(0).getProduct().getPriceUnit());
-            printReceiptItemDto.setTotal(orderItemsForProduct.stream().mapToDouble(orderRequestItemsEntity -> orderRequestItemsEntity.getProduct().getPriceUnit()).sum());
-            printReceiptItemDtos.add(printReceiptItemDto);
+            List<PrintReceiptItemDto> printReceiptItemDtos = new ArrayList<>();
+            Map<String, List<OrderRequestItemEntity>> groupedByProductId = orderRequestEntity.getOrderItems().stream().collect(Collectors.groupingBy(orderItem -> orderItem.getProduct().getId()));
+            for (Map.Entry<String, List<OrderRequestItemEntity>> entry : groupedByProductId.entrySet()) {
+                List<OrderRequestItemEntity> orderItemsForProduct = entry.getValue();
+                PrintReceiptItemDto printReceiptItemDto = new PrintReceiptItemDto();
+                printReceiptItemDto.setAmount(orderItemsForProduct.size());
+                printReceiptItemDto.setProductName(orderItemsForProduct.get(0).getProduct().getName());
+                printReceiptItemDto.setUnitPrice(orderItemsForProduct.get(0).getProduct().getPriceUnit());
+                printReceiptItemDto.setTotal(orderItemsForProduct.stream().mapToDouble(orderRequestItemsEntity -> orderRequestItemsEntity.getProduct().getPriceUnit()).sum());
+                printReceiptItemDtos.add(printReceiptItemDto);
+            }
+            printReceiptDto.setReceiptItems(printReceiptItemDtos);
+            return printReceiptDto;
+        } else {
+            throw new EntityNotFoundException("Customer Not Found");
         }
-        printReceiptDto.setReceiptItems(printReceiptItemDtos);
-        return printReceiptDto;
     }
 
 

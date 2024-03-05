@@ -10,7 +10,7 @@ import java.util.Date;
 public @Data
 class BaseDto implements Serializable {
 
-    private Long id;
+    private String id;
 
     @JsonFormat(pattern= Constants.PATTERN_DATE_FORMAT)
     private Date dateCreate;

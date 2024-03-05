@@ -8,10 +8,10 @@ import java.util.List;
 public interface DiscountService {
 
     DiscountDto add(DiscountDto obj);
-    DiscountDto update(Long id, DiscountDto obj);
-    void delete(Long id);
+    DiscountDto update(String id, DiscountDto obj);
+    void delete(String id);
     List<DiscountDto> getAll();
-    DiscountDto getById(Long id);
+    DiscountDto getById(String id);
 
 
 }

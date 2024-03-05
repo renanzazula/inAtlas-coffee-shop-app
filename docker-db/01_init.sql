@@ -43,22 +43,21 @@ CREATE TABLE IF NOT EXISTS `standardcoffeeshopapp`.`product` (
                                                                  `who_create` BIGINT NULL DEFAULT NULL,
                                                                  `who_update` BIGINT NULL DEFAULT NULL,
                                                                  `description` VARCHAR(100) NULL DEFAULT NULL,
-    `name` VARCHAR(45) NOT NULL,
-    `price_unit` DOUBLE NULL DEFAULT '0',
-    `quantity` BIGINT NULL DEFAULT '0',
-    `status` VARCHAR(255) NULL DEFAULT NULL,
-    PRIMARY KEY (`id`))
-    ENGINE = InnoDB
-    AUTO_INCREMENT = 8
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+                                                                 `name` VARCHAR(45) NOT NULL,
+                                                                 `price_unit` DOUBLE NULL DEFAULT '0',
+                                                                 `quantity` BIGINT NULL DEFAULT '0',
+                                                                 `status` VARCHAR(255) NULL DEFAULT NULL,
+                                                                 PRIMARY KEY (`id`))
+                                                                 ENGINE = InnoDB
+                                                                 AUTO_INCREMENT = 8
+                                                                 DEFAULT CHARACTER SET = utf8mb4
+                                                                 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `standardcoffeeshopapp`.`discount`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `standardcoffeeshopapp`.`discount` (
-                                                                  `id` BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `standardcoffeeshopapp`.`discount` (   `id` BIGINT NOT NULL AUTO_INCREMENT,
                                                                   `date_create` DATE NULL DEFAULT NULL,
                                                                   `date_update` DATE NULL DEFAULT NULL,
                                                                   `time_create` TIME NULL DEFAULT NULL,
@@ -70,16 +69,16 @@ CREATE TABLE IF NOT EXISTS `standardcoffeeshopapp`.`discount` (
                                                                   `amount_to` DOUBLE NULL DEFAULT NULL,
                                                                   `discount` DOUBLE NULL DEFAULT NULL,
                                                                   `discount_type` VARCHAR(255) NULL DEFAULT NULL,
-    `start_date` DATE NULL DEFAULT NULL,
-    `quantity_items` DOUBLE NULL DEFAULT NULL,
-    `status` VARCHAR(255) NULL DEFAULT NULL,
-    `title` VARCHAR(255) NULL DEFAULT NULL,
-    `to_date` DATE NULL DEFAULT NULL,
-    PRIMARY KEY (`id`))
-    ENGINE = InnoDB
-    AUTO_INCREMENT = 2
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+                                                                  `start_date` DATE NULL DEFAULT NULL,
+                                                                  `quantity_items` DOUBLE NULL DEFAULT NULL,
+                                                                  `status` VARCHAR(255) NULL DEFAULT NULL,
+                                                                  `title` VARCHAR(255) NULL DEFAULT NULL,
+                                                                  `to_date` DATE NULL DEFAULT NULL,
+                                                                  PRIMARY KEY (`id`))
+                                                                  ENGINE = InnoDB
+                                                                  AUTO_INCREMENT = 2
+                                                                  DEFAULT CHARACTER SET = utf8mb4
+                                                                  COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------

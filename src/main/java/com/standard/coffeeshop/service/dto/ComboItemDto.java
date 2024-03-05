@@ -4,7 +4,7 @@ import lombok.Data;
 
 public @Data class ComboItemDto extends BaseDto {
 
-    private Long id;
+    private String id;
     private ProductDto product;
 
 }

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @AllArgsConstructor
-
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -21,12 +20,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.debug("loadUserByUsername: {}",username);
-
-        UserDetails userResponse = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User name: " + username + "not found"));
-
-        log.debug("loadUserByUsername: {}",userResponse);
-
-        return userResponse;
+        return userRepository.findByUsername(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User name: " + username + "not found"));
     }
 
 

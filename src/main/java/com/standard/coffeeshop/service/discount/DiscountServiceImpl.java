@@ -45,7 +45,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     @Transactional
-    public DiscountDto update(Long id, DiscountDto discountDto) {
+    public DiscountDto update(String id, DiscountDto discountDto) {
         DiscountEntity discountEntity = discountRepository.getById(id);
         return getDiscountDto(discountDto, discountEntity);
     }
@@ -67,7 +67,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
+    public void delete(String id) {
         DiscountEntity discountEntity = discountRepository.getById(id);
         discountEntity.setStatus("INATIVO");
         discountRepository.save(discountEntity);
@@ -84,7 +84,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     @Transactional(readOnly = true)
-    public DiscountDto getById(Long id) {
+    public DiscountDto getById(String id) {
         return EntityToDtoAdapter.discountEntityToDiscountDtoAdapter
                 .apply(discountRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(Constants.DISCOUNT_NOT_FOUND)));

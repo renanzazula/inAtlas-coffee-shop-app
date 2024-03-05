@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public @Data class DiscountDto extends BaseDto {
 
-    private Long id;
+    private String id;
     private String title;
     private String status;
     private Date fromDate;

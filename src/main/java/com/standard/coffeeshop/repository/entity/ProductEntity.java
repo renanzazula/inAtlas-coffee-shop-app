@@ -21,7 +21,7 @@ public @Data class ProductEntity extends BaseAuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @NotNull
     @Size(max = 45)

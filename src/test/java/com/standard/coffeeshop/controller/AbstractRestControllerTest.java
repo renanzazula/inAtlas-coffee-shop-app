@@ -43,7 +43,7 @@ public abstract class AbstractRestControllerTest {
 
     protected OrderRequestDto setUpOrderDto(){
         OrderRequestDto orderRequest = new OrderRequestDto();
-        orderRequest.setId(1L);
+        orderRequest.setId("1");
         orderRequest.setOrderDateTime(LocalDateTime.now());
         orderRequest.setStatus(StatusOrderEnum.OPEN.toString());
         orderRequest.setTotalQuantity(0L);
@@ -54,7 +54,7 @@ public abstract class AbstractRestControllerTest {
 
     protected OrderRequestDto setUpOrderWithItemsDto(){
         OrderRequestDto orderRequest = new OrderRequestDto();
-        orderRequest.setId(1L);
+        orderRequest.setId("1");
         orderRequest.setOrderDateTime(LocalDateTime.now());
         orderRequest.setStatus(StatusOrderEnum.OPEN.toString());
         orderRequest.setTotalQuantity(0L);
@@ -66,7 +66,7 @@ public abstract class AbstractRestControllerTest {
 
     protected ProductDto setUpProductDto(){
         ProductDto product = new ProductDto();
-        product.setId(1L);
+        product.setId("1");
         product.setName("Latte");
         product.setQuantity(100L);
         product.setPriceUnit(5.3);
@@ -75,7 +75,7 @@ public abstract class AbstractRestControllerTest {
 
     protected OrderRequestItemDto setUpOrderRequestItemDto(){
         OrderRequestItemDto orderRequestItem = new OrderRequestItemDto();
-        orderRequestItem.setId(ThreadLocalRandom.current().nextLong());
+        orderRequestItem.setId(String.valueOf(ThreadLocalRandom.current().nextLong()));
         orderRequestItem.setPriceUnit(5.3);
         orderRequestItem.setProduct(setUpProductDto());
         return orderRequestItem;

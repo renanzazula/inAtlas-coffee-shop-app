@@ -26,8 +26,8 @@ public class OrdersController {
 
     @PreAuthorize("hasAnyAuthority('ORDER_SEARCH')")
     @GetMapping({"/"})
-    public ResponseEntity<List<OrderRequest>> getAllOrders() {
-        return new ResponseEntity<>(orderRequestService.getAll()
+    public ResponseEntity<List<OrderRequest>> getAllOrders(@PathVariable("customerId") String customerId) {
+        return new ResponseEntity<>(orderRequestService.getAll(customerId)
                 .stream()
                 .map(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter)
                 .collect(Collectors.toList()), HttpStatus.OK);
@@ -35,59 +35,59 @@ public class OrdersController {
 
     @PreAuthorize("hasAnyAuthority('ORDER_SEARCH')")
     @GetMapping({"/{orderId}"})
-    public ResponseEntity<OrderRequest> getOrderById(@PathVariable long orderId) {
+    public ResponseEntity<OrderRequest> getOrderById(@PathVariable("customerId") String customerId, @PathVariable String orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.getById(orderId)), HttpStatus.OK);
+                .apply(orderRequestService.getById(customerId,orderId)), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_OPEN')")
     @PostMapping("/open")
-    public ResponseEntity<OrderRequest> openOrder() {
+    public ResponseEntity<OrderRequest> openOrder(@PathVariable("customerId") String customerId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.openOrder()), HttpStatus.CREATED);
+                .apply(orderRequestService.openOrder(customerId)), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_DELETE')")
     @PutMapping({"/{orderId}/delete"})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<OrderRequest> delete(@PathVariable long orderId) {
+    public ResponseEntity<OrderRequest> delete(@PathVariable("customerId") String customerId, @PathVariable String orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.delete(orderId)), HttpStatus.OK);
+                .apply(orderRequestService.delete(customerId,orderId)), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_CLOSE')")
     @PutMapping({"/{orderId}/close"})
-    public ResponseEntity<OrderRequest> closeOrder(@PathVariable long orderId) {
+    public ResponseEntity<OrderRequest> closeOrder(@PathVariable("customerId") String customerId, @PathVariable String orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.closeOrder(orderId)), HttpStatus.OK);
+                .apply(orderRequestService.closeOrder(customerId,orderId)), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_REOPEN')")
     @PutMapping({"/{orderId}/reopen"})
-    public ResponseEntity<OrderRequest> reopenOrder(@PathVariable long orderId) {
+    public ResponseEntity<OrderRequest> reopenOrder(@PathVariable("customerId") String customerId, @PathVariable String orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.reopenOrder(orderId)), HttpStatus.OK);
+                .apply(orderRequestService.reopenOrder(customerId,orderId)), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_PRINT')")
     @GetMapping({"/{orderId}/receipt"})
-    public ResponseEntity<PrintReceipt> printOrder(@PathVariable long orderId) {
+    public ResponseEntity<PrintReceipt> printOrder(@PathVariable("customerId") String customerId, @PathVariable String orderId) {
         return new ResponseEntity<>(DtoToDomainAdapter.printReceiptDtoToPrintReceiptAdapter
-                .apply(orderRequestService.printOrder(orderId)), HttpStatus.OK);
+                .apply(orderRequestService.printOrder(customerId,orderId)), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_ADD')")
     @PutMapping({"/{orderId}/add/{productId}"})
-    public ResponseEntity<OrderRequest> addProduct(@PathVariable long orderId, @PathVariable long productId) {
+    public ResponseEntity<OrderRequest> addProduct(@PathVariable("customerId") String customerId, @PathVariable String orderId, @PathVariable String productId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.addProduct(orderId, productId)), HttpStatus.OK);
+                .apply(orderRequestService.addProduct(customerId,orderId, productId)), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_REMOVE')")
     @PutMapping({"/{orderId}/remove/{productId}"})
-    public ResponseEntity<OrderRequest> removeProduct(@PathVariable long orderId, @PathVariable long productId) {
+    public ResponseEntity<OrderRequest> removeProduct(@PathVariable("customerId") String customerId, @PathVariable String orderId, @PathVariable String productId) {
         return new ResponseEntity<>(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter
-                .apply(orderRequestService.removeProduct(orderId, productId)), HttpStatus.OK);
+                .apply(orderRequestService.removeProduct(customerId,orderId, productId)), HttpStatus.OK);
     }
 
 }

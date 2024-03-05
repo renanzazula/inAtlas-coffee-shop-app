@@ -49,7 +49,7 @@ public class ProductsController {
 
     @PreAuthorize("hasAnyAuthority('PRODUCT_SEARCH')")
     @GetMapping({"/{id}"})
-    public ResponseEntity<Product> getById(@PathVariable long id) {
+    public ResponseEntity<Product> getById(@PathVariable String id) {
         return new ResponseEntity<>(DtoToDomainAdapter.productDtoToProductDomainAdapter
                 .apply(productService.getById(id)), HttpStatus.OK);
     }
@@ -64,13 +64,13 @@ public class ProductsController {
     @PreAuthorize("hasAnyAuthority('PRODUCT_DELETE')")
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable String id) {
         productService.delete(id);
     }
 
     @PreAuthorize("hasAnyAuthority('PRODUCT_UPDATE')")
     @PutMapping({"/{id}"})
-    public ResponseEntity<Product> update(@PathVariable long id, @RequestBody Product obj) {
+    public ResponseEntity<Product> update(@PathVariable String id, @RequestBody Product obj) {
         return new ResponseEntity<>(DtoToDomainAdapter.productDtoToProductDomainAdapter
                 .apply(productService.update(id, DomainToDtoAdapter.productToProductDtoAdapter.apply(obj))), HttpStatus.OK);
     }
