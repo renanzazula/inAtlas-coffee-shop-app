@@ -9,6 +9,6 @@ public @Data
 class PrintReceipt  implements Serializable {
 
     private double total;
-    List<PrintReceiptItem> receiptItems;
+    private List<PrintReceiptItem> receiptItems;
 
 }
