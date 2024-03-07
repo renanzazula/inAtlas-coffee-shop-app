@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-public  class UserEntity implements UserDetails, CredentialsContainer, Serializable {
+public class UserEntity implements UserDetails, CredentialsContainer, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,8 +31,9 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password", insertable = false, updatable = false)
-    private String password;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserPasswordEntity userPassword;
 
     @Singular
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
@@ -83,6 +84,11 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
     }
 
     @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
     public boolean isCredentialsNonExpired() {
         return this.credentialNonExpired;
     }
@@ -94,7 +100,7 @@ public  class UserEntity implements UserDetails, CredentialsContainer, Serializa
 
     @Override
     public void eraseCredentials() {
-        this.password = null;
+        this.userPassword.setPassword(null);
     }
 
 }
