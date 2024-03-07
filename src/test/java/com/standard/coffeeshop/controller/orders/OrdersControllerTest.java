@@ -30,7 +30,7 @@ class OrdersControllerTest extends AbstractRestControllerTest {
     @Test
      void testGetAllOrders() throws Exception {
         orderRequestDto = setUpOrderWithItemsDto();
-        //   when(orderRequestService.getAll()).thenReturn(Arrays.asList(orderRequestDto));
+        //when(orderRequestService.getAll()).thenReturn(Arrays.asList(orderRequestDto));
         mockMvc.perform(get(OrdersController.ORDER_CONTROLLER_BASE_URL)
                         .with(httpBasic("admin", "spring"))
                         .contentType(MediaType.APPLICATION_JSON))

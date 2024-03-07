@@ -33,11 +33,11 @@ public class SwaggerConfig {
         String description = "standard - Coffee Shop - app";
         String version = "v1";
         Contact contact = new Contact("Renan Zazula",
-                "", "renan.zazula@gmail.com");
+                "www.standardcoffeeshopapp.com", "renan.zazula@gmail.com");
         return new ApiInfo(title,
                 description,
                 version,
-                "",
+                "www.standardcoffeeshopapp.com/termsofservice",
                 contact,
                 "",
                 "",
