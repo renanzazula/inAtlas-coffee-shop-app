@@ -1,7 +1,7 @@
-FROM openjdk:11-jre-slim as builder
+FROM openjdk:11-jre-slim AS builder
 WORKDIR application
            
-ADD target/standardCoffeeShop-0.0.1-SNAPSHOT.jar ./
+ADD /target/standardCoffeeShop-0.0.1-SNAPSHOT.jar ./
 RUN java -Djarmode=layertools -jar standardCoffeeShop-0.0.1-SNAPSHOT.jar extract
 
 FROM openjdk:11-jre-slim
