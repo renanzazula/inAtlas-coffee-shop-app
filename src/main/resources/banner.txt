@@ -7,4 +7,5 @@
 Application Name : ${application.name}
 Application Version : ${build.version}
 Spring Boot Version : ${spring-boot.formatted-version}
+Spring Boot Active Profile: ${spring.profiles.active}
 Java Version: ${java.version}

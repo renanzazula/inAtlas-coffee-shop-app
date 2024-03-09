@@ -15,15 +15,15 @@ import java.io.Serializable;
 public class UserPasswordEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long id;
-
 
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "userPassword")
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
 }

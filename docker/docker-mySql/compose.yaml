@@ -3,11 +3,11 @@ services:
     container_name: "standard-coffee-shop-db"
     image: mysql:latest
     env_file:
-      - .env
+      - ../.env
     environment:
       - MYSQL_USER=$MYSQL_USER
       - MYSQL_PASSWORD=$MYSQL_PASSWORD
-      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
       - MYSQL_DATABASE=$MYSQL_DATABASE
       - MYSQL_DATA=$MYSQL_DATA
       - MYSQL_LOCAL_PORT=$MYSQL_LOCAL_PORT
@@ -15,8 +15,7 @@ services:
     ports:
       - '${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}'
     volumes:
-      - "./db-files/startup-scripts/01_init.sql:/docker-entrypoint-initdb.d/01_init.sql"
-
+      - "./startup-scripts/01_init.sql:/docker-entrypoint-initdb.d/01_init.sql"
     networks:
       - mysql-network
 

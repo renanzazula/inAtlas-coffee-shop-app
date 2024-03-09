@@ -31,8 +31,9 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
     @Column(name = "username")
     private String username;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private UserPasswordEntity userPassword;
 
     @Singular

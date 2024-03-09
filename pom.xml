@@ -10,10 +10,10 @@
         <!-- lookup parent from repository -->
     </parent>
     <groupId>com.coffeeShop.standard</groupId>
-    <artifactId>standardCoffeeShop</artifactId>
+    <artifactId>standard-coffee-shop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>standardCoffeeShop</name>
-    <description>standardCoffeeShop</description>
+    <name>standard-coffee-shop</name>
+    <description>standard-coffee-shop</description>
 
     <developers>
         <developer>
@@ -48,6 +48,8 @@
         <cglib-nodep.version>3.2.9</cglib-nodep.version>
         <jaxb-core.version>2.3.0.1</jaxb-core.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
+        <docker.image.prefix>renanzazula</docker.image.prefix>
+        <docker.image.name>${project.artifactId}</docker.image.name>
     </properties>
 
     <dependencies>
@@ -277,6 +279,30 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.33.0</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>${docker.image.prefix}/${docker.image.name}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <dockerFile>${project.basedir}/docker/docker-app/Dockerfile</dockerFile>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
             </plugin>
         </plugins>
     </build>
