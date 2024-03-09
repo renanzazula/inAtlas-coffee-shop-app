@@ -399,11 +399,11 @@ INSERT INTO `standardcoffeeshopapp`.`user`(`id`,`username`,`password`,`account_n
 INSERT INTO `standardcoffeeshopapp`.`user`(`id`,`username`,`password`,`account_non_expired`,`account_non_locked`,`credential_non_expired`,`enable`, `use_google_2fa`) VALUES(3, 'customer', '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true, false);
 INSERT INTO `standardcoffeeshopapp`.`user`(`id`,`username`,`password`,`account_non_expired`,`account_non_locked`,`credential_non_expired`,`enable`, `use_google_2fa`) VALUES(1, 'admin',    '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true, false);
 
-INSERT INTO `standardcoffeeshopapp`.`user_pass`(`id`, `password``user_id`)
+INSERT INTO `standardcoffeeshopapp`.`user_pass`(`id`, `password`, `user_id`)
 VALUES (2, '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', 2);
-INSERT INTO `standardcoffeeshopapp`.`user_pass`(`id`, `password``user_id`)
+INSERT INTO `standardcoffeeshopapp`.`user_pass`(`id`, `password`, `user_id`)
 VALUES (3, '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', 3);
-INSERT INTO `standardcoffeeshopapp`.`user_pass`(`id`, `password``user_id`)
+INSERT INTO `standardcoffeeshopapp`.`user_pass`(`id`, `password`, `user_id`)
 VALUES (1, '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', 1);
 
 INSERT INTO `standardcoffeeshopapp`.`role` (`id`,`name`) VALUES(1, 'ADMIN');

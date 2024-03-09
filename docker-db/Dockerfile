@@ -1,6 +1,6 @@
 FROM mysql:latest
 
-MAINTAINER Renan zazula
+LABEL org.opencontainers.image.authors="Renan zazula"
 
 RUN chown -R mysql:root /var/lib/mysql/
 
