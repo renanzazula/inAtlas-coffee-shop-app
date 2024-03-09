@@ -86,7 +86,7 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
 
     @Override
     public String getPassword() {
-        return null;
+        return userPassword.getPassword();
     }
 
     @Override
@@ -101,7 +101,7 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
 
     @Override
     public void eraseCredentials() {
-        this.userPassword.setPassword(null);
+
     }
 
 }

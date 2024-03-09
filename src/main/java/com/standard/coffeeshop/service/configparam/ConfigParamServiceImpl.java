@@ -15,6 +15,7 @@ public class ConfigParamServiceImpl implements ConfigParamService {
 
     private final ConfigParamRepository configParamRepository;
 
+
     @Override
     public Object getParameterValue(ConfigParamsEnum id) {
         ConfigParamEntity param = configParamRepository.getById(id.name());

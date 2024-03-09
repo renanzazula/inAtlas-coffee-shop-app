@@ -428,17 +428,20 @@ SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
 
+INSERT INTO `standardcoffeeshopapp.config_param `(id, value)
+VALUES ('SESSION_TIMEOUT', '60');
+
 INSERT INTO `standardcoffeeshopapp`.`user`(`id`, `username`, `password`, `account_non_expired`, `account_non_locked`,
                                            `credential_non_expired`, `enable`, `use_google_2fa`)
-VALUES (2, 'user', '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true,
+VALUES (2, 'user', '{bcrypt}$2a$10$9fcFfoA5HfC6A9Ncz.jRwepdh9d9RcfPkM5Dbotadaahcy9QbU8li', true, true, true, true,
         false);
 INSERT INTO `standardcoffeeshopapp`.`user`(`id`, `username`, `password`, `account_non_expired`, `account_non_locked`,
                                            `credential_non_expired`, `enable`, `use_google_2fa`)
-VALUES (3, 'customer', '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true,
+VALUES (3, 'customer', '{bcrypt}$2a$10$9fcFfoA5HfC6A9Ncz.jRwepdh9d9RcfPkM5Dbotadaahcy9QbU8li', true, true, true, true,
         false);
 INSERT INTO `standardcoffeeshopapp`.`user`(`id`, `username`, `password`, `account_non_expired`, `account_non_locked`,
                                            `credential_non_expired`, `enable`, `use_google_2fa`)
-VALUES (1, 'admin', '{bcrypt}$2a$10$3w//CgAicchkVo0iCYJ0W.oXv911VdgfHsuS0hFks5joDpFFakUS2', true, true, true, true,
+VALUES (1, 'admin', '{bcrypt}$2a$10$9fcFfoA5HfC6A9Ncz.jRwepdh9d9RcfPkM5Dbotadaahcy9QbU8li', true, true, true, true,
         false);
 
 INSERT INTO `standardcoffeeshopapp`.`user_pass`(`id`, `password`, `user_id`)
