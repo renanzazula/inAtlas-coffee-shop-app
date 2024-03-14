@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -62,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public List<ProductDto> getAll() {
-        return productRepository.findAll().stream().map(EntityToDtoAdapter.productEntityToProductDtoAdapter).collect(Collectors.toList());
+        return productRepository.findAll().stream().map(EntityToDtoAdapter.productEntityToProductDtoAdapter).toList();
     }
 
     @Override
