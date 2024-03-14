@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim AS builder
+FROM openjdk:17-jdk-slim AS builder
 LABEL org.opencontainers.image.authors="Renan zazula"
 
 WORKDIR application
@@ -6,7 +6,7 @@ WORKDIR application
 ADD maven/${project.build.finalName}.jar ${project.build.finalName}.jar
 RUN java -Djarmode=layertools -jar ${project.build.finalName}.jar extract
 
-FROM openjdk:11-jre-slim
+FROM openjdk:17-jdk-slim
 LABEL PROJECT_NAME=${project.artifactId} \
       PROJECT=${project.id}
 

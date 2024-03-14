@@ -52,6 +52,7 @@
         <mysql-connector.version>8.0.28</mysql-connector.version>
         <docker.image.prefix>renanzazula</docker.image.prefix>
         <docker.image.name>${project.artifactId}</docker.image.name>
+        <logstash.logback.version>6.3</logstash.logback.version>
     </properties>
 
     <dependencies>
@@ -204,6 +205,13 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash.logback.version}</version>
+        </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
