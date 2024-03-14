@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Api(value = "Manage discounts", tags = "discount")
 @RestController
@@ -27,7 +26,7 @@ public class DiscountsController {
         return new ResponseEntity<>(discountService.getAll()
                 .stream()
                 .map(DtoToDomainAdapter.discountDtoToDiscountAdapter)
-                .collect(Collectors.toList()), HttpStatus.OK);
+                .toList(), HttpStatus.OK);
     }
 
     @GetMapping({"/{id}"})

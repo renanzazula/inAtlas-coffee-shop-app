@@ -7,7 +7,6 @@ import com.standard.coffeeshop.utils.functions.DtoToDomainAdapter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class OrderRequestDtoToOrderRequestAdapter implements Function<OrderRequestDto, OrderRequest> {
 
@@ -18,7 +17,7 @@ public class OrderRequestDtoToOrderRequestAdapter implements Function<OrderReque
         orderRequest.setOrderItems(dto
                 .getOrderItems().stream()
                 .map(DtoToDomainAdapter.orderRequestItemDtoToOrderRequestItemAdapter)
-                .collect(Collectors.toList()));
+                .toList());
         return orderRequest;
     }
 }

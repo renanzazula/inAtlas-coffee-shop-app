@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DiscountServiceImpl implements DiscountService {
@@ -79,7 +78,7 @@ public class DiscountServiceImpl implements DiscountService {
         return discountRepository.findAll()
                 .stream()
                 .map(EntityToDtoAdapter.discountEntityToDiscountDtoAdapter)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

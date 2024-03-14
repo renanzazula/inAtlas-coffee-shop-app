@@ -7,7 +7,6 @@ import com.standard.coffeeshop.utils.functions.DtoToDomainAdapter;
 import org.springframework.beans.BeanUtils;
 
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class UserDtoToUserAdapter implements Function<UserDto, User> {
 
@@ -21,7 +20,7 @@ public class UserDtoToUserAdapter implements Function<UserDto, User> {
                     return r1.getRole().compareTo(r2.getRole());
                 })
                 .map(DtoToDomainAdapter.authorityDtoToUserAdapter)
-                .collect(Collectors.toList()));
+                .toList());
         return domain;
     }
 }

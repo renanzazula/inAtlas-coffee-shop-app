@@ -13,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Api(value = "Manage Orders", tags = "order")
 @RestController
@@ -30,7 +29,7 @@ public class OrdersController {
         return new ResponseEntity<>(orderRequestService.getAll(customerId)
                 .stream()
                 .map(DtoToDomainAdapter.orderRequestDtoToOrderRequestAdapter)
-                .collect(Collectors.toList()), HttpStatus.OK);
+                .toList(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('ORDER_SEARCH')")

@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Api(value = "Manage Products", tags = "products")
 @Slf4j
@@ -35,7 +34,7 @@ public class ProductsController {
         return new ResponseEntity<>(productService.getAll()
                 .stream()
                 .map(DtoToDomainAdapter.productDtoToProductDomainAdapter)
-                .collect(Collectors.toList()), HttpStatus.OK);
+                .toList(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('PRODUCT_PRINT')")
@@ -44,7 +43,7 @@ public class ProductsController {
         return new ResponseEntity<>(productService.getAll()
                 .stream()
                 .map(DtoToDomainAdapter.productDtoToPrintMenuAdapter)
-                .collect(Collectors.toList()), HttpStatus.OK);
+                .toList(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyAuthority('PRODUCT_SEARCH')")

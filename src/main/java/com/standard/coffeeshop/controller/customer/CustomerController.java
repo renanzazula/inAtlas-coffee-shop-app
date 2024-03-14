@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Api(value = "Manage Customer", tags = "customer")
 @RestController
@@ -23,7 +22,7 @@ public class CustomerController {
     @PreAuthorize("hasAnyAuthority('CUSTOMER_SEARCH')")
     @GetMapping({""})
     public ResponseEntity<List<Customer>> getAll() {
-        return new ResponseEntity<>(Arrays.asList(new Customer(), new Customer()).stream().collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(Arrays.asList(new Customer(), new Customer()).stream().toList(), HttpStatus.OK);
     }
 
 

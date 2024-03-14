@@ -169,7 +169,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             return orderRequestRepository.findAllByCustomer(customerOptional.get())
                     .stream()
                     .map(EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter)
-                    .collect(Collectors.toList());
+                    .toList();
         } else {
             throw new EntityNotFoundException("Customer Not Found");
         }
