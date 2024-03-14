@@ -55,9 +55,6 @@ public @Data class OrderRequestEntity extends BaseAuditEntity {
 
     public void addOrderItem(OrderRequestItemEntity orderItem){
         if(orderItems != null){
-            if(orderItems == null){
-                orderItems = new ArrayList<>();
-            }
             orderItem.setOrderRequest(this);
             orderItems.add(orderItem);
         }

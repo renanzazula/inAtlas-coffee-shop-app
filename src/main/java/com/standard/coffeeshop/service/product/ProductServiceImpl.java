@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -30,8 +31,8 @@ public class ProductServiceImpl implements ProductService {
         productEntity.setStatus(obj.getStatus());
         productEntity.setQuantity(obj.getQuantity());
         productEntity.setPriceUnit(obj.getPriceUnit());
-        productEntity.setWhoCreate(0l);
-        productEntity.setWhoUpdate(0l);
+        productEntity.setWhoCreate(0L);
+        productEntity.setWhoUpdate(0L);
         return EntityToDtoAdapter.productEntityToProductDtoAdapter.apply(productRepository.save(productEntity));
     }
 
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
         productEntity.setStatus(obj.getStatus());
         productEntity.setQuantity(obj.getQuantity());
         productEntity.setPriceUnit(obj.getPriceUnit());
-        productEntity.setWhoUpdate(0l);
+        productEntity.setWhoUpdate(0L);
         productRepository.saveAndFlush(productEntity);
         return EntityToDtoAdapter.productEntityToProductDtoAdapter.apply(productRepository.getById(id));
     }
@@ -52,10 +53,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void delete(String id) {
-        productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND));
-        ProductEntity productEntity = productRepository.getById(id);
-        productEntity.setStatus("INATIVO");
-        productRepository.save(productEntity);
+        Optional<ProductEntity> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            ProductEntity productEntity = productRepository.getById(id);
+            productEntity.setStatus("INATIVO");
+            productRepository.save(productEntity);
+        } else {
+            throw new EntityNotFoundException(Constants.PRODUCT_NOT_FOUND);
+        }
     }
 
     @Override

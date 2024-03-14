@@ -61,9 +61,6 @@ public @Data class DiscountEntity extends BaseAuditEntity {
 
     public void addDiscountItem(DiscountItemEntity discountItem) {
         if (discountItems != null) {
-            if (discountItems == null) {
-                discountItems = new ArrayList<>();
-            }
             discountItem.setDiscount(this);
             discountItems.add(discountItem);
         }

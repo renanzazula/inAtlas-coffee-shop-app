@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,13 +76,15 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
 
     @Transient
     public Set<GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(RoleEntity::getAuthorities)
-                .flatMap(Set::stream)
-                .map(authorityEntity -> {
-                    return new SimpleGrantedAuthority(authorityEntity.getPermission());
-                })
-                .collect(Collectors.toSet());
+        Set<GrantedAuthority> set = new HashSet<>();
+        for (RoleEntity role : this.roles) {
+            Set<AuthorityEntity> authorities = role.getAuthorities();
+            for (AuthorityEntity authorityEntity : authorities) {
+                SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authorityEntity.getPermission());
+                set.add(simpleGrantedAuthority);
+            }
+        }
+        return set;
     }
 
     @Override
@@ -101,7 +104,7 @@ public class UserEntity implements UserDetails, CredentialsContainer, Serializab
 
     @Override
     public void eraseCredentials() {
-
+        // TODO document why this method is empty
     }
 
 }

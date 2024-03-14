@@ -20,10 +20,10 @@ public class AuthenticationSuccessListener {
     @EventListener
     public void listen(AuthenticationSuccessEvent event){
 
-        if(event.getSource() instanceof UsernamePasswordAuthenticationToken){
+        if (event.getSource() instanceof UsernamePasswordAuthenticationToken token) {
             LoginSuccessEntity.LoginSuccessEntityBuilder build = LoginSuccessEntity.builder();
 
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getSource();
+            token = (UsernamePasswordAuthenticationToken) event.getSource();
             if (token.getPrincipal() instanceof UserEntity user) {
                 user = (UserEntity) token.getPrincipal();
                 build.userId(user.getId()).username(user.getUsername());

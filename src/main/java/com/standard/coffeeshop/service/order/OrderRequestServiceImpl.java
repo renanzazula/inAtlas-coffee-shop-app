@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderRequestServiceImpl implements OrderRequestService {
 
+    public static final EntityNotFoundException CUSTOMER_NOT_FOUND = new EntityNotFoundException("Customer Not Found");
     private final OrderRequestRepository orderRequestRepository;
     private final ProductRepository productRepository;
     private final DiscountRepository discountRepository;
@@ -48,7 +49,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             entity.setCustomer(customerOptional.get());
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.save(entity));
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -75,7 +76,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                     .apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -94,17 +95,17 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                             .getOrderItems()
                             .stream()
                             .findFirst()
-                            .filter(orderHasProduct -> orderHasProduct.getProduct().getId() == (productId))
+                            .filter(orderHasProduct -> Objects.equals(orderHasProduct.getProduct().getId(), productId))
                             .orElseThrow(() -> new IllegalArgumentException(Constants.PRODUCT_NOT_FOUND + productId)));
 
-            orderRequestToUpdate.removeOrderItem(itemProductToRemove.get());
+            itemProductToRemove.ifPresent(orderRequestToUpdate::removeOrderItem);
 
             OrderRequestEntity orderRequestEntityTotals = orderRequestRepository.saveAndFlush(orderRequestToUpdate);
             orderRequestEntityTotals.setTotalQuantity(calculateTotalQuantity(orderRequestEntityTotals.getOrderItems()));
             orderRequestEntityTotals.setTotalAmount(calculateMinusAmount(orderRequestEntityTotals.getOrderItems(), orderRequestEntityTotals.getTotalAmount()));
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.saveAndFlush(orderRequestEntityTotals));
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -127,7 +128,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                     .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -142,7 +143,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                     .apply(orderRequestRepository.saveAndFlush(orderRequestEntity));
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -157,7 +158,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                     .apply(orderRequestRepository.save(entity));
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -171,7 +172,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
                     .map(EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter)
                     .toList();
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -183,7 +184,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter
                     .apply(orderRequestRepository.findById(orderId).orElseThrow(() -> new IllegalArgumentException(Constants.ORDER_NOT_FOUND + orderId)));
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 
@@ -272,7 +273,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             printReceiptDto.setReceiptItems(printReceiptItemDtos);
             return printReceiptDto;
         } else {
-            throw new EntityNotFoundException("Customer Not Found");
+            throw CUSTOMER_NOT_FOUND;
         }
     }
 

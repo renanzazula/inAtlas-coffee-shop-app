@@ -30,7 +30,7 @@ public class UserController {
         UserEntity userEntity = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDto userDto = EntityToDtoAdapter.userEntityToUserDtoAdapter.apply(userEntity);
         User user = DtoToDomainAdapter.userDtoToUserAdapter.apply(userDto);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 }

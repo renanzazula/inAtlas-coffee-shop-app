@@ -19,26 +19,23 @@ public class ConfigParamServiceImpl implements ConfigParamService {
     @Override
     public Object getParameterValue(ConfigParamsEnum id) {
         ConfigParamEntity param = configParamRepository.getById(id.name());
-        if (param != null) {
-            String value = param.getValue();
-            switch (id.getType()) {
-                case BOOLEAN:
-                    if (StringUtils.hasText(value) && "Y".equals(value)) {
-                        return Boolean.TRUE;
-                    } else {
-                        return Boolean.FALSE;
-                    }
-                case INTEGER:
-                    if (StringUtils.hasText(value) ) {
-                        return Integer.parseInt(value);
-                    } else {
-                        return 0;
-                    }
-                default:
-                    return value;
-            }
+        String value = param.getValue();
+        switch (id.getType()) {
+            case BOOLEAN:
+                if (StringUtils.hasText(value) && "Y".equals(value)) {
+                    return Boolean.TRUE;
+                } else {
+                    return Boolean.FALSE;
+                }
+            case INTEGER:
+                if (StringUtils.hasText(value)) {
+                    return Integer.parseInt(value);
+                } else {
+                    return 0;
+                }
+            default:
+                return value;
         }
-        return null;
     }
 
     @Override

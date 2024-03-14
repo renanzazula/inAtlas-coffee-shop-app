@@ -15,6 +15,7 @@ public class RedirectSuccessFilter implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request,
                                 HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
+        // TODO document why this method is empty
     }
 
 }

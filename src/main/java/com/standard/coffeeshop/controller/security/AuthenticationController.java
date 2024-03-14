@@ -36,7 +36,7 @@ public class AuthenticationController {
         Authentication authResp = authenticate(new UsernamePasswordAuthenticationToken(authentication.getUserId(), authentication.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authResp);
         authentication.setPassword(null);
-        return new ResponseEntity<Login>(authentication, HttpStatus.OK);
+        return new ResponseEntity<>(authentication, HttpStatus.OK);
     }
 
     @GetMapping("/logout")
@@ -55,7 +55,7 @@ public class AuthenticationController {
         } catch (Exception exception) {
             SecurityContextHolder.clearContext();
             log.error("Credentials validation failed", exception);
-            log.info("User credentials failed - user ID", authRequest.getPrincipal());
+            log.info("User credentials failed - user ID {}", authRequest.getPrincipal());
             throw exception;
         }
         return authResp;

@@ -49,7 +49,7 @@ public class RegisterSessionAuthenticationStrategy implements SessionAuthenticat
     @Transactional
     public void registerNewSession(HttpServletRequest request, int concurrentSessions, String userId) {
         UserSessionEntity userSession = getUserAttribute(userId);
-        String value = buildNewValue(request, concurrentSessions, userSession != null ? userSession.getActiveSessions() : null);
+        String value = buildNewValue(request, concurrentSessions, userSession.getActiveSessions());
         userSession.setActiveSessions(value);
         userSessionRepository.saveAndFlush(userSession);
     }
@@ -57,7 +57,7 @@ public class RegisterSessionAuthenticationStrategy implements SessionAuthenticat
     private UserSessionEntity getUserAttribute(String userId) {
         UserSessionEntity userAttribute = new UserSessionEntity();
         Optional<UserSessionEntity> userAttributeOpt = userSessionRepository.findById(userId);
-        if (!userAttributeOpt.isPresent()) {
+        if (userAttributeOpt.isEmpty()) {
             userAttribute.setUserId(userId);
         } else {
             userAttribute = userAttributeOpt.get();
@@ -70,7 +70,7 @@ public class RegisterSessionAuthenticationStrategy implements SessionAuthenticat
         //Development can define the authorized number of logins.
         try {
             String concurrentValue = "1";
-            concurrentUsers = Integer.valueOf(concurrentValue);
+            concurrentUsers = Integer.parseInt(concurrentValue);
         } catch (Exception e) {
             log.error("Error retrieving concurrent users {}", "CONCURRENT_SESSIONS", e);
         }
