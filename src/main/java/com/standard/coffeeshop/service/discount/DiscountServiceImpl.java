@@ -33,8 +33,7 @@ public class DiscountServiceImpl implements DiscountService {
             case "DISCOUNT_ORDER":
                 configureDiscountOrder(obj);
                 return getDiscountDto(obj, discountEntity);
-            case "DISCOUNT_PRODUCT":
-            case "DISCOUNT_PRODUCT_COMBO":
+            case "DISCOUNT_PRODUCT", "DISCOUNT_PRODUCT_COMBO":
                 configureDiscountProduct(obj);
                 return getDiscountDto(obj, discountEntity);
             default:

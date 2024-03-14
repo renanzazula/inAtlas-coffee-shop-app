@@ -48,7 +48,7 @@ public class OrderRequestServiceImpl implements OrderRequestService {
             entity.setCustomer(customerOptional.get());
             return EntityToDtoAdapter.orderRequestEntityToOrderRequestDtoAdapter.apply(orderRequestRepository.save(entity));
         } else {
-            throw new RuntimeException("Customer Not Found");
+            throw new EntityNotFoundException("Customer Not Found");
         }
     }
 

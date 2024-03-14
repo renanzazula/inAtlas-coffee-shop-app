@@ -24,14 +24,14 @@ public class AuthenticationSuccessListener {
             LoginSuccessEntity.LoginSuccessEntityBuilder build = LoginSuccessEntity.builder();
 
             UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getSource();
-            if (token.getPrincipal() instanceof UserEntity) {
-                UserEntity user = (UserEntity) token.getPrincipal();
+            if (token.getPrincipal() instanceof UserEntity user) {
+                user = (UserEntity) token.getPrincipal();
                 build.userId(user.getId()).username(user.getUsername());
                 log.debug("User name logged in: " + user.getUsername());
             }
 
-            if (token.getDetails() instanceof WebAuthenticationDetails) {
-                WebAuthenticationDetails details = (WebAuthenticationDetails) token.getDetails();
+            if (token.getDetails() instanceof WebAuthenticationDetails details) {
+                details = (WebAuthenticationDetails) token.getDetails();
                 build.sourceIp(details.getRemoteAddress());
                 log.debug("Source IP: " + details.getRemoteAddress());
             }

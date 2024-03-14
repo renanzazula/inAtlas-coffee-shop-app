@@ -28,19 +28,18 @@ public class AuthenticationFailureListener {
     public void failureListen(AuthenticationFailureBadCredentialsEvent event){
         log.debug("Login failure ");
 
-        if (event.getSource() instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) event.getSource();
+        if (event.getSource() instanceof UsernamePasswordAuthenticationToken token) {
+            token = (UsernamePasswordAuthenticationToken) event.getSource();
             LoginFailureEntity.LoginFailureEntityBuilder builder = LoginFailureEntity.builder();
 
-            if (token.getPrincipal() instanceof String) {
+            if (token.getPrincipal() instanceof String userName) {
                 log.debug("Attempted Username: " + token.getPrincipal());
-                builder.username((String) token.getPrincipal());
+                builder.username(userName);
                 userRepository.findByUsername((String) token.getPrincipal()).ifPresent(builder::user);
             }
 
-            if (token.getDetails() instanceof WebAuthenticationDetails) {
-                WebAuthenticationDetails details = (WebAuthenticationDetails) token.getDetails();
-
+            if (token.getDetails() instanceof WebAuthenticationDetails details) {
+                details = (WebAuthenticationDetails) token.getDetails();
                 log.debug("Source IP: " + details.getRemoteAddress());
                 builder.sourceIp(details.getRemoteAddress());
             }
